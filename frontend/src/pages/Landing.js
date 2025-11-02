@@ -48,9 +48,15 @@ export default function Landing() {
         setProgress((prev) => Math.min(prev + 15, 85));
       }, 500);
 
+      const token = localStorage.getItem('gr8_session_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${BACKEND_URL}/api/analyze`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         credentials: 'include',
         body: JSON.stringify({ url: url.trim() })
       });

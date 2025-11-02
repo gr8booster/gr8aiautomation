@@ -209,12 +209,15 @@ async def logout(request: Request, response: Response):
 
 @app.post("/api/auth/demo")
 async def demo_login(response: Response):
-    """Demo login for testing (creates test user)"""
+    """Demo login for testing (creates test user with sample data)"""
     demo_email = "demo@gr8ai.com"
     
     # Get or create demo user
     user = await users.find_one({"email": demo_email})
+    is_new_user = False
+    
     if not user:
+        is_new_user = True
         user_id = str(uuid.uuid4())
         user = {
             "_id": user_id,
@@ -237,6 +240,83 @@ async def demo_login(response: Response):
             "current_period_end": datetime.now(timezone.utc) + timedelta(days=365)
         }
         await subscriptions.insert_one(sub)
+        
+        # Create demo website
+        demo_website_id = str(uuid.uuid4())
+        await websites.insert_one({
+            "_id": demo_website_id,
+            "owner_id": user_id,
+            "url": "https://gr8ai.com",
+            "title": "GR8 AI Automation Demo",
+            "business_type": "saas",
+            "fetched_at": datetime.now(timezone.utc),
+            "analysis_summary": "AI-powered automation platform helping businesses automate workflows with intelligent chatbots, lead capture, and scheduling.",
+            "content_digest": "GR8 AI Automation helps you build intelligent automations for your business. We offer chatbots, lead capture forms, appointment scheduling, and more. Our AI-powered platform makes it easy to connect with your customers and streamline your operations."
+        })
+        
+        # Create demo chatbot automation
+        chatbot_template = await templates.find_one({"key": "ai-chatbot"})
+        if chatbot_template:
+            auto_id = str(uuid.uuid4())
+            await automations.insert_one({
+                "_id": auto_id,
+                "owner_id": user_id,
+                "website_id": demo_website_id,
+                "template_id": chatbot_template["_id"],
+                "name": chatbot_template["name"],
+                "status": "active",
+                "config": {},
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            })
+            
+            # Create workflow
+            workflow_id = str(uuid.uuid4())
+            await workflows.insert_one({
+                "_id": workflow_id,
+                "owner_id": user_id,
+                "website_id": demo_website_id,
+                "automation_id": auto_id,
+                "name": chatbot_template["name"],
+                "version": 1
+            })
+            
+            # Create execution record
+            exec_id = await orchestrator.create_execution(workflow_id, "demo_setup")
+            await orchestrator.add_log(exec_id, "Demo chatbot automation activated")
+            await orchestrator.update_execution_state(exec_id, "completed")
+        
+        # Create demo lead capture automation
+        leadcap_template = await templates.find_one({"key": "lead-capture"})
+        if leadcap_template:
+            auto_id = str(uuid.uuid4())
+            await automations.insert_one({
+                "_id": auto_id,
+                "owner_id": user_id,
+                "website_id": demo_website_id,
+                "template_id": leadcap_template["_id"],
+                "name": leadcap_template["name"],
+                "status": "active",
+                "config": {},
+                "created_at": datetime.now(timezone.utc),
+                "updated_at": datetime.now(timezone.utc)
+            })
+            
+            # Create workflow
+            workflow_id = str(uuid.uuid4())
+            await workflows.insert_one({
+                "_id": workflow_id,
+                "owner_id": user_id,
+                "website_id": demo_website_id,
+                "automation_id": auto_id,
+                "name": leadcap_template["name"],
+                "version": 1
+            })
+            
+            exec_id = await orchestrator.create_execution(workflow_id, "demo_setup")
+            await orchestrator.add_log(exec_id, "Demo lead capture automation activated")
+            await orchestrator.update_execution_state(exec_id, "completed")
+        
     else:
         await users.update_one({"_id": user["_id"]}, {"$set": {"last_login": datetime.now(timezone.utc)}})
     

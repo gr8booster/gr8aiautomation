@@ -18,16 +18,29 @@ export const AuthProvider = ({ children }) => {
 
   const checkSession = async () => {
     try {
+      // Try to get token from localStorage first
+      const token = localStorage.getItem('gr8_session_token');
+      
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      
       const response = await fetch(`${BACKEND_URL}/api/auth/me`, {
+        headers,
         credentials: 'include'
       });
 
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
+      } else {
+        // Clear invalid token
+        localStorage.removeItem('gr8_session_token');
       }
     } catch (error) {
       console.log('Not authenticated');
+      localStorage.removeItem('gr8_session_token');
     } finally {
       setLoading(false);
     }

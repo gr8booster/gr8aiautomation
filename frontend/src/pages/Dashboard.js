@@ -326,6 +326,51 @@ export default function Dashboard() {
           </TabsContent>
         </Tabs>
       </div>
+
+      {/* Embed Code Dialog */}
+      <Dialog open={showCodeDialog} onOpenChange={setShowCodeDialog}>
+        <DialogContent className="max-w-2xl">
+          <DialogHeader>
+            <DialogTitle>Embed Code - {selectedAutomation?.name}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p className="text-sm text-muted-foreground">
+              Copy this code and paste it into your website's HTML, just before the closing &lt;/body&gt; tag.
+            </p>
+            <div className="relative">
+              <pre className="bg-muted p-4 rounded-lg overflow-x-auto text-sm">
+                <code>{embedCode}</code>
+              </pre>
+              <Button
+                size="sm"
+                className="absolute top-2 right-2"
+                onClick={copyCode}
+              >
+                {copied ? (
+                  <>
+                    <Check className="h-4 w-4 mr-1" />
+                    Copied!
+                  </>
+                ) : (
+                  <>
+                    <Copy className="h-4 w-4 mr-1" />
+                    Copy Code
+                  </>
+                )}
+              </Button>
+            </div>
+            <div className="flex gap-2">
+              <Button onClick={() => testWidget(selectedAutomation)} variant="outline" className="flex-1">
+                <TestTube className="h-4 w-4 mr-2" />
+                Test Widget
+              </Button>
+              <Button onClick={() => setShowCodeDialog(false)} className="flex-1">
+                Done
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

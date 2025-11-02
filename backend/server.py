@@ -659,7 +659,7 @@ async def submit_form(form_id: str, req: FormSubmitRequest):
     if form.get("owner_id") != "demo":
         await track_usage(db, form["owner_id"], ai_interactions=1)
     
-    return {"success": True, "lead_id": lead_id, "autoresponse": autoresponse}
+    return {"success": True, "lead_id": lead_id, "autoresponse": autoresponse, "email_sent": email_sent}
 
 @app.get("/api/leads")
 async def list_leads(user: dict = Depends(get_current_user)):

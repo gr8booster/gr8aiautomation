@@ -273,20 +273,20 @@ async def signup(req: SignupRequest, response: Response):
         "name": req.name,
         "password_hash": hashed_password,
         "picture": None,
-        "plan": "free",
+        "plan": "starter",  # Give new users Starter plan to test features
         "created_at": datetime.now(timezone.utc),
         "last_login": datetime.now(timezone.utc)
     }
     await users.insert_one(user)
     
-    # Create free subscription
+    # Create starter subscription
     sub = {
         "_id": str(uuid.uuid4()),
         "user_id": user_id,
-        "plan": "free",
+        "plan": "starter",
         "status": "active",
         "current_period_start": datetime.now(timezone.utc),
-        "current_period_end": datetime.now(timezone.utc) + timedelta(days=365)
+        "current_period_end": datetime.now(timezone.utc) + timedelta(days=30)
     }
     await subscriptions.insert_one(sub)
     

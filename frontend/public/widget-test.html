@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widget Test - External Site Simulation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        .section {
+            background: white;
+            padding: 30px;
+            margin: 20px 0;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .test-info {
+            background: #e3f2fd;
+            border-left: 4px solid #2196f3;
+            padding: 15px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>🧪 GR8 AI Widget Test Page</h1>
+    <p>This simulates embedding widgets on an external website</p>
+
+    <!-- Chatbot Widget Test -->
+    <div class="section">
+        <h2>1. AI Chatbot Widget</h2>
+        <div class="test-info">
+            <strong>Expected behavior:</strong> Floating chat button should appear in bottom-right corner
+        </div>
+        <p>Try clicking the chat button and sending a message!</p>
+    </div>
+
+    <!-- Lead Form Widget Test -->
+    <div class="section">
+        <h2>2. Lead Capture Form Widget</h2>
+        <div class="test-info">
+            <strong>Expected behavior:</strong> Contact form should render below
+        </div>
+        <div id="gr8-lead-form"></div>
+    </div>
+
+    <!-- Load Chatbot Widget -->
+    <script src="https://smarthub-ai-1.preview.emergentagent.com/widget.js"></script>
+    <script>
+        console.log('Loading chatbot widget...');
+        if (window.GR8Chatbot) {
+            GR8Chatbot.init({
+                websiteId: 'demo-website',
+                apiUrl: 'https://smarthub-ai-1.preview.emergentagent.com/api'
+            });
+            console.log('✅ Chatbot initialized');
+        } else {
+            console.error('❌ GR8Chatbot not found');
+        }
+    </script>
+
+    <!-- Load Lead Form Widget -->
+    <script src="https://smarthub-ai-1.preview.emergentagent.com/lead-form-widget.js"></script>
+    <script>
+        console.log('Loading lead form widget...');
+        if (window.GR8LeadForm) {
+            GR8LeadForm.init({
+                formId: 'demo-form',
+                apiUrl: 'https://smarthub-ai-1.preview.emergentagent.com/api'
+            });
+            console.log('✅ Lead form initialized');
+        } else {
+            console.error('❌ GR8LeadForm not found');
+        }
+    </script>
+
+    <script>
+        // Debug info
+        console.log('Page loaded at:', new Date().toLocaleString());
+        console.log('Testing widgets from:', window.location.href);
+    </script>
+</body>
+</html>

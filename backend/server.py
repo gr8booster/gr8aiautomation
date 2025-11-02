@@ -66,6 +66,7 @@ chatbot_sessions = db["chatbot_sessions"]
 
 # Services
 orchestrator = OrchestratorService(db)
+appointment_scheduler = AppointmentScheduler(db)
 
 # Stripe
 STRIPE_API_KEY = os.environ.get('STRIPE_API_KEY')

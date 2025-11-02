@@ -217,6 +217,28 @@ export default function Dashboard() {
                             {formatDate(automation.created_at)}
                           </TableCell>
                           <TableCell className="text-right space-x-2">
+                            {automation.status === 'active' && (automation.template_id === 'ai-chatbot' || automation.template_id === 'lead-capture') && (
+                              <>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => testWidget(automation)}
+                                  data-testid="automation-test-button"
+                                >
+                                  <TestTube className="h-4 w-4 mr-1" />
+                                  Test
+                                </Button>
+                                <Button
+                                  size="sm"
+                                  variant="outline"
+                                  onClick={() => showEmbedCode(automation)}
+                                  data-testid="automation-code-button"
+                                >
+                                  <Code className="h-4 w-4 mr-1" />
+                                  Get Code
+                                </Button>
+                              </>
+                            )}
                             <Button
                               size="sm"
                               variant="ghost"

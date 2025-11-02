@@ -29,6 +29,13 @@ export default function Landing() {
       return;
     }
 
+    // Check if authenticated
+    if (!isAuthenticated) {
+      toast.error('Please login to analyze websites');
+      login();
+      return;
+    }
+
     setIsAnalyzing(true);
     setProgress(10);
 
@@ -41,13 +48,15 @@ export default function Landing() {
       const response = await fetch(`${BACKEND_URL}/api/analyze`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ url: url.trim() })
       });
 
       clearInterval(progressInterval);
 
       if (!response.ok) {
-        throw new Error('Analysis failed');
+        const error = await response.json();
+        throw new Error(error.detail || 'Analysis failed');
       }
 
       const data = await response.json();
@@ -57,7 +66,7 @@ export default function Landing() {
 
     } catch (error) {
       console.error('Analysis error:', error);
-      toast.error('Failed to analyze website. Please try again.');
+      toast.error(error.message || 'Failed to analyze website. Please try again.');
       setIsAnalyzing(false);
       setProgress(0);
     }

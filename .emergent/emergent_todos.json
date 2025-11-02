@@ -1,26 +1,26 @@
 [
   {
     "content": "Iteration 1.1: Complete authentication system (backend + frontend)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Iteration 1.2: Build AI Chatbot widget (embeddable + backend API)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Iteration 1.3: Integrate Stripe billing with subscription plans",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Iteration 1.4: Update all APIs to require authentication",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Iteration 1.5: Create plan limits enforcement",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Iteration 1.6: Test Iteration 1 end-to-end",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]

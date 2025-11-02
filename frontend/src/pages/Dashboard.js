@@ -17,6 +17,10 @@ export default function Dashboard() {
   const [executions, setExecutions] = useState([]);
   const [stats, setStats] = useState({ active: 0, total: 0 });
   const [loading, setLoading] = useState(true);
+  const [showCodeDialog, setShowCodeDialog] = useState(false);
+  const [selectedAutomation, setSelectedAutomation] = useState(null);
+  const [embedCode, setEmbedCode] = useState('');
+  const [copied, setCopied] = useState(false);
 
   useEffect(() => {
     loadData();

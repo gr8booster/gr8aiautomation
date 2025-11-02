@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import Billing from './pages/Billing';
 import BillingSuccess from './pages/BillingSuccess';
 import ChatbotSetup from './pages/ChatbotSetup';
+import LeadCapture from './pages/LeadCapture';
+import Analytics from './pages/Analytics';
 import './App.css';
 
 function App() {
@@ -22,6 +24,8 @@ function App() {
             <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
             <Route path="/billing/success" element={<ProtectedRoute><BillingSuccess /></ProtectedRoute>} />
             <Route path="/chatbot/:automationId" element={<ProtectedRoute><ChatbotSetup /></ProtectedRoute>} />
+            <Route path="/leads" element={<ProtectedRoute><LeadCapture /></ProtectedRoute>} />
+            <Route path="/analytics" element={<ProtectedRoute><Analytics /></ProtectedRoute>} />
           </Routes>
         </div>
       </AuthProvider>

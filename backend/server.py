@@ -430,19 +430,10 @@ async def chatbot_message(req: ChatbotMessageRequest):
 
 
 @app.get("/api/chatbot/history/{session_id}")
-
-
-# ========== LEAD CAPTURE & FORMS ==========
-from services.lead_service import generate_lead_autoresponse, score_lead
-
-class FormSubmitRequest(BaseModel):
-    data: dict
-
-class FormCreateRequest(BaseModel):
-    name: str
-    website_id: str
-    fields: List[dict]
-    settings: Optional[dict] = None
+async def chatbot_history(session_id: str):
+    """Get chat history"""
+    messages = await get_chatbot_history(db, session_id, limit=50)
+    return serialize_docs(messages)
 
 @app.post("/api/forms")
 async def create_form(req: FormCreateRequest, user: dict = Depends(get_current_user)):

@@ -159,15 +159,23 @@ async def create_session(request: Request, response: Response):
     
     async with httpx.AsyncClient() as client:
         try:
+            # Call Emergent Auth to verify session
             r = await client.get(
-                "https://demobackend.emergentagent.com/auth/v1/env/oauth/session-data",
+                "https://auth-backend.emergentagent.com/auth/v1/env/oauth/session-data",
                 headers={"X-Session-ID": session_id},
                 timeout=10.0
             )
             r.raise_for_status()
             data = r.json()
-        except:
-            raise HTTPException(500, "Auth verification failed")
+        except httpx.HTTPStatusError as e:
+            print(f"Auth verification HTTP error: {e.response.status_code}")
+            raise HTTPException(500, f"Auth verification failed: {e.response.status_code}")
+        except httpx.TimeoutException:
+            print("Auth verification timeout")
+            raise HTTPException(500, "Auth verification timeout")
+        except Exception as e:
+            print(f"Auth verification error: {e}")
+            raise HTTPException(500, f"Auth verification failed: {str(e)}")
     
     email = data["email"]
     name = data["name"]

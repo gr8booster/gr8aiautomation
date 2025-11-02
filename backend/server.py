@@ -545,7 +545,8 @@ class FormCreateRequest(BaseModel):
     settings: Optional[dict] = None
 
 @app.post("/api/chatbot/message")
-async def chatbot_message(req: ChatbotMessageRequest):
+@limiter.limit("30/minute")  # 30 messages per minute per IP
+async def chatbot_message(req: ChatbotMessageRequest, request: Request):
     """Public chatbot endpoint (no auth required)"""
     # Handle demo website
     if req.website_id == 'demo-website':

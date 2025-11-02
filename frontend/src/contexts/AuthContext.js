@@ -4,7 +4,6 @@ import { useNavigate, useLocation } from 'react-router-dom';
 const AuthContext = createContext(null);
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
-const AUTH_REDIRECT_URL = 'https://smarthub-ai-1.preview.emergentagent.com/dashboard';
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);

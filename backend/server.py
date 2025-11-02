@@ -659,7 +659,7 @@ async def check_payment_status(session_id: str, user: dict = Depends(get_current
         return serialize_doc(transaction)
     
     # Check with Stripe
-    webhook_url = f"{str(Request.base_url)}api/webhook/stripe"
+    webhook_url = f"{str(request.base_url)}api/webhook/stripe"
     stripe_checkout = StripeCheckout(api_key=STRIPE_API_KEY, webhook_url=webhook_url)
     
     try:
@@ -700,12 +700,69 @@ async def check_payment_status(session_id: str, user: dict = Depends(get_current
 @app.post("/api/webhook/stripe")
 async def stripe_webhook(request: Request):
     """Handle Stripe webhooks"""
+    import stripe
+    
     body = await request.body()
     signature = request.headers.get("Stripe-Signature")
     
-    # Note: In production, validate webhook signature
-    # For now, just return 200
-    return {"received": True}
+    # Validate webhook signature for security
+    STRIPE_WEBHOOK_SECRET = os.environ.get('STRIPE_WEBHOOK_SECRET')
+    
+    if not STRIPE_WEBHOOK_SECRET:
+        print("Warning: STRIPE_WEBHOOK_SECRET not set")
+        return {"received": True}
+    
+    try:
+        event = stripe.Webhook.construct_event(
+            payload=body,
+            sig_header=signature,
+            secret=STRIPE_WEBHOOK_SECRET
+        )
+        
+        # Process the event
+        if event['type'] == 'checkout.session.completed':
+            session = event['data']['object']
+            session_id = session['id']
+            
+            # Update payment transaction
+            transaction = await payments.find_one({"session_id": session_id})
+            if transaction:
+                await payments.update_one(
+                    {"_id": transaction["_id"]},
+                    {"$set": {
+                        "status": "completed",
+                        "payment_status": "paid",
+                        "updated_at": datetime.now(timezone.utc)
+                    }}
+                )
+                
+                # Upgrade user's plan
+                plan_id = transaction["plan_id"]
+                await users.update_one(
+                    {"_id": transaction["user_id"]},
+                    {"$set": {"plan": plan_id}}
+                )
+                
+                # Update subscription
+                await subscriptions.update_one(
+                    {"user_id": transaction["user_id"], "status": "active"},
+                    {"$set": {
+                        "plan": plan_id,
+                        "stripe_session_id": session_id,
+                        "updated_at": datetime.now(timezone.utc)
+                    }}
+                )
+                
+                print(f"Payment processed for user {transaction['user_id']}: {plan_id}")
+        
+        return {"received": True}
+        
+    except stripe.error.SignatureVerificationError as e:
+        print(f"Webhook signature verification failed: {e}")
+        raise HTTPException(400, "Invalid signature")
+    except Exception as e:
+        print(f"Webhook error: {e}")
+        return {"received": True}
 
 
 # ========== EXECUTIONS & TEMPLATES ==========

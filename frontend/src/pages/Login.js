@@ -44,6 +44,9 @@ export default function Login() {
       const data = await response.json();
       toast.success(isLogin ? 'Login successful!' : 'Account created successfully!');
       
+      // Set user in localStorage as backup
+      localStorage.setItem('gr8_user', JSON.stringify(data.user));
+      
       // Reload page to trigger AuthContext to check session
       window.location.href = '/dashboard';
 

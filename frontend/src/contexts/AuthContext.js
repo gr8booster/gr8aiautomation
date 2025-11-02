@@ -82,7 +82,10 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
-        navigate('/dashboard');
+        // Force reload to ensure cookies are set
+        window.location.href = '/dashboard';
+      } else {
+        console.error('Demo login failed:', response.status);
       }
     } catch (error) {
       console.error('Demo login error:', error);

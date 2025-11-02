@@ -445,6 +445,99 @@ async def chatbot_history(session_id: str):
     messages = await get_chatbot_history(db, session_id, limit=50)
     return serialize_docs(messages)
 
+
+@app.get("/api/chatbot/widget/{website_id}")
+async def get_widget_code(website_id: str):
+    """Get embeddable widget code"""
+    website = await websites.find_one({"_id": website_id})
+    if not website:
+        raise HTTPException(404, "Website not found")
+    
+    widget_code = f"""<!-- GR8 AI Chatbot Widget -->
+<script>
+(function() {{
+  const GR8_CONFIG = {{
+    websiteId: '{website_id}',
+    apiUrl: 'https://vibe-automation-1.preview.emergentagent.com/api'
+  }};
+  
+  const script = document.createElement('script');
+  script.src = GR8_CONFIG.apiUrl + '/widget.js';
+  script.async = true;
+  script.onload = function() {{
+    GR8Chatbot.init(GR8_CONFIG);
+  }};
+  document.head.appendChild(script);
+}})();
+</script>"""
+    
+    return {"widget_code": widget_code, "website_id": website_id}
+
+
+# ========== LEAD CAPTURE & FORMS ==========
+@app.post("/api/forms")
+async def create_form(req: FormCreateRequest, user: dict = Depends(get_current_user)):
+    """Create a lead capture form"""
+    form_id = str(uuid.uuid4())
+    await db["forms"].insert_one({
+        "_id": form_id,
+        "owner_id": user["user_id"],
+        "website_id": req.website_id,
+        "name": req.name,
+        "fields": req.fields,
+        "settings": req.settings or {"autoresponse_enabled": True},
+        "created_at": datetime.now(timezone.utc)
+    })
+    form = await db["forms"].find_one({"_id": form_id})
+    return serialize_doc(form)
+
+@app.get("/api/forms")
+async def list_forms(user: dict = Depends(get_current_user)):
+    """List user's forms"""
+    items = await db["forms"].find({"owner_id": user["user_id"]}).to_list(100)
+    return serialize_docs(items)
+
+@app.post("/api/forms/{form_id}/submit")
+async def submit_form(form_id: str, req: FormSubmitRequest):
+    """PUBLIC endpoint for form submissions"""
+    form = await db["forms"].find_one({"_id": form_id})
+    if not form:
+        raise HTTPException(404, "Form not found")
+    
+    # Score and store lead
+    score = await score_lead(db, req.data)
+    lead_id = str(uuid.uuid4())
+    await db["leads"].insert_one({
+        "_id": lead_id,
+        "form_id": form_id,
+        "website_id": form["website_id"],
+        "owner_id": form["owner_id"],
+        "data": req.data,
+        "score": score,
+        "status": "new",
+        "created_at": datetime.now(timezone.utc)
+    })
+    
+    # AI auto-response
+    autoresponse = await generate_lead_autoresponse(db, req.data, form["website_id"])
+    await db["leads"].update_one({"_id": lead_id}, {"$set": {"autoresponse_content": autoresponse}})
+    await track_usage(db, form["owner_id"], ai_interactions=1)
+    
+    return {"success": True, "lead_id": lead_id, "autoresponse": autoresponse}
+
+@app.get("/api/leads")
+async def list_leads(user: dict = Depends(get_current_user)):
+    """List leads"""
+    items = await db["leads"].find({"owner_id": user["user_id"]}).sort("created_at", -1).limit(100).to_list(100)
+    return serialize_docs(items)
+
+
+# ========== ANALYTICS ==========
+@app.get("/api/analytics/dashboard")
+async def get_analytics(user: dict = Depends(get_current_user), days: int = 30):
+    """Get dashboard analytics"""
+    return await get_dashboard_analytics(db, user["user_id"], days)
+
 @app.post("/api/forms")
 async def create_form(req: FormCreateRequest, user: dict = Depends(get_current_user)):
     """Create a lead capture form"""

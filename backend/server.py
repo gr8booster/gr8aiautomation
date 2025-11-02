@@ -639,9 +639,21 @@ async def submit_form(form_id: str, req: FormSubmitRequest):
         "created_at": datetime.now(timezone.utc)
     })
     
-    # AI auto-response
-    autoresponse = await generate_lead_autoresponse(db, req.data, form.get("website_id", "demo-website"))
-    await db["leads"].update_one({"_id": lead_id}, {"$set": {"autoresponse_content": autoresponse}})
+    # AI auto-response with email delivery
+    autoresponse, email_sent = await generate_and_send_lead_autoresponse(
+        db, 
+        req.data, 
+        form.get("website_id", "demo-website"),
+        send_email=True
+    )
+    await db["leads"].update_one(
+        {"_id": lead_id}, 
+        {"$set": {
+            "autoresponse_content": autoresponse,
+            "autoresponse_email_sent": email_sent,
+            "autoresponse_sent_at": datetime.now(timezone.utc) if email_sent else None
+        }}
+    )
     
     # Track usage (skip for demo)
     if form.get("owner_id") != "demo":

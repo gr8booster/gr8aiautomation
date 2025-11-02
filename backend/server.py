@@ -222,8 +222,8 @@ async def create_session(request: Request, response: Response):
         key="session_token",
         value=token,
         httponly=True,
-        secure=False,  # Allow HTTP for development
-        samesite="lax",  # Changed from "none" to "lax" for same-origin requests
+        secure=True,  # Use secure for HTTPS preview URL
+        samesite="none",  # Required for cross-origin cookies
         max_age=7*24*60*60,
         path="/"
     )
@@ -390,8 +390,8 @@ async def demo_login(response: Response):
         key="session_token",
         value=token,
         httponly=True,
-        secure=False,  # Allow HTTP for development
-        samesite="lax",  # Changed from "none" to "lax" for same-origin requests
+        secure=True,  # Use secure for HTTPS preview URL
+        samesite="none",  # Required for cross-origin cookies
         max_age=7*24*60*60,
         path="/"
     )

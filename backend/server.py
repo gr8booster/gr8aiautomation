@@ -24,6 +24,8 @@ from analyzer.ai_analyzer import analyze_website_for_automations
 from services.orchestrator import OrchestratorService
 from services.chatbot_service import process_chatbot_message, get_chatbot_history
 from services.usage_tracker import PLAN_LIMITS, track_usage, get_usage, check_limit
+from services.lead_service import generate_lead_autoresponse, score_lead
+from services.analytics_service import get_dashboard_analytics
 from utils.db_helpers import serialize_doc, serialize_docs
 from auth.jwt_handler import create_access_token
 from auth.dependencies import get_current_user, get_current_user_optional

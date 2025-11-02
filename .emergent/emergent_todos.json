@@ -1,27 +1,15 @@
 [
   {
-    "content": "Fix critical bug: Request.base_url typo in billing/status endpoint (line 662)",
-    "status": "completed"
-  },
-  {
-    "content": "Fix critical bug: Implement Stripe webhook signature validation",
-    "status": "completed"
-  },
-  {
-    "content": "Fix critical bug: Auto-create demo website and automation for demo users",
-    "status": "completed"
-  },
-  {
     "content": "Fix critical bug: Investigate and fix 401 authentication errors",
     "status": "pending"
   },
   {
     "content": "Implement email delivery integration (SendGrid) for lead auto-responses",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Implement Appointment Scheduler automation with calendar integration",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Add Sentry error tracking and monitoring",

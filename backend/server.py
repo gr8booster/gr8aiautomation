@@ -500,9 +500,32 @@ async def list_forms(user: dict = Depends(get_current_user)):
 @app.post("/api/forms/{form_id}/submit")
 async def submit_form(form_id: str, req: FormSubmitRequest):
     """PUBLIC endpoint for form submissions"""
-    form = await db["forms"].find_one({"_id": form_id})
-    if not form:
-        raise HTTPException(404, "Form not found")
+    # Handle demo form
+    if form_id == 'demo-form':
+        # Create demo form if it doesn't exist
+        demo_form = await db["forms"].find_one({"_id": "demo-form"})
+        if not demo_form:
+            await db["forms"].insert_one({
+                "_id": "demo-form",
+                "owner_id": "demo",
+                "website_id": "demo-website",
+                "name": "Demo Contact Form",
+                "fields": [
+                    {"name": "name", "type": "text", "required": True},
+                    {"name": "email", "type": "email", "required": True},
+                    {"name": "phone", "type": "tel", "required": False},
+                    {"name": "message", "type": "textarea", "required": True}
+                ],
+                "settings": {"autoresponse_enabled": True},
+                "created_at": datetime.now(timezone.utc)
+            })
+            demo_form = {"_id": "demo-form", "owner_id": "demo", "website_id": "demo-website"}
+        
+        form = demo_form
+    else:
+        form = await db["forms"].find_one({"_id": form_id})
+        if not form:
+            raise HTTPException(404, "Form not found")
     
     # Score and store lead
     score = await score_lead(db, req.data)
@@ -510,8 +533,8 @@ async def submit_form(form_id: str, req: FormSubmitRequest):
     await db["leads"].insert_one({
         "_id": lead_id,
         "form_id": form_id,
-        "website_id": form["website_id"],
-        "owner_id": form["owner_id"],
+        "website_id": form.get("website_id", "demo-website"),
+        "owner_id": form.get("owner_id", "demo"),
         "data": req.data,
         "score": score,
         "status": "new",
@@ -519,9 +542,12 @@ async def submit_form(form_id: str, req: FormSubmitRequest):
     })
     
     # AI auto-response
-    autoresponse = await generate_lead_autoresponse(db, req.data, form["website_id"])
+    autoresponse = await generate_lead_autoresponse(db, req.data, form.get("website_id", "demo-website"))
     await db["leads"].update_one({"_id": lead_id}, {"$set": {"autoresponse_content": autoresponse}})
-    await track_usage(db, form["owner_id"], ai_interactions=1)
+    
+    # Track usage (skip for demo)
+    if form.get("owner_id") != "demo":
+        await track_usage(db, form["owner_id"], ai_interactions=1)
     
     return {"success": True, "lead_id": lead_id, "autoresponse": autoresponse}
 

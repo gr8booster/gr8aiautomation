@@ -233,7 +233,6 @@ async def create_session(request: Request, response: Response):
         secure=True,
         samesite="none",
         max_age=7*24*60*60,
-        domain=".preview.emergentagent.com",  # Allow across all preview subdomains
         path="/"
     )
     
@@ -536,7 +535,6 @@ async def demo_login(response: Response):
         secure=True,
         samesite="none",
         max_age=7*24*60*60,
-        domain=".preview.emergentagent.com",  # Allow across all preview subdomains
         path="/"
     )
     

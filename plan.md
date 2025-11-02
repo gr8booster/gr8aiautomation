@@ -412,7 +412,7 @@ Tasks:
 - **Environment**: Emergent platform (Kubernetes-based)
 - **Services**: Backend (FastAPI), Frontend (React), MongoDB
 - **Deployment**: Manual restart via supervisorctl
-- **Preview URL**: https://vibe-automation-1.preview.emergentagent.com
+- **Preview URL**: https://smarthub-ai-1.preview.emergentagent.com
 
 ### Production Deployment Options:
 
@@ -490,7 +490,7 @@ Tasks:
 
 ## 12) Contact & Support
 
-**Platform URL**: https://vibe-automation-1.preview.emergentagent.com
+**Platform URL**: https://smarthub-ai-1.preview.emergentagent.com
 
 **Demo Login**: Click "Start Demo Now" button (no signup required)
 

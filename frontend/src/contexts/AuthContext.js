@@ -16,33 +16,6 @@ export const AuthProvider = ({ children }) => {
     checkSession();
   }, []);
 
-  const processSessionId = async (sessionId) => {
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/session`, {
-        method: 'POST',
-        headers: {
-          'X-Session-ID': sessionId
-        },
-        credentials: 'include'
-      });
-
-      if (response.ok) {
-        const data = await response.json();
-        setUser(data.user);
-        
-        // Clean URL
-        window.location.hash = '';
-        
-        // Navigate to dashboard
-        navigate('/dashboard');
-      }
-    } catch (error) {
-      console.error('Session processing error:', error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const checkSession = async () => {
     try {
       const response = await fetch(`${BACKEND_URL}/api/auth/me`, {

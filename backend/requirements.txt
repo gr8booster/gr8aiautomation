@@ -26,3 +26,5 @@ jq>=1.6.0
 typer>=0.9.0
 stripe==13.1.1
 sendgrid
+slowapi
+sentry-sdk[fastapi]

@@ -29,6 +29,9 @@ export default function Landing() {
       return;
     }
 
+    console.log('🔍 Starting analysis, isAuthenticated:', isAuthenticated);
+    console.log('🔍 User:', user);
+
     // Check if authenticated
     if (!isAuthenticated) {
       toast.error('Please login to analyze websites');

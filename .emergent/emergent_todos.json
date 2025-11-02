@@ -1,10 +1,14 @@
 [
   {
-    "content": "Call testing agent for E2E testing",
-    "status": "completed"
+    "content": "Make demo login button yellow and more prominent",
+    "status": "in_progress"
   },
   {
-    "content": "Create user documentation and setup guides",
-    "status": "completed"
+    "content": "Fix authentication flow - session expired on every action",
+    "status": "pending"
+  },
+  {
+    "content": "Test with screenshots to confirm everything works",
+    "status": "pending"
   }
 ]

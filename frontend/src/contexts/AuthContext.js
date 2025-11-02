@@ -82,7 +82,9 @@ export const AuthProvider = ({ children }) => {
       if (response.ok) {
         const data = await response.json();
         setUser(data.user);
-        // Force reload to ensure cookies are set
+        // Small delay to ensure cookies are fully set
+        await new Promise(resolve => setTimeout(resolve, 500));
+        // Force reload to ensure cookies are recognized
         window.location.href = '/dashboard';
       } else {
         console.error('Demo login failed:', response.status);

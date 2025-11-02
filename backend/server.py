@@ -90,9 +90,30 @@ async def startup():
         await templates.insert_many(template_list)
         print("✓ Seeded templates")
     
-    # Indexes
+    # Indexes for performance optimization
     await users.create_index("email", unique=True)
+    await users.create_index("plan")
     await sessions_db.create_index("expires_at")
+    await sessions_db.create_index("user_id")
+    await websites.create_index("owner_id")
+    await websites.create_index([("owner_id", 1), ("url", 1)])
+    await automations.create_index("owner_id")
+    await automations.create_index([("website_id", 1), ("template_id", 1)])
+    await automations.create_index([("owner_id", 1), ("status", 1)])
+    await workflows.create_index("automation_id")
+    await executions.create_index("workflow_id")
+    await executions.create_index([("started_at", -1)])
+    await subscriptions.create_index([("user_id", 1), ("status", 1)])
+    await usage_db.create_index([("user_id", 1), ("month", 1)], unique=True)
+    await chatbot_messages.create_index([("website_id", 1), ("timestamp", -1)])
+    await chatbot_messages.create_index([("session_id", 1), ("timestamp", 1)])
+    await chatbot_sessions.create_index("website_id")
+    await db["leads"].create_index([("owner_id", 1), ("created_at", -1)])
+    await db["leads"].create_index([("website_id", 1), ("score", 1)])
+    await db["forms"].create_index("owner_id")
+    await db["forms"].create_index("website_id")
+    await db["appointments"].create_index([("website_id", 1), ("start_time", 1)])
+    await db["appointments"].create_index([("website_id", 1), ("status", 1)])
     print("✓ Indexes created")
 
 

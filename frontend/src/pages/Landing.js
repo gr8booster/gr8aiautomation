@@ -14,7 +14,7 @@ const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
 export default function Landing() {
   const navigate = useNavigate();
-  const { isAuthenticated, login, logout, user } = useAuth();
+  const { isAuthenticated, login, demoLogin, logout, user } = useAuth();
   const [url, setUrl] = useState('');
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [progress, setProgress] = useState(0);

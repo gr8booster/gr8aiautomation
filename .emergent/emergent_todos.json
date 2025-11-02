@@ -1,15 +1,11 @@
 [
   {
     "content": "Fix critical bug: Investigate and fix 401 authentication errors",
-    "status": "pending"
-  },
-  {
-    "content": "Implement email delivery integration (SendGrid) for lead auto-responses",
-    "status": "completed"
-  },
-  {
-    "content": "Implement Appointment Scheduler automation with calendar integration",
     "status": "in_progress"
+  },
+  {
+    "content": "Add database indexes for performance optimization",
+    "status": "pending"
   },
   {
     "content": "Add Sentry error tracking and monitoring",
@@ -17,10 +13,6 @@
   },
   {
     "content": "Implement HTTP rate limiting middleware",
-    "status": "pending"
-  },
-  {
-    "content": "Add database indexes for performance optimization",
     "status": "pending"
   },
   {

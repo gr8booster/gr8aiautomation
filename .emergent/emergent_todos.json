@@ -1,7 +1,7 @@
 [
   {
     "content": "Create setup wizard that launches after activating any automation",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Build AI Content Generator automation (blog posts, product descriptions)",
@@ -13,11 +13,11 @@
   },
   {
     "content": "Enhance chatbot setup with customization wizard",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Enhance lead capture with form builder wizard",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test all AI agents end-to-end",

@@ -1,6 +1,26 @@
 [
   {
-    "content": "Test email login flow end-to-end",
-    "status": "completed"
+    "content": "Test and fix chatbot widget embeddability on external websites",
+    "status": "pending"
+  },
+  {
+    "content": "Test and fix lead form widget embeddability on external websites",
+    "status": "pending"
+  },
+  {
+    "content": "Create implementation wizard for each automation type (guided setup)",
+    "status": "pending"
+  },
+  {
+    "content": "Implement social media scheduler with actual posting functionality",
+    "status": "pending"
+  },
+  {
+    "content": "Build email marketing sequences with actual email sending",
+    "status": "pending"
+  },
+  {
+    "content": "Create setup guides/wizards for each automation after activation",
+    "status": "pending"
   }
 ]

@@ -5,7 +5,7 @@ Handles appointment booking, availability checking, and confirmations
 import uuid
 from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Optional
-from email_service import send_email, EmailDeliveryError
+from .email_service import send_email, EmailDeliveryError
 
 # Business hours configuration (can be customized per website)
 DEFAULT_BUSINESS_HOURS = {

@@ -72,39 +72,6 @@ export const AuthProvider = ({ children }) => {
     window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(AUTH_REDIRECT_URL)}`;
   };
 
-  const demoLogin = async () => {
-    console.log('🔵 Demo login started...');
-    setLoggingIn(true);
-    try {
-      const response = await fetch(`${BACKEND_URL}/api/auth/demo`, {
-        method: 'POST',
-        credentials: 'include'
-      });
-
-      console.log('🔵 Demo login response:', response.status);
-
-      if (response.ok) {
-        const data = await response.json();
-        console.log('🔵 Demo login data received:', data.user?.email);
-        setUser(data.user);
-        setLoggingIn(false);
-        console.log('🔵 Navigating to dashboard...');
-        // Use setTimeout to ensure state updates before navigation
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 100);
-      } else {
-        console.error('❌ Demo login failed:', response.status);
-        alert('Demo login failed. Please try again or contact support.');
-        setLoggingIn(false);
-      }
-    } catch (error) {
-      console.error('❌ Demo login error:', error);
-      alert('Network error. Please check your connection and try again.');
-      setLoggingIn(false);
-    }
-  };
-
   const logout = async () => {
     try {
       await fetch(`${BACKEND_URL}/api/auth/logout`, {

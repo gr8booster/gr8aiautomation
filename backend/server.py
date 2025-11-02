@@ -646,7 +646,8 @@ async def list_forms(user: dict = Depends(get_current_user)):
     return serialize_docs(items)
 
 @app.post("/api/forms/{form_id}/submit")
-async def submit_form(form_id: str, req: FormSubmitRequest):
+@limiter.limit("10/minute")  # 10 form submissions per minute per IP
+async def submit_form(form_id: str, req: FormSubmitRequest, request: Request):
     """PUBLIC endpoint for form submissions"""
     # Handle demo form
     if form_id == 'demo-form':

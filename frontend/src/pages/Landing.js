@@ -123,7 +123,7 @@ export default function Landing() {
                 </>
               ) : (
                 <>
-                  <Button onClick={demoLogin} data-testid="demo-login-button" className="bg-success hover:bg-success/90">
+                  <Button onClick={demoLogin} data-testid="demo-login-button" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold shadow-lg">
                     <Zap className="h-4 w-4 mr-2" />
                     Try Demo (No Signup)
                   </Button>

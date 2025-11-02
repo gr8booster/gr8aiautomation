@@ -122,15 +122,9 @@ export default function Landing() {
                   <Button variant="outline" onClick={logout}>Logout</Button>
                 </>
               ) : (
-                <>
-                  <Button onClick={demoLogin} data-testid="demo-login-button" className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold shadow-lg">
-                    <Zap className="h-4 w-4 mr-2" />
-                    Try Demo (No Signup)
-                  </Button>
-                  <Button variant="outline" onClick={login} data-testid="nav-login-button">
-                    Login with Google
-                  </Button>
-                </>
+                <Button onClick={login} data-testid="nav-login-button" className="bg-primary hover:bg-primary/90">
+                  Login with Google
+                </Button>
               )}
             </div>
           </div>

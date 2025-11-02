@@ -428,6 +428,84 @@ async def chatbot_message(req: ChatbotMessageRequest):
 
 
 @app.get("/api/chatbot/history/{session_id}")
+
+
+# ========== LEAD CAPTURE & FORMS ==========
+from services.lead_service import generate_lead_autoresponse, score_lead
+
+class FormSubmitRequest(BaseModel):
+    data: dict
+
+class FormCreateRequest(BaseModel):
+    name: str
+    website_id: str
+    fields: List[dict]
+    settings: Optional[dict] = None
+
+@app.post("/api/forms")
+async def create_form(req: FormCreateRequest, user: dict = Depends(get_current_user)):
+    """Create a lead capture form"""
+    form_id = str(uuid.uuid4())
+    await db["forms"].insert_one({
+        "_id": form_id,
+        "owner_id": user["user_id"],
+        "website_id": req.website_id,
+        "name": req.name,
+        "fields": req.fields,
+        "settings": req.settings or {"autoresponse_enabled": True},
+        "created_at": datetime.now(timezone.utc)
+    })
+    form = await db["forms"].find_one({"_id": form_id})
+    return serialize_doc(form)
+
+@app.get("/api/forms")
+async def list_forms(user: dict = Depends(get_current_user)):
+    """List user's forms"""
+    items = await db["forms"].find({"owner_id": user["user_id"]}).to_list(100)
+    return serialize_docs(items)
+
+@app.post("/api/forms/{form_id}/submit")
+async def submit_form(form_id: str, req: FormSubmitRequest):
+    """PUBLIC endpoint for form submissions"""
+    form = await db["forms"].find_one({"_id": form_id})
+    if not form:
+        raise HTTPException(404, "Form not found")
+    
+    # Score and store lead
+    score = await score_lead(db, req.data)
+    lead_id = str(uuid.uuid4())
+    await db["leads"].insert_one({
+        "_id": lead_id,
+        "form_id": form_id,
+        "website_id": form["website_id"],
+        "owner_id": form["owner_id"],
+        "data": req.data,
+        "score": score,
+        "status": "new",
+        "created_at": datetime.now(timezone.utc)
+    })
+    
+    # AI auto-response
+    autoresponse = await generate_lead_autoresponse(db, req.data, form["website_id"])
+    await db["leads"].update_one({"_id": lead_id}, {"$set": {"autoresponse_content": autoresponse}})
+    await track_usage(db, form["owner_id"], ai_interactions=1)
+    
+    return {"success": True, "lead_id": lead_id, "autoresponse": autoresponse}
+
+@app.get("/api/leads")
+async def list_leads(user: dict = Depends(get_current_user)):
+    """List leads"""
+    items = await db["leads"].find({"owner_id": user["user_id"]}).sort("created_at", -1).limit(100).to_list(100)
+    return serialize_docs(items)
+
+# ========== ANALYTICS ==========
+from services.analytics_service import get_dashboard_analytics
+
+@app.get("/api/analytics/dashboard")
+async def get_analytics(user: dict = Depends(get_current_user), days: int = 30):
+    """Get dashboard analytics"""
+    return await get_dashboard_analytics(db, user["user_id"], days)
+
 async def chatbot_history(session_id: str):
     """Get chat history"""
     messages = await get_chatbot_history(db, session_id, limit=50)

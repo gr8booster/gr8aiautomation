@@ -1,6 +1,18 @@
 [
   {
-    "content": "Debug actual demo login issue - button flashes but nothing happens",
-    "status": "completed"
+    "content": "Document Google OAuth issue in roadmap for future fix",
+    "status": "in_progress"
+  },
+  {
+    "content": "Implement simple email/password authentication",
+    "status": "pending"
+  },
+  {
+    "content": "Create login form UI for email authentication",
+    "status": "pending"
+  },
+  {
+    "content": "Test email login flow end-to-end",
+    "status": "pending"
   }
 ]

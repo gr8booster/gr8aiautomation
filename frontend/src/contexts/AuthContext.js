@@ -73,24 +73,31 @@ export const AuthProvider = ({ children }) => {
   };
 
   const demoLogin = async () => {
+    console.log('🔵 Demo login started...');
     try {
       const response = await fetch(`${BACKEND_URL}/api/auth/demo`, {
         method: 'POST',
         credentials: 'include'
       });
 
+      console.log('🔵 Demo login response:', response.status);
+
       if (response.ok) {
         const data = await response.json();
+        console.log('🔵 Demo login data received:', data.user?.email);
         setUser(data.user);
         // Small delay to ensure cookies are fully set
         await new Promise(resolve => setTimeout(resolve, 500));
+        console.log('🔵 Redirecting to dashboard...');
         // Force reload to ensure cookies are recognized
         window.location.href = '/dashboard';
       } else {
-        console.error('Demo login failed:', response.status);
+        console.error('❌ Demo login failed:', response.status);
+        alert('Demo login failed. Please try again or contact support.');
       }
     } catch (error) {
-      console.error('Demo login error:', error);
+      console.error('❌ Demo login error:', error);
+      alert('Network error. Please check your connection and try again.');
     }
   };
 

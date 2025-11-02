@@ -114,13 +114,19 @@ export default function Landing() {
               <Sparkles className="h-6 w-6 text-primary" />
               <span className="font-heading text-xl font-bold">GR8 AI Automation</span>
             </div>
-            <Button
-              variant="ghost"
-              onClick={() => navigate('/dashboard')}
-              data-testid="nav-dashboard-button"
-            >
-              Dashboard
-            </Button>
+            <div className="flex items-center gap-3">
+              {isAuthenticated ? (
+                <>
+                  <Button variant="ghost" onClick={() => navigate('/dashboard')}>Dashboard</Button>
+                  <Button variant="ghost" onClick={() => navigate('/billing')}>Billing</Button>
+                  <Button variant="outline" onClick={logout}>Logout</Button>
+                </>
+              ) : (
+                <Button onClick={login} data-testid="nav-login-button">
+                  Login with Google
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </header>

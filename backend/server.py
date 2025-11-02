@@ -279,14 +279,14 @@ async def signup(req: SignupRequest, response: Response):
     }
     await users.insert_one(user)
     
-    # Create starter subscription
+    # Create pro subscription
     sub = {
         "_id": str(uuid.uuid4()),
         "user_id": user_id,
-        "plan": "starter",
+        "plan": "pro",
         "status": "active",
         "current_period_start": datetime.now(timezone.utc),
-        "current_period_end": datetime.now(timezone.utc) + timedelta(days=30)
+        "current_period_end": datetime.now(timezone.utc) + timedelta(days=365)
     }
     await subscriptions.insert_one(sub)
     

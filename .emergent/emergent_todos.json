@@ -5,34 +5,34 @@
   },
   {
     "content": "Update index.css with design system tokens (colors, fonts)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create backend MongoDB models and database helpers",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Create backend API routes (/api/analyze, /api/automations, /api/orchestrator)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Build frontend Landing page with Hero, URL input, and analysis flow",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Build frontend Recommendations page with AI automation cards",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Build frontend Dashboard page for managing active automations",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Wire frontend to backend API endpoints",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test core workflow: URL → Analysis → Recommendations → Activate",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]

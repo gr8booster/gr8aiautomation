@@ -1,7 +1,7 @@
 [
   {
     "content": "Install frontend dependencies (framer-motion, lucide-react, sonner)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Update index.css with design system tokens (colors, fonts)",

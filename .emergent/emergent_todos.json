@@ -1,18 +1,10 @@
 [
   {
-    "content": "Write comprehensive unit tests for backend services",
-    "status": "completed"
-  },
-  {
-    "content": "Write integration tests for API endpoints",
-    "status": "completed"
-  },
-  {
     "content": "Call testing agent for E2E testing",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create user documentation and setup guides",
-    "status": "pending"
+    "status": "completed"
   }
 ]

@@ -273,7 +273,7 @@ async def signup(req: SignupRequest, response: Response):
         "name": req.name,
         "password_hash": hashed_password,
         "picture": None,
-        "plan": "starter",  # Give new users Starter plan to test features
+        "plan": "pro",  # Give new users Pro plan for full access
         "created_at": datetime.now(timezone.utc),
         "last_login": datetime.now(timezone.utc)
     }

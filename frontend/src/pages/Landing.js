@@ -89,9 +89,15 @@ export default function Landing() {
     }
 
     try {
+      const token = localStorage.getItem('gr8_session_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       const response = await fetch(`${BACKEND_URL}/api/automations`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers,
         credentials: 'include',
         body: JSON.stringify({
           website_id: analysis.analysis_id,

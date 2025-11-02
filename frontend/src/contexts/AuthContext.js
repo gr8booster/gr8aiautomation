@@ -88,9 +88,12 @@ export const AuthProvider = ({ children }) => {
         const data = await response.json();
         console.log('🔵 Demo login data received:', data.user?.email);
         setUser(data.user);
+        setLoggingIn(false);
         console.log('🔵 Navigating to dashboard...');
-        // Use navigate instead of window.location.href to avoid full reload
-        navigate('/dashboard');
+        // Use setTimeout to ensure state updates before navigation
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 100);
       } else {
         console.error('❌ Demo login failed:', response.status);
         alert('Demo login failed. Please try again or contact support.');

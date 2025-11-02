@@ -670,6 +670,99 @@ async def list_leads(user: dict = Depends(get_current_user)):
     return serialize_docs(items)
 
 
+
+# ========== APPOINTMENTS ==========
+class AppointmentBookRequest(BaseModel):
+    website_id: str
+    start_time: str  # ISO format datetime string
+    duration: int  # minutes
+    customer_name: str
+    customer_email: str
+    customer_phone: Optional[str] = None
+    notes: Optional[str] = None
+
+class AvailabilityRequest(BaseModel):
+    website_id: str
+    date: str  # ISO format date string
+
+@app.get("/api/appointments/availability")
+async def get_availability(website_id: str, date: str):
+    """Get available appointment slots for a date (PUBLIC)"""
+    try:
+        date_obj = datetime.fromisoformat(date.replace('Z', '+00:00'))
+        slots = await appointment_scheduler.get_available_slots(website_id, date_obj)
+        return {"available_slots": slots}
+    except Exception as e:
+        raise HTTPException(400, f"Invalid date format: {str(e)}")
+
+@app.post("/api/appointments/book")
+async def book_appointment(req: AppointmentBookRequest):
+    """Book an appointment (PUBLIC)"""
+    try:
+        start_time = datetime.fromisoformat(req.start_time.replace('Z', '+00:00'))
+        appointment = await appointment_scheduler.book_appointment(
+            website_id=req.website_id,
+            start_time=start_time,
+            duration=req.duration,
+            customer_name=req.customer_name,
+            customer_email=req.customer_email,
+            customer_phone=req.customer_phone,
+            notes=req.notes
+        )
+        return serialize_doc(appointment)
+    except ValueError as e:
+        raise HTTPException(400, str(e))
+    except Exception as e:
+        raise HTTPException(500, f"Booking failed: {str(e)}")
+
+@app.get("/api/appointments")
+async def list_appointments(
+    website_id: Optional[str] = None,
+    start_date: Optional[str] = None,
+    end_date: Optional[str] = None,
+    status: Optional[str] = None,
+    user: dict = Depends(get_current_user)
+):
+    """List appointments (AUTH REQUIRED)"""
+    # If no website_id, get all user's websites
+    if not website_id:
+        user_websites = await websites.find({"owner_id": user["user_id"]}).to_list(100)
+        if not user_websites:
+            return []
+        website_id = user_websites[0]["_id"]  # Default to first website
+    
+    # Parse dates if provided
+    start_dt = datetime.fromisoformat(start_date.replace('Z', '+00:00')) if start_date else None
+    end_dt = datetime.fromisoformat(end_date.replace('Z', '+00:00')) if end_date else None
+    
+    appointments = await appointment_scheduler.get_appointments(
+        website_id=website_id,
+        start_date=start_dt,
+        end_date=end_dt,
+        status=status
+    )
+    
+    return serialize_docs(appointments)
+
+@app.post("/api/appointments/{appointment_id}/cancel")
+async def cancel_appointment(appointment_id: str, user: dict = Depends(get_current_user)):
+    """Cancel an appointment"""
+    # Verify ownership
+    appointment = await db["appointments"].find_one({"_id": appointment_id})
+    if not appointment:
+        raise HTTPException(404, "Appointment not found")
+    
+    website = await websites.find_one({"_id": appointment["website_id"], "owner_id": user["user_id"]})
+    if not website:
+        raise HTTPException(403, "Not authorized")
+    
+    success = await appointment_scheduler.cancel_appointment(appointment_id)
+    if not success:
+        raise HTTPException(404, "Appointment not found")
+    
+    return {"success": True, "message": "Appointment cancelled"}
+
+
 # ========== ANALYTICS ==========
 @app.get("/api/analytics/dashboard")
 async def get_analytics(user: dict = Depends(get_current_user), days: int = 30):

@@ -156,11 +156,11 @@ export default function Landing() {
             </p>
 
             {!isAuthenticated && (
-              <div className="bg-accent/20 border border-accent rounded-lg p-4 mb-6 max-w-2xl">
-                <p className="text-sm font-medium mb-2">🚀 Ready to test? No signup required!</p>
-                <Button onClick={demoLogin} className="bg-success hover:bg-success/90" data-testid="hero-demo-button">
-                  <Zap className="h-4 w-4 mr-2" />
-                  Start Demo Now
+              <div className="bg-yellow-50 border-2 border-yellow-400 rounded-lg p-6 mb-6 max-w-2xl shadow-md">
+                <p className="text-base font-semibold mb-3 text-gray-900">🚀 Ready to test? No signup required!</p>
+                <Button onClick={demoLogin} size="lg" className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-lg" data-testid="hero-demo-button">
+                  <Zap className="h-5 w-5 mr-2" />
+                  Start Demo Now - Full Pro Access
                 </Button>
               </div>
             )}

@@ -123,7 +123,7 @@ export default function Landing() {
                 </>
               ) : (
                 <Button onClick={login} data-testid="nav-login-button" className="bg-primary hover:bg-primary/90">
-                  Login with Google
+                  Get Started
                 </Button>
               )}
             </div>

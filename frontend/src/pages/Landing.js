@@ -111,8 +111,11 @@ export default function Landing() {
         throw new Error(error.detail || 'Activation failed');
       }
 
+      const data = await response.json();
       toast.success(`${recommendation.title} activated!`);
-      setTimeout(() => navigate('/dashboard'), 1500);
+      
+      // Redirect to setup wizard
+      navigate(`/setup/${data._id}`);
     } catch (error) {
       console.error('Activation error:', error);
       toast.error(error.message || 'Failed to activate automation');

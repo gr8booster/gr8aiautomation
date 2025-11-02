@@ -28,15 +28,23 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
+      const token = localStorage.getItem('gr8_session_token');
+      const headers = { 'Content-Type': 'application/json' };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+
       // Load automations
       const autoResponse = await fetch(`${BACKEND_URL}/api/automations`, {
+        headers,
         credentials: 'include'
       });
       
       if (!autoResponse.ok) {
         if (autoResponse.status === 401) {
           toast.error('Session expired. Please login again.');
-          navigate('/');
+          localStorage.removeItem('gr8_session_token');
+          navigate('/login');
           return;
         }
         throw new Error('Failed to load automations');
@@ -51,6 +59,7 @@ export default function Dashboard() {
 
       // Load executions
       const execResponse = await fetch(`${BACKEND_URL}/api/executions?limit=20`, {
+        headers,
         credentials: 'include'
       });
       const execData = await execResponse.json();

@@ -13,15 +13,8 @@ export const AuthProvider = ({ children }) => {
   const location = useLocation();
 
   useEffect(() => {
-    // Check if returning from auth
-    const hash = window.location.hash;
-    if (hash.includes('session_id=')) {
-      const sessionId = hash.split('session_id=')[1].split('&')[0];
-      processSessionId(sessionId);
-    } else {
-      // Check existing session
-      checkSession();
-    }
+    // Check existing session
+    checkSession();
   }, []);
 
   const processSessionId = async (sessionId) => {

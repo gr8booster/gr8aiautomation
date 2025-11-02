@@ -1,11 +1,11 @@
 [
   {
     "content": "Install frontend dependencies (framer-motion, lucide-react, sonner)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Update index.css with design system tokens (colors, fonts)",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Create backend MongoDB models and database helpers",

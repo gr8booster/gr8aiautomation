@@ -69,7 +69,7 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = () => {
-    window.location.href = `https://auth.emergentagent.com/?redirect=${encodeURIComponent(AUTH_REDIRECT_URL)}`;
+    navigate('/login');
   };
 
   const logout = async () => {

@@ -6,6 +6,7 @@ import { ProtectedRoute } from './components/ProtectedRoute';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import Dashboard from './pages/Dashboard';
+import SetupWizard from './pages/SetupWizard';
 import Billing from './pages/Billing';
 import BillingSuccess from './pages/BillingSuccess';
 import ChatbotSetup from './pages/ChatbotSetup';

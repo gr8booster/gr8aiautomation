@@ -1,0 +1,38 @@
+[
+  {
+    "content": "Install frontend dependencies (framer-motion, lucide-react, sonner)",
+    "status": "pending"
+  },
+  {
+    "content": "Update index.css with design system tokens (colors, fonts)",
+    "status": "pending"
+  },
+  {
+    "content": "Create backend MongoDB models and database helpers",
+    "status": "pending"
+  },
+  {
+    "content": "Create backend API routes (/api/analyze, /api/automations, /api/orchestrator)",
+    "status": "pending"
+  },
+  {
+    "content": "Build frontend Landing page with Hero, URL input, and analysis flow",
+    "status": "pending"
+  },
+  {
+    "content": "Build frontend Recommendations page with AI automation cards",
+    "status": "pending"
+  },
+  {
+    "content": "Build frontend Dashboard page for managing active automations",
+    "status": "pending"
+  },
+  {
+    "content": "Wire frontend to backend API endpoints",
+    "status": "pending"
+  },
+  {
+    "content": "Test core workflow: URL → Analysis → Recommendations → Activate",
+    "status": "pending"
+  }
+]

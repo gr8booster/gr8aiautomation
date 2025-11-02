@@ -1,26 +1,26 @@
 [
   {
-    "content": "Test and fix chatbot widget embeddability on external websites",
-    "status": "completed"
-  },
-  {
-    "content": "Test and fix lead form widget embeddability on external websites",
-    "status": "completed"
-  },
-  {
-    "content": "Create implementation wizard for chatbot and lead capture",
+    "content": "Create setup wizard that launches after activating any automation",
     "status": "in_progress"
   },
   {
-    "content": "Build social media scheduler with actual posting capability",
+    "content": "Build AI Content Generator automation (blog posts, product descriptions)",
     "status": "pending"
   },
   {
-    "content": "Build email sequences automation with SendGrid integration",
+    "content": "Build AI Email Assistant automation (draft responses, campaigns)",
     "status": "pending"
   },
   {
-    "content": "Create setup wizard that launches after clicking Activate",
+    "content": "Enhance chatbot setup with customization wizard",
+    "status": "pending"
+  },
+  {
+    "content": "Enhance lead capture with form builder wizard",
+    "status": "pending"
+  },
+  {
+    "content": "Test all AI agents end-to-end",
     "status": "pending"
   }
 ]

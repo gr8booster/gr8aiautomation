@@ -26,6 +26,7 @@ from services.chatbot_service import process_chatbot_message, get_chatbot_histor
 from services.usage_tracker import PLAN_LIMITS, track_usage, get_usage, check_limit
 from services.lead_service import generate_and_send_lead_autoresponse, score_lead
 from services.analytics_service import get_dashboard_analytics
+from services.appointment_service import AppointmentScheduler
 from utils.db_helpers import serialize_doc, serialize_docs
 from auth.jwt_handler import create_access_token
 from auth.dependencies import get_current_user, get_current_user_optional

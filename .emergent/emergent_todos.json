@@ -1,38 +1,38 @@
 [
   {
-    "content": "Install frontend dependencies (framer-motion, lucide-react, sonner)",
-    "status": "completed"
+    "content": "Phase 3.1: Implement JWT Authentication + Google OAuth",
+    "status": "pending"
   },
   {
-    "content": "Update index.css with design system tokens (colors, fonts)",
-    "status": "completed"
+    "content": "Phase 3.2: Build AI Chatbot automation (embeddable widget + backend)",
+    "status": "pending"
   },
   {
-    "content": "Create backend MongoDB models and database helpers",
-    "status": "completed"
+    "content": "Phase 3.3: Build Lead Capture automation (forms + auto-response)",
+    "status": "pending"
   },
   {
-    "content": "Create backend API routes (/api/analyze, /api/automations, /api/orchestrator)",
-    "status": "completed"
+    "content": "Phase 3.5: Enhance orchestrator with async execution and retry logic",
+    "status": "pending"
   },
   {
-    "content": "Build frontend Landing page with Hero, URL input, and analysis flow",
-    "status": "completed"
+    "content": "Phase 4.2: Integrate Stripe billing and subscriptions",
+    "status": "pending"
   },
   {
-    "content": "Build frontend Recommendations page with AI automation cards",
-    "status": "completed"
+    "content": "Phase 6.2: Build Analytics Dashboard with key metrics",
+    "status": "pending"
   },
   {
-    "content": "Build frontend Dashboard page for managing active automations",
-    "status": "completed"
+    "content": "Update all APIs to require authentication",
+    "status": "pending"
   },
   {
-    "content": "Wire frontend to backend API endpoints",
-    "status": "completed"
+    "content": "Create usage tracking and plan limits enforcement",
+    "status": "pending"
   },
   {
-    "content": "Test core workflow: URL → Analysis → Recommendations → Activate",
-    "status": "completed"
+    "content": "Test complete flow: Auth → Create Automation → Billing → Analytics",
+    "status": "pending"
   }
 ]

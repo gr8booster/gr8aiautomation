@@ -5,6 +5,7 @@ import os
 import uuid
 from datetime import datetime, timezone
 from emergentintegrations.llm.chat import LlmChat, UserMessage
+from .email_service import send_lead_autoresponse_email, EmailDeliveryError
 
 EMERGENT_LLM_KEY = os.environ.get('EMERGENT_LLM_KEY')
 
@@ -64,6 +65,42 @@ In the meantime, feel free to explore our website at {website.get('url')} for mo
 
 Best regards,
 The Team"""
+
+
+async def generate_and_send_lead_autoresponse(
+    db, 
+    lead_data: dict, 
+    website_id: str,
+    send_email: bool = True
+) -> tuple[str, bool]:
+    """
+    Generate AI auto-response and optionally send it via email
+    
+    Returns:
+        tuple: (autoresponse_content, email_sent_successfully)
+    """
+    # Generate the auto-response
+    autoresponse_content = await generate_lead_autoresponse(db, lead_data, website_id)
+    
+    email_sent = False
+    if send_email and lead_data.get('email'):
+        # Get website info for company name
+        websites_collection = db["websites"]
+        website = await websites_collection.find_one({"_id": website_id})
+        company_name = website.get('title', 'Our Company') if website else 'Our Company'
+        
+        try:
+            email_sent = await send_lead_autoresponse_email(
+                to_email=lead_data['email'],
+                lead_name=lead_data.get('name', 'there'),
+                company_name=company_name,
+                autoresponse_content=autoresponse_content
+            )
+        except EmailDeliveryError as e:
+            print(f"Email delivery failed: {e}")
+            email_sent = False
+    
+    return autoresponse_content, email_sent
 
 
 async def score_lead(db, lead_data: dict) -> str:

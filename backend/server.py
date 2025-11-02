@@ -564,39 +564,7 @@ async def get_analytics(user: dict = Depends(get_current_user), days: int = 30):
     """Get dashboard analytics"""
     return await get_dashboard_analytics(db, user["user_id"], days)
 
-async def chatbot_history(session_id: str):
-    """Get chat history"""
-    messages = await get_chatbot_history(db, session_id, limit=50)
-    return serialize_docs(messages)
-
-
-@app.get("/api/chatbot/widget/{website_id}")
-async def get_widget_code(website_id: str):
-    """Get embeddable widget code"""
-    website = await websites.find_one({"_id": website_id})
-    if not website:
-        raise HTTPException(404, "Website not found")
-    
-    # Generate widget code
-    widget_code = f"""<!-- GR8 AI Chatbot Widget -->
-<script>
-(function() {{
-  const GR8_CONFIG = {{
-    websiteId: '{website_id}',
-    apiUrl: 'https://vibe-automation-1.preview.emergentagent.com/api'
-  }};
-  
-  const script = document.createElement('script');
-  script.src = GR8_CONFIG.apiUrl + '/widget.js';
-  script.async = true;
-  script.onload = function() {{
-    GR8Chatbot.init(GR8_CONFIG);
-  }};
-  document.head.appendChild(script);
-}})();
-</script>"""
-    
-    return {"widget_code": widget_code, "website_id": website_id}
+# Duplicate functions removed
 
 
 # ========== BILLING ==========

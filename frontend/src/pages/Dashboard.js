@@ -29,18 +29,32 @@ export default function Dashboard() {
   const loadData = async () => {
     try {
       // Load automations
-      const autoResponse = await fetch(`${BACKEND_URL}/api/automations`);
+      const autoResponse = await fetch(`${BACKEND_URL}/api/automations`, {
+        credentials: 'include'
+      });
+      
+      if (!autoResponse.ok) {
+        if (autoResponse.status === 401) {
+          toast.error('Session expired. Please login again.');
+          navigate('/');
+          return;
+        }
+        throw new Error('Failed to load automations');
+      }
+      
       const autoData = await autoResponse.json();
-      setAutomations(autoData);
+      setAutomations(Array.isArray(autoData) ? autoData : []);
 
       // Calculate stats
       const activeCount = autoData.filter(a => a.status === 'active').length;
       setStats({ active: activeCount, total: autoData.length });
 
       // Load executions
-      const execResponse = await fetch(`${BACKEND_URL}/api/executions?limit=20`);
+      const execResponse = await fetch(`${BACKEND_URL}/api/executions?limit=20`, {
+        credentials: 'include'
+      });
       const execData = await execResponse.json();
-      setExecutions(execData);
+      setExecutions(Array.isArray(execData) ? execData : []);
 
       setLoading(false);
     } catch (error) {

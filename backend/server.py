@@ -401,7 +401,8 @@ async def demo_login(response: Response):
 
 # ========== ANALYSIS ==========
 @app.post("/api/analyze")
-async def analyze(req: AnalysisRequest, user: dict = Depends(get_current_user)):
+@limiter.limit("5/minute")  # 5 website analyses per minute
+async def analyze(req: AnalysisRequest, request: Request, user: dict = Depends(get_current_user)):
     """Analyze website (AUTH REQUIRED)"""
     user_id = user["user_id"]
     user_doc = await users.find_one({"_id": user_id})

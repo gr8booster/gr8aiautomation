@@ -1,23 +1,23 @@
 [
   {
     "content": "Fix critical bug: Investigate and fix 401 authentication errors",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Add database indexes for performance optimization",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Add Sentry error tracking and monitoring",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Implement HTTP rate limiting middleware",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Write comprehensive unit tests for backend services",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Write integration tests for API endpoints",

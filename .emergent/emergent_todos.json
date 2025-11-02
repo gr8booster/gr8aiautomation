@@ -1,26 +1,30 @@
 [
   {
-    "content": "Iteration 1.1: Complete authentication system (backend + frontend)",
-    "status": "completed"
+    "content": "Iteration 2.1: Build Lead Capture form system (backend)",
+    "status": "pending"
   },
   {
-    "content": "Iteration 1.2: Build AI Chatbot widget (embeddable + backend API)",
-    "status": "completed"
+    "content": "Iteration 2.2: Create Form Builder UI for lead capture",
+    "status": "pending"
   },
   {
-    "content": "Iteration 1.3: Integrate Stripe billing with subscription plans",
-    "status": "completed"
+    "content": "Iteration 2.3: Implement AI auto-response for leads",
+    "status": "pending"
   },
   {
-    "content": "Iteration 1.4: Update all APIs to require authentication",
-    "status": "completed"
+    "content": "Iteration 2.4: Build Analytics Dashboard with charts",
+    "status": "pending"
   },
   {
-    "content": "Iteration 1.5: Create plan limits enforcement",
-    "status": "completed"
+    "content": "Iteration 3.1: Enhance orchestrator with async workers and retry logic",
+    "status": "pending"
   },
   {
-    "content": "Iteration 1.6: Test Iteration 1 end-to-end",
-    "status": "completed"
+    "content": "Iteration 3.2: Add real-time execution logs and monitoring",
+    "status": "pending"
+  },
+  {
+    "content": "Test Iterations 2 & 3 end-to-end",
+    "status": "pending"
   }
 ]

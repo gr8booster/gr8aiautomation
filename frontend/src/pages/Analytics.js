@@ -6,6 +6,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../co
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend } from 'recharts';
 import { useAuth } from '../contexts/AuthContext';
 import { toast } from 'sonner';
+import { apiCall } from '../utils/api';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -22,9 +23,7 @@ export default function Analytics() {
 
   const loadAnalytics = async () => {
     try {
-      const response = await fetch(`${BACKEND_URL}/api/analytics/dashboard?days=${period}`, {
-        credentials: 'include'
-      });
+      const response = await apiCall(`/api/analytics/dashboard?days=${period}`);
 
       if (response.ok) {
         const data = await response.json();
@@ -34,7 +33,6 @@ export default function Analytics() {
       }
     } catch (error) {
       console.error('Analytics error:', error);
-      toast.error('Failed to load analytics');
     } finally {
       setLoading(false);
     }
@@ -85,7 +83,6 @@ export default function Analytics() {
 
         {analytics && (
           <>
-            {/* Overview Cards */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4 mb-8">
               <Card>
                 <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
@@ -132,7 +129,6 @@ export default function Analytics() {
               </Card>
             </div>
 
-            {/* Activity Chart */}
             <Card className="mb-8">
               <CardHeader>
                 <CardTitle>Activity Over Time</CardTitle>
@@ -154,7 +150,6 @@ export default function Analytics() {
               </CardContent>
             </Card>
 
-            {/* Performance Breakdown */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <Card>
                 <CardHeader>

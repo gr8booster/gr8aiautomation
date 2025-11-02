@@ -8,6 +8,7 @@ import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '.
 import { Badge } from '../components/ui/badge';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '../components/ui/dialog';
 import { toast } from 'sonner';
+import { apiCall } from '../utils/api';
 
 const BACKEND_URL = process.env.REACT_APP_BACKEND_URL;
 
@@ -28,47 +29,20 @@ export default function Dashboard() {
 
   const loadData = async () => {
     try {
-      const token = localStorage.getItem('gr8_session_token');
-      const headers = { 'Content-Type': 'application/json' };
-      if (token) {
-        headers['Authorization'] = `Bearer ${token}`;
-      }
-
-      // Load automations
-      const autoResponse = await fetch(`${BACKEND_URL}/api/automations`, {
-        headers,
-        credentials: 'include'
-      });
-      
-      if (!autoResponse.ok) {
-        if (autoResponse.status === 401) {
-          toast.error('Session expired. Please login again.');
-          localStorage.removeItem('gr8_session_token');
-          navigate('/login');
-          return;
-        }
-        throw new Error('Failed to load automations');
-      }
-      
+      const autoResponse = await apiCall('/api/automations');
       const autoData = await autoResponse.json();
       setAutomations(Array.isArray(autoData) ? autoData : []);
 
-      // Calculate stats
       const activeCount = autoData.filter(a => a.status === 'active').length;
       setStats({ active: activeCount, total: autoData.length });
 
-      // Load executions
-      const execResponse = await fetch(`${BACKEND_URL}/api/executions?limit=20`, {
-        headers,
-        credentials: 'include'
-      });
+      const execResponse = await apiCall('/api/executions?limit=20');
       const execData = await execResponse.json();
       setExecutions(Array.isArray(execData) ? execData : []);
 
       setLoading(false);
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
-      toast.error('Failed to load dashboard');
       setLoading(false);
     }
   };
@@ -76,10 +50,8 @@ export default function Dashboard() {
   const toggleAutomationStatus = async (id, currentStatus) => {
     try {
       const newStatus = currentStatus === 'active' ? 'paused' : 'active';
-      await fetch(`${BACKEND_URL}/api/automations/${id}`, {
+      await apiCall(`/api/automations/${id}`, {
         method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({ status: newStatus })
       });
 
@@ -93,7 +65,6 @@ export default function Dashboard() {
   const showEmbedCode = async (automation) => {
     setSelectedAutomation(automation);
     
-    // Generate embed code based on automation type
     let code = '';
     if (automation.template_id === 'ai-chatbot') {
       code = `<!-- GR8 AI Chatbot -->
@@ -128,7 +99,6 @@ export default function Dashboard() {
   };
 
   const testWidget = (automation) => {
-    // Open demo page with the specific automation
     const testUrl = automation.template_id === 'ai-chatbot' 
       ? `${window.location.origin}/demo.html`
       : `${window.location.origin}/demo.html`;
@@ -143,7 +113,6 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-background">
-      {/* Header */}
       <header className="border-b border-border bg-card/50 backdrop-blur-sm sticky top-0 z-50">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
@@ -163,9 +132,7 @@ export default function Dashboard() {
         </div>
       </header>
 
-      {/* Dashboard Content */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        {/* Stats Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
           <Card>
             <CardHeader className="pb-2">
@@ -193,14 +160,12 @@ export default function Dashboard() {
           </Card>
         </div>
 
-        {/* Tabs */}
         <Tabs defaultValue="automations" className="space-y-6">
           <TabsList>
             <TabsTrigger value="automations">Automations</TabsTrigger>
             <TabsTrigger value="executions">Execution History</TabsTrigger>
           </TabsList>
 
-          {/* Automations Tab */}
           <TabsContent value="automations">
             <Card>
               <CardHeader>
@@ -284,7 +249,6 @@ export default function Dashboard() {
             </Card>
           </TabsContent>
 
-          {/* Executions Tab */}
           <TabsContent value="executions">
             <Card>
               <CardHeader>
@@ -350,7 +314,6 @@ export default function Dashboard() {
         </Tabs>
       </div>
 
-      {/* Embed Code Dialog */}
       <Dialog open={showCodeDialog} onOpenChange={setShowCodeDialog}>
         <DialogContent className="max-w-2xl">
           <DialogHeader>

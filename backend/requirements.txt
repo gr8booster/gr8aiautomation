@@ -31,3 +31,4 @@ sentry-sdk[fastapi]
 pytest
 pytest-asyncio
 pytest-mock
+passlib[bcrypt]

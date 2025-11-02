@@ -400,10 +400,20 @@ async def update_automation(automation_id: str, updates: dict, user: dict = Depe
 
 
 # ========== CHATBOT (PUBLIC) ==========
+# Pydantic Models
 class ChatbotMessageRequest(BaseModel):
     website_id: str
     session_id: str
     message: str
+
+class FormSubmitRequest(BaseModel):
+    data: dict
+
+class FormCreateRequest(BaseModel):
+    name: str
+    website_id: str
+    fields: List[dict]
+    settings: Optional[dict] = None
 
 @app.post("/api/chatbot/message")
 async def chatbot_message(req: ChatbotMessageRequest):

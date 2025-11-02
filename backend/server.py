@@ -240,6 +240,140 @@ async def create_session(request: Request, response: Response):
     return {"user": serialize_doc(user), "session_token": token}
 
 
+
+# Email/Password Authentication
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
+class SignupRequest(BaseModel):
+    email: str
+    password: str
+    name: str
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+
+@app.post("/api/auth/signup")
+async def signup(req: SignupRequest, response: Response):
+    """Email/password signup"""
+    # Check if user exists
+    existing = await users.find_one({"email": req.email})
+    if existing:
+        raise HTTPException(400, "Email already registered")
+    
+    # Hash password
+    hashed_password = pwd_context.hash(req.password)
+    
+    # Create user
+    user_id = str(uuid.uuid4())
+    user = {
+        "_id": user_id,
+        "email": req.email,
+        "name": req.name,
+        "password_hash": hashed_password,
+        "picture": None,
+        "plan": "free",
+        "created_at": datetime.now(timezone.utc),
+        "last_login": datetime.now(timezone.utc)
+    }
+    await users.insert_one(user)
+    
+    # Create free subscription
+    sub = {
+        "_id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "plan": "free",
+        "status": "active",
+        "current_period_start": datetime.now(timezone.utc),
+        "current_period_end": datetime.now(timezone.utc) + timedelta(days=365)
+    }
+    await subscriptions.insert_one(sub)
+    
+    # Create JWT
+    token = create_access_token({
+        "user_id": user_id,
+        "email": req.email,
+        "name": req.name
+    })
+    
+    # Store session
+    await sessions_db.insert_one({
+        "_id": str(uuid.uuid4()),
+        "user_id": user_id,
+        "session_token": token,
+        "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
+        "created_at": datetime.now(timezone.utc)
+    })
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=7*24*60*60,
+        domain=".preview.emergentagent.com",
+        path="/"
+    )
+    
+    # Return user without password hash
+    user_clean = {k: v for k, v in user.items() if k != 'password_hash'}
+    return {"user": serialize_doc(user_clean), "session_token": token}
+
+@app.post("/api/auth/login")
+async def login_email(req: LoginRequest, response: Response):
+    """Email/password login"""
+    # Find user
+    user = await users.find_one({"email": req.email})
+    if not user or 'password_hash' not in user:
+        raise HTTPException(401, "Invalid email or password")
+    
+    # Verify password
+    if not pwd_context.verify(req.password, user["password_hash"]):
+        raise HTTPException(401, "Invalid email or password")
+    
+    # Update last login
+    await users.update_one(
+        {"_id": user["_id"]}, 
+        {"$set": {"last_login": datetime.now(timezone.utc)}}
+    )
+    
+    # Create JWT
+    token = create_access_token({
+        "user_id": user["_id"],
+        "email": user["email"],
+        "name": user["name"]
+    })
+    
+    # Store session
+    await sessions_db.insert_one({
+        "_id": str(uuid.uuid4()),
+        "user_id": user["_id"],
+        "session_token": token,
+        "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
+        "created_at": datetime.now(timezone.utc)
+    })
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=7*24*60*60,
+        domain=".preview.emergentagent.com",
+        path="/"
+    )
+    
+    # Return user without password hash
+    user_clean = {k: v for k, v in user.items() if k != 'password_hash'}
+    return {"user": serialize_doc(user_clean), "session_token": token}
+
+
 @app.get("/api/auth/me")
 async def get_me(user: dict = Depends(get_current_user)):
     """Get current user"""

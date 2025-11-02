@@ -1,18 +1,6 @@
 [
   {
-    "content": "Document Google OAuth issue in roadmap for future fix",
-    "status": "completed"
-  },
-  {
-    "content": "Implement simple email/password authentication",
-    "status": "completed"
-  },
-  {
-    "content": "Create login form UI for email authentication",
-    "status": "completed"
-  },
-  {
     "content": "Test email login flow end-to-end",
-    "status": "in_progress"
+    "status": "completed"
   }
 ]

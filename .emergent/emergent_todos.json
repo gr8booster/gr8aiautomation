@@ -1,14 +1,14 @@
 [
   {
     "content": "Make demo login button yellow and more prominent",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Fix authentication flow - session expired on every action",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test with screenshots to confirm everything works",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]

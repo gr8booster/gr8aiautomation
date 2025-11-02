@@ -418,21 +418,39 @@ class FormCreateRequest(BaseModel):
 @app.post("/api/chatbot/message")
 async def chatbot_message(req: ChatbotMessageRequest):
     """Public chatbot endpoint (no auth required)"""
-    website = await websites.find_one({"_id": req.website_id})
-    if not website:
-        raise HTTPException(404, "Website not found")
+    # Handle demo website
+    if req.website_id == 'demo-website':
+        website = await websites.find_one({"_id": "demo-website"})
+        if not website:
+            # Create demo website
+            await websites.insert_one({
+                "_id": "demo-website",
+                "owner_id": "demo",
+                "url": "https://gr8ai.com",
+                "title": "GR8 AI Automation Demo",
+                "business_type": "saas",
+                "fetched_at": datetime.now(timezone.utc),
+                "analysis_summary": "AI-powered automation platform that helps businesses automate their workflows.",
+                "content_digest": "GR8 AI Automation helps you build intelligent automations for your business. We offer chatbots, lead capture forms, appointment scheduling, and more. Our AI-powered platform makes it easy to connect with your customers and streamline your operations."
+            })
+    else:
+        website = await websites.find_one({"_id": req.website_id})
+        if not website:
+            raise HTTPException(404, "Website not found")
     
-    # Check if chatbot automation is active
-    chatbot_auto = await automations.find_one({
-        "website_id": req.website_id,
-        "template_id": "ai-chatbot",
-        "status": "active"
-    })
-    if not chatbot_auto:
-        raise HTTPException(403, "Chatbot not activated for this website")
+    # Check if chatbot automation is active (skip check for demo)
+    if req.website_id != 'demo-website':
+        chatbot_auto = await automations.find_one({
+            "website_id": req.website_id,
+            "template_id": "ai-chatbot",
+            "status": "active"
+        })
+        if not chatbot_auto:
+            raise HTTPException(403, "Chatbot not activated for this website")
     
-    # Track usage for website owner
-    await track_usage(db, website["owner_id"], chatbot_messages=1)
+    # Track usage for website owner (skip for demo)
+    if req.website_id != 'demo-website':
+        await track_usage(db, website.get("owner_id", "demo"), chatbot_messages=1)
     
     # Process message
     result = await process_chatbot_message(db, req.website_id, req.session_id, req.message)

@@ -9,7 +9,6 @@ const AUTH_REDIRECT_URL = 'https://smarthub-ai-1.preview.emergentagent.com/dashb
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [loggingIn, setLoggingIn] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 

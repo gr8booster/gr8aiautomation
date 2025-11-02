@@ -155,6 +155,16 @@ export default function Landing() {
               Paste your URL. We scan your site and propose high-impact automations: chatbots, bookings, lead capture, marketing sequences, and more.
             </p>
 
+            {!isAuthenticated && (
+              <div className="bg-accent/20 border border-accent rounded-lg p-4 mb-6 max-w-2xl">
+                <p className="text-sm font-medium mb-2">🚀 Ready to test? No signup required!</p>
+                <Button onClick={demoLogin} className="bg-success hover:bg-success/90" data-testid="hero-demo-button">
+                  <Zap className="h-4 w-4 mr-2" />
+                  Start Demo Now
+                </Button>
+              </div>
+            )}
+
             {/* URL Input */}
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Input

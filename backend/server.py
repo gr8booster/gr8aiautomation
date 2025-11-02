@@ -12,6 +12,12 @@ from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Any, Optional
 from dotenv import load_dotenv
 from pydantic import BaseModel
+import sentry_sdk
+from sentry_sdk.integrations.fastapi import FastApiIntegration
+from sentry_sdk.integrations.starlette import StarletteIntegration
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 
 # Load environment variables
 load_dotenv()

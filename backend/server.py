@@ -205,6 +205,69 @@ async def logout(request: Request, response: Response):
     return {"message": "Logged out"}
 
 
+@app.post("/api/auth/demo")
+async def demo_login(response: Response):
+    """Demo login for testing (creates test user)"""
+    demo_email = "demo@gr8ai.com"
+    
+    # Get or create demo user
+    user = await users.find_one({"email": demo_email})
+    if not user:
+        user_id = str(uuid.uuid4())
+        user = {
+            "_id": user_id,
+            "email": demo_email,
+            "name": "Demo User",
+            "picture": None,
+            "plan": "pro",  # Give demo user Pro plan for full testing
+            "created_at": datetime.now(timezone.utc),
+            "last_login": datetime.now(timezone.utc)
+        }
+        await users.insert_one(user)
+        
+        # Create pro subscription for demo
+        sub = {
+            "_id": str(uuid.uuid4()),
+            "user_id": user_id,
+            "plan": "pro",
+            "status": "active",
+            "current_period_start": datetime.now(timezone.utc),
+            "current_period_end": datetime.now(timezone.utc) + timedelta(days=365)
+        }
+        await subscriptions.insert_one(sub)
+    else:
+        await users.update_one({"_id": user["_id"]}, {"$set": {"last_login": datetime.now(timezone.utc)}})
+    
+    # Create JWT
+    token = create_access_token({
+        "user_id": user["_id"],
+        "email": demo_email,
+        "name": "Demo User"
+    })
+    
+    # Store session
+    await sessions_db.insert_one({
+        "_id": str(uuid.uuid4()),
+        "user_id": user["_id"],
+        "session_token": token,
+        "expires_at": datetime.now(timezone.utc) + timedelta(days=7),
+        "created_at": datetime.now(timezone.utc)
+    })
+    
+    # Set cookie
+    response.set_cookie(
+        key="session_token",
+        value=token,
+        httponly=True,
+        secure=True,
+        samesite="none",
+        max_age=7*24*60*60,
+        path="/"
+    )
+    
+    return {"user": serialize_doc(user), "session_token": token, "message": "Demo login successful"}
+
+
 # ========== ANALYSIS ==========
 @app.post("/api/analyze")
 async def analyze(req: AnalysisRequest, user: dict = Depends(get_current_user)):

@@ -56,6 +56,7 @@ export default function Dashboard() {
       await fetch(`${BACKEND_URL}/api/automations/${id}`, {
         method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({ status: newStatus })
       });
 
@@ -64,6 +65,52 @@ export default function Dashboard() {
     } catch (error) {
       toast.error('Failed to update automation');
     }
+  };
+
+  const showEmbedCode = async (automation) => {
+    setSelectedAutomation(automation);
+    
+    // Generate embed code based on automation type
+    let code = '';
+    if (automation.template_id === 'ai-chatbot') {
+      code = `<!-- GR8 AI Chatbot -->
+<script src="${window.location.origin}/widget.js"></script>
+<script>
+  GR8Chatbot.init({
+    websiteId: '${automation.website_id}',
+    apiUrl: '${BACKEND_URL}'
+  });
+</script>`;
+    } else if (automation.template_id === 'lead-capture') {
+      code = `<!-- GR8 Lead Capture Form -->
+<div id="gr8-lead-form"></div>
+<script src="${window.location.origin}/lead-form-widget.js"></script>
+<script>
+  GR8LeadForm.init({
+    formId: '${automation._id}',
+    apiUrl: '${BACKEND_URL}'
+  });
+</script>`;
+    }
+    
+    setEmbedCode(code);
+    setShowCodeDialog(true);
+  };
+
+  const copyCode = () => {
+    navigator.clipboard.writeText(embedCode);
+    setCopied(true);
+    toast.success('Code copied to clipboard!');
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const testWidget = (automation) => {
+    // Open demo page with the specific automation
+    const testUrl = automation.template_id === 'ai-chatbot' 
+      ? `${window.location.origin}/demo.html`
+      : `${window.location.origin}/demo.html`;
+    window.open(testUrl, '_blank');
+    toast.success('Test page opened in new tab');
   };
 
   const formatDate = (dateString) => {

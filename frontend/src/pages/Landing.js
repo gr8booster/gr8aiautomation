@@ -73,10 +73,17 @@ export default function Landing() {
   };
 
   const activateAutomation = async (recommendation) => {
+    if (!isAuthenticated) {
+      toast.error('Please login to activate automations');
+      login();
+      return;
+    }
+
     try {
       const response = await fetch(`${BACKEND_URL}/api/automations`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include',
         body: JSON.stringify({
           website_id: analysis.analysis_id,
           recommendation_key: recommendation.key,
@@ -84,13 +91,16 @@ export default function Landing() {
         })
       });
 
-      if (!response.ok) throw new Error('Activation failed');
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.detail || 'Activation failed');
+      }
 
       toast.success(`${recommendation.title} activated!`);
       setTimeout(() => navigate('/dashboard'), 1500);
     } catch (error) {
       console.error('Activation error:', error);
-      toast.error('Failed to activate automation');
+      toast.error(error.message || 'Failed to activate automation');
     }
   };
 

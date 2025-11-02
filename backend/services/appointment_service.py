@@ -106,6 +106,10 @@ class AppointmentScheduler:
         start_hour, start_min = map(int, start_time_str.split(":"))
         end_hour, end_min = map(int, end_time_str.split(":"))
         
+        # Ensure timezone-aware datetime objects
+        if date.tzinfo is None:
+            date = date.replace(tzinfo=timezone.utc)
+        
         current_slot = date.replace(hour=start_hour, minute=start_min, second=0, microsecond=0)
         end_time = date.replace(hour=end_hour, minute=end_min, second=0, microsecond=0)
         

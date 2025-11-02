@@ -217,14 +217,15 @@ async def create_session(request: Request, response: Response):
         "created_at": datetime.now(timezone.utc)
     })
     
-    # Set cookie
+    # Set cookie with explicit domain for preview URL
     response.set_cookie(
         key="session_token",
         value=token,
         httponly=True,
-        secure=True,  # Use secure for HTTPS preview URL
-        samesite="none",  # Required for cross-origin cookies
+        secure=True,
+        samesite="none",
         max_age=7*24*60*60,
+        domain=".preview.emergentagent.com",  # Allow across all preview subdomains
         path="/"
     )
     
@@ -385,14 +386,15 @@ async def demo_login(response: Response):
         "created_at": datetime.now(timezone.utc)
     })
     
-    # Set cookie
+    # Set cookie with explicit domain for preview URL
     response.set_cookie(
         key="session_token",
         value=token,
         httponly=True,
-        secure=True,  # Use secure for HTTPS preview URL
-        samesite="none",  # Required for cross-origin cookies
+        secure=True,
+        samesite="none",
         max_age=7*24*60*60,
+        domain=".preview.emergentagent.com",  # Allow across all preview subdomains
         path="/"
     )
     

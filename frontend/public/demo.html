@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GR8 AI Automation - Widget Demo</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 40px 20px;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .header {
+      text-align: center;
+      color: white;
+      margin-bottom: 60px;
+    }
+    
+    .header h1 {
+      font-size: 48px;
+      margin-bottom: 16px;
+      font-weight: 700;
+    }
+    
+    .header p {
+      font-size: 20px;
+      opacity: 0.9;
+    }
+    
+    .demo-section {
+      background: white;
+      border-radius: 16px;
+      padding: 40px;
+      margin-bottom: 40px;
+      box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    }
+    
+    .demo-section h2 {
+      font-size: 32px;
+      margin-bottom: 12px;
+      color: #111827;
+    }
+    
+    .demo-section p {
+      font-size: 16px;
+      color: #6b7280;
+      margin-bottom: 24px;
+    }
+    
+    .demo-content {
+      background: #f9fafb;
+      border-radius: 12px;
+      padding: 32px;
+      min-height: 400px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .code-block {
+      background: #1f2937;
+      color: #f3f4f6;
+      padding: 20px;
+      border-radius: 8px;
+      margin-top: 20px;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      overflow-x: auto;
+    }
+    
+    .badge {
+      display: inline-block;
+      background: #10b981;
+      color: white;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>🚀 GR8 AI Automation</h1>
+      <p>Live Demo - Working Widgets</p>
+    </div>
+    
+    <!-- Chatbot Demo -->
+    <div class="demo-section">
+      <span class="badge">✓ LIVE & WORKING</span>
+      <h2>1. AI Chatbot Widget</h2>
+      <p>The chatbot is active in the bottom-right corner. Click the blue button to start chatting!</p>
+      
+      <div class="demo-content">
+        <div style="text-align: center;">
+          <div style="font-size: 64px; margin-bottom: 20px;">💬</div>
+          <h3 style="font-size: 24px; margin-bottom: 12px;">Look for the chat button →</h3>
+          <p style="color: #6b7280;">It's in the bottom-right corner of your screen</p>
+          <p style="margin-top: 16px; padding: 12px; background: #dbeafe; border-radius: 8px; color: #1e40af;">
+            <strong>Try asking:</strong> "What services do you offer?" or "How can I get started?"
+          </p>
+        </div>
+      </div>
+      
+      <div class="code-block">
+&lt;!-- Add this to any website --&gt;
+&lt;script&gt;
+(function() {
+  const script = document.createElement('script');
+  script.src = 'https://vibe-automation-1.preview.emergentagent.com/widget.js';
+  script.onload = function() {
+    GR8Chatbot.init({
+      websiteId: 'demo-website',
+      apiUrl: 'https://vibe-automation-1.preview.emergentagent.com/api'
+    });
+  };
+  document.head.appendChild(script);
+})();
+&lt;/script&gt;
+      </div>
+    </div>
+    
+    <!-- Lead Form Demo -->
+    <div class="demo-section">
+      <span class="badge">✓ LIVE & WORKING</span>
+      <h2>2. Lead Capture Form</h2>
+      <p>This form captures leads and generates AI-powered auto-responses instantly.</p>
+      
+      <div class="demo-content">
+        <div id="gr8-lead-form" style="width: 100%;"></div>
+      </div>
+      
+      <div class="code-block">
+&lt;!-- Add this to any website --&gt;
+&lt;div id="gr8-lead-form"&gt;&lt;/div&gt;
+&lt;script src="https://vibe-automation-1.preview.emergentagent.com/lead-form-widget.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  GR8LeadForm.init({
+    formId: 'YOUR_FORM_ID',
+    apiUrl: 'https://vibe-automation-1.preview.emergentagent.com/api'
+  });
+&lt;/script&gt;
+      </div>
+    </div>
+  </div>
+  
+  <!-- Load Chatbot Widget -->
+  <script src="/widget.js"></script>
+  <script>
+    // Initialize chatbot
+    GR8Chatbot.init({
+      websiteId: 'demo-website',
+      apiUrl: 'https://vibe-automation-1.preview.emergentagent.com/api',
+      greeting: 'Hi! I\'m your AI assistant. Ask me anything!'
+    });
+  </script>
+  
+  <!-- Load Lead Form Widget -->
+  <script src="/lead-form-widget.js"></script>
+  <script>
+    // Initialize lead form
+    GR8LeadForm.init({
+      formId: 'demo-form',
+      apiUrl: 'https://vibe-automation-1.preview.emergentagent.com/api'
+    });
+  </script>
+</body>
+</html>

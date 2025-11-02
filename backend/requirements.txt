@@ -28,3 +28,6 @@ stripe==13.1.1
 sendgrid
 slowapi
 sentry-sdk[fastapi]
+pytest
+pytest-asyncio
+pytest-mock

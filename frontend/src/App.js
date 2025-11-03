@@ -5,6 +5,7 @@ import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
+import FreeAudit from './pages/FreeAudit';
 import Dashboard from './pages/Dashboard';
 import SetupWizard from './pages/SetupWizard';
 import Billing from './pages/Billing';

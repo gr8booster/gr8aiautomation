@@ -1,6 +1,26 @@
 [
   {
-    "content": "Test Content Generator and Email Assistant end-to-end",
-    "status": "completed"
+    "content": "Build Appointment Calendar UI for viewing and managing bookings",
+    "status": "in_progress"
+  },
+  {
+    "content": "Add appointment rescheduling and cancellation features",
+    "status": "pending"
+  },
+  {
+    "content": "Create Visual Workflow Builder with drag-drop interface",
+    "status": "pending"
+  },
+  {
+    "content": "Implement workflow node system (triggers, actions, conditions)",
+    "status": "pending"
+  },
+  {
+    "content": "Test Appointment Calendar end-to-end",
+    "status": "pending"
+  },
+  {
+    "content": "Test Visual Workflow Builder end-to-end",
+    "status": "pending"
   }
 ]

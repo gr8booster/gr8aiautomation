@@ -17,14 +17,21 @@ export default function Reports() {
   const [reports, setReports] = useState([]);
   const [stats, setStats] = useState({ total: 0, hot: 0, conversions: 0 });
   const [loading, setLoading] = useState(true);
+  const [search, setSearch] = useState('');
+  const [scoreFilter, setScoreFilter] = useState('');
+  const [exporting, setExporting] = useState(false);
 
   useEffect(() => {
     loadReports();
-  }, []);
+  }, [search, scoreFilter]);
 
   const loadReports = async () => {
     try {
-      const response = await apiCall('/api/reports');
+      let url = '/api/reports?';
+      if (search) url += `search=${encodeURIComponent(search)}&`;
+      if (scoreFilter) url += `score=${scoreFilter}&`;
+      
+      const response = await apiCall(url);
       const data = await response.json();
       setReports(Array.isArray(data) ? data : []);
 
@@ -38,6 +45,32 @@ export default function Reports() {
       console.error('Failed to load reports:', error);
       toast.error('Failed to load reports');
       setLoading(false);
+    }
+  };
+
+  const exportCSV = async () => {
+    setExporting(true);
+    try {
+      const token = localStorage.getItem('gr8_session_token');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_URL}/api/reports/export`, {
+        headers: { 'Authorization': `Bearer ${token}` },
+        credentials: 'include'
+      });
+      
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `automation_reports_${new Date().toISOString().split('T')[0]}.csv`;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      
+      toast.success('Reports exported successfully!');
+    } catch (error) {
+      toast.error('Failed to export reports');
+    } finally {
+      setExporting(false);
     }
   };
 

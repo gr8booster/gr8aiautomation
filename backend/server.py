@@ -1089,10 +1089,68 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
 
 
 @app.get("/api/reports")
-async def list_reports(user: dict = Depends(get_current_user)):
-    """List all generated reports (admin/system view)"""
-    reports = await db["automation_reports"].find().sort("created_at", -1).limit(100).to_list(100)
+async def list_reports(
+    user: dict = Depends(get_current_user),
+    search: Optional[str] = None,
+    score: Optional[str] = None,
+    status: Optional[str] = None
+):
+    """List all generated reports with search and filters"""
+    query = {}
+    
+    if search:
+        query["$or"] = [
+            {"lead_email": {"$regex": search, "$options": "i"}},
+            {"lead_name": {"$regex": search, "$options": "i"}},
+            {"website_url": {"$regex": search, "$options": "i"}}
+        ]
+    
+    if score:
+        query["automation_score"] = score
+    
+    if status:
+        query["status"] = status
+    
+    reports = await db["automation_reports"].find(query).sort("created_at", -1).limit(100).to_list(100)
     return serialize_docs(reports)
+
+@app.get("/api/reports/export")
+async def export_reports_csv(user: dict = Depends(get_current_user)):
+    """Export reports as CSV"""
+    reports = await db["automation_reports"].find().sort("created_at", -1).to_list(1000)
+    
+    # Create CSV
+    output = StringIO()
+    writer = csv.writer(output)
+    
+    # Headers
+    writer.writerow(['Date', 'Lead Name', 'Email', 'Website', 'Score', 'Opportunities', 'Status', 'Converted'])
+    
+    # Data
+    for report in reports:
+        writer.writerow([
+            report.get('created_at', '').strftime('%Y-%m-%d %H:%M') if report.get('created_at') else '',
+            report.get('lead_name', ''),
+            report.get('lead_email', ''),
+            report.get('website_url', ''),
+            report.get('automation_score', ''),
+            report.get('opportunities_count', 0),
+            report.get('status', 'sent'),
+            'Yes' if report.get('converted') else 'No'
+        ])
+    
+    output.seek(0)
+    
+    return StreamingResponse(
+        iter([output.getvalue()]),
+        media_type="text/csv",
+        headers={"Content-Disposition": "attachment; filename=automation_reports.csv"}
+    )
+
+@app.get("/api/analytics/attribution")
+async def get_lead_attribution(user: dict = Depends(get_current_user), days: int = 30):
+    """Get lead attribution by UTM source"""
+    return await get_attribution_report(db, days)
 
 
 

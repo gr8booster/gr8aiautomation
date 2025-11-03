@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Toaster } from 'sonner';
 import { AuthProvider } from './contexts/AuthContext';
 import { ProtectedRoute } from './components/ProtectedRoute';
+import FreeAuditPopup from './components/FreeAuditPopup';
 import Landing from './pages/Landing';
 import Login from './pages/Login';
 import FreeAudit from './pages/FreeAudit';

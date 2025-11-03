@@ -1142,6 +1142,25 @@ async def list_reports(
     reports = await db["automation_reports"].find(query).sort("created_at", -1).limit(100).to_list(100)
     return serialize_docs(reports)
 
+
+@app.get("/api/reports/{report_id}/download")
+async def download_report_pdf(report_id: str):
+    """Download PDF report (PUBLIC for email links)"""
+    report = await db["automation_reports"].find_one({"_id": report_id})
+    if not report:
+        raise HTTPException(404, "Report not found")
+    
+    pdf_path = report.get("pdf_path")
+    if not pdf_path or not os.path.exists(pdf_path):
+        raise HTTPException(404, "PDF file not found")
+    
+    return StreamingResponse(
+        open(pdf_path, "rb"),
+        media_type="application/pdf",
+        headers={"Content-Disposition": f"attachment; filename=automation_report_{report_id}.pdf"}
+    )
+
+
 @app.get("/api/reports/export")
 async def export_reports_csv(user: dict = Depends(get_current_user)):
     """Export reports as CSV"""

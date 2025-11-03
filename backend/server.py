@@ -1027,6 +1027,15 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
         pdf_buffer = generate_automation_report_pdf(analysis_data, lead_data)
         pdf_bytes = pdf_buffer.getvalue()
         
+        # Save PDF to filesystem
+        pdf_dir = "/app/backend/generated_reports"
+        os.makedirs(pdf_dir, exist_ok=True)
+        pdf_filename = f"{report_id}.pdf"
+        pdf_path = os.path.join(pdf_dir, pdf_filename)
+        
+        with open(pdf_path, 'wb') as f:
+            f.write(pdf_bytes)
+        
         # Save report record in database
         report_id = str(uuid.uuid4())
         await db["automation_reports"].insert_one({

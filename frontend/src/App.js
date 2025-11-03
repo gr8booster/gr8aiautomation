@@ -23,6 +23,7 @@ function App() {
           <Toaster position="top-right" />
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/free-audit" element={<FreeAudit />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/setup/:automationId" element={<ProtectedRoute><SetupWizard /></ProtectedRoute>} />

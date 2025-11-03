@@ -7,6 +7,8 @@ import Landing from './pages/Landing';
 import Login from './pages/Login';
 import FreeAudit from './pages/FreeAudit';
 import Reports from './pages/Reports';
+import ContentGenerator from './pages/ContentGenerator';
+import EmailAssistant from './pages/EmailAssistant';
 import Dashboard from './pages/Dashboard';
 import SetupWizard from './pages/SetupWizard';
 import Billing from './pages/Billing';

@@ -1074,7 +1074,8 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "opportunities_count": len(analysis.recommendations),
             "estimated_savings": 5000,
             "email_sent": email_sent,
-            "message": "Report generated and sent to your email!"
+            "message": "Report generated and sent to your email!",
+            "recommendations": analysis_data["recommendations"][:6]  # Return top 6 for preview
         }
         
     except Exception as e:

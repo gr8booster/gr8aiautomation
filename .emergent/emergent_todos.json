@@ -1,26 +1,34 @@
 [
   {
-    "content": "Phase 4: Get Twilio integration playbook and implement SMS automation",
-    "status": "completed"
+    "content": "Implement CSV export for reports",
+    "status": "in_progress"
   },
   {
-    "content": "Phase 4: Build social media scheduler with Twitter/LinkedIn posting",
-    "status": "completed"
+    "content": "Add search and advanced filters to Reports page",
+    "status": "pending"
   },
   {
-    "content": "Phase 4: Add CRM integration options (webhooks to Salesforce/HubSpot)",
-    "status": "completed"
+    "content": "Create popup trigger for Free Audit across site",
+    "status": "pending"
   },
   {
-    "content": "Phase 5: Build team workspaces with role-based access control",
-    "status": "completed"
+    "content": "Implement UTM tracking for lead attribution",
+    "status": "pending"
   },
   {
-    "content": "Phase 5: Implement user invitation and team management",
-    "status": "completed"
+    "content": "Add PDF storage to filesystem for persistent downloads",
+    "status": "pending"
   },
   {
-    "content": "Phase 5: Add shared automation library for teams",
-    "status": "completed"
+    "content": "Integrate report analytics into main Analytics dashboard",
+    "status": "pending"
+  },
+  {
+    "content": "Create background job processor for automated email sequences",
+    "status": "pending"
+  },
+  {
+    "content": "Add SendGrid API key configuration UI in settings",
+    "status": "pending"
   }
 ]

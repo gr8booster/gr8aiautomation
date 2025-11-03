@@ -1093,6 +1093,73 @@ async def list_reports(user: dict = Depends(get_current_user)):
 
 
 
+
+
+
+# ========== AI CONTENT GENERATOR ==========
+class ContentGenerateRequest(BaseModel):
+    content_type: str  # blog_post, product_description, social_media, email_campaign, ad_copy
+    inputs: dict  # Dynamic inputs based on content type
+
+@app.get("/api/content/templates")
+async def get_content_templates():
+    """Get available content generation templates"""
+    return {"templates": {k: v["name"] for k, v in CONTENT_TEMPLATES.items()}}
+
+@app.post("/api/content/generate")
+async def generate_ai_content(req: ContentGenerateRequest, user: dict = Depends(get_current_user)):
+    """Generate AI content"""
+    result = await generate_content(db, req.content_type, req.inputs, user["user_id"])
+    await track_usage(db, user["user_id"], ai_interactions=1)
+    return result
+
+@app.get("/api/content/history")
+async def get_user_content(user: dict = Depends(get_current_user)):
+    """Get content generation history"""
+    items = await get_content_history(db, user["user_id"])
+    return serialize_docs(items)
+
+
+# ========== AI EMAIL ASSISTANT ==========
+class EmailDraftRequest(BaseModel):
+    original_email: str
+    tone: str = "professional and friendly"
+    key_points: str = ""
+    recipient_name: str = ""
+
+class EmailCampaignRequest(BaseModel):
+    topic: str
+    goal: str = "Generate interest and drive action"
+    audience: str = "Business professionals"
+    tone: str = "professional yet engaging"
+    num_variations: int = 2
+
+@app.post("/api/email/draft")
+async def draft_email(req: EmailDraftRequest, user: dict = Depends(get_current_user)):
+    """Draft email response"""
+    context = {
+        "original_email": req.original_email,
+        "tone": req.tone,
+        "key_points": req.key_points,
+        "recipient_name": req.recipient_name
+    }
+    result = await draft_email_response(db, context, user["user_id"])
+    await track_usage(db, user["user_id"], ai_interactions=1)
+    return result
+
+@app.post("/api/email/campaign")
+async def create_campaign(req: EmailCampaignRequest, user: dict = Depends(get_current_user)):
+    """Generate email campaign"""
+    result = await create_email_campaign(db, req.dict(), user["user_id"])
+    await track_usage(db, user["user_id"], ai_interactions=1)
+    return result
+
+@app.get("/api/email/drafts")
+async def list_drafts(user: dict = Depends(get_current_user)):
+    """Get email draft history"""
+    items = await get_email_drafts(db, user["user_id"])
+    return serialize_docs(items)
+
 # ========== BILLING ==========
 @app.get("/api/billing/plans")
 async def get_plans():

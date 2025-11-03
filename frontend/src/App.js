@@ -13,6 +13,7 @@ import EmailAssistant from './pages/EmailAssistant';
 import WorkflowBuilder from './pages/WorkflowBuilder';
 import Marketplace from './pages/Marketplace';
 import TeamSettings from './pages/TeamSettings';
+import Settings from './pages/Settings';
 import Dashboard from './pages/Dashboard';
 import SetupWizard from './pages/SetupWizard';
 import Billing from './pages/Billing';

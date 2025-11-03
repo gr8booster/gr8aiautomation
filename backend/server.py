@@ -966,6 +966,123 @@ async def get_analytics(user: dict = Depends(get_current_user), days: int = 30):
 # Duplicate functions removed
 
 
+# ========== LEAD MAGNET - FREE REPORTS ==========
+from fastapi.responses import StreamingResponse
+
+class ReportGenerateRequest(BaseModel):
+    url: str
+    email: str
+    name: Optional[str] = None
+
+@app.post("/api/reports/generate")
+@limiter.limit("3/hour")  # Limit to prevent abuse
+async def generate_free_report(req: ReportGenerateRequest, request: Request):
+    """Generate free automation report (PUBLIC endpoint for lead generation)"""
+    try:
+        # Analyze website
+        extraction = await fetch_and_extract_website(req.url)
+        analysis = await analyze_website_for_automations(extraction)
+        
+        # Prepare analysis data for PDF
+        analysis_data = {
+            "url": req.url,
+            "summary": analysis.summary,
+            "business_type": analysis.business_type.value,
+            "strengths": analysis.strengths,
+            "opportunities": analysis.opportunities,
+            "recommendations": [{
+                "title": r.title,
+                "description": r.description,
+                "rationale": r.rationale,
+                "expected_impact": r.expected_impact,
+                "priority": r.priority.value,
+                "estimated_value": r.estimated_value or "Significant ROI expected"
+            } for r in analysis.recommendations],
+            "confidence_score": analysis.confidence_score
+        }
+        
+        # Score the lead
+        lead_score = await score_lead(db, {
+            "email": req.email,
+            "name": req.name,
+            "website": req.url,
+            "message": f"Interested in automation for {extraction.business_type.value} business"
+        })
+        
+        # Generate PDF
+        lead_data = {
+            "name": req.name or "Valued Business Owner",
+            "email": req.email,
+            "website": req.url
+        }
+        
+        pdf_buffer = generate_automation_report_pdf(analysis_data, lead_data)
+        pdf_bytes = pdf_buffer.getvalue()
+        
+        # Save report record in database
+        report_id = str(uuid.uuid4())
+        await db["automation_reports"].insert_one({
+            "_id": report_id,
+            "lead_email": req.email,
+            "lead_name": req.name,
+            "website_url": req.url,
+            "business_type": analysis.business_type.value,
+            "automation_score": lead_score,
+            "opportunities_count": len(analysis.recommendations),
+            "estimated_savings": 5000,  # TODO: Calculate from recommendations
+            "pdf_size_bytes": len(pdf_bytes),
+            "status": "sent",
+            "created_at": datetime.now(timezone.utc)
+        })
+        
+        # Save lead in leads collection with special tag
+        lead_id = str(uuid.uuid4())
+        await db["leads"].insert_one({
+            "_id": lead_id,
+            "form_id": "free-report",
+            "website_id": "lead-magnet",
+            "owner_id": "system",  # System-generated lead
+            "data": {
+                "name": req.name,
+                "email": req.email,
+                "website": req.url
+            },
+            "score": lead_score,
+            "status": "new",
+            "source": "free_audit",
+            "report_id": report_id,
+            "created_at": datetime.now(timezone.utc)
+        })
+        
+        # Send report email (if SendGrid configured)
+        report_url = f"https://gr8ai.com/reports/{report_id}"  # TODO: Implement download endpoint
+        email_sent = await send_report_email(
+            lead_email=req.email,
+            lead_name=req.name or "there",
+            report_url=report_url,
+            opportunities_count=len(analysis.recommendations)
+        )
+        
+        # Schedule nurture sequence
+        if email_sent:
+            await schedule_nurture_sequence(db, lead_id, req.email, req.name or "there")
+        
+        return {
+            "success": True,
+            "report_id": report_id,
+            "score": lead_score,
+            "opportunities_count": len(analysis.recommendations),
+            "estimated_savings": 5000,
+            "email_sent": email_sent,
+            "message": "Report generated and sent to your email!"
+        }
+        
+    except Exception as e:
+        print(f"Report generation error: {e}")
+        raise HTTPException(500, f"Failed to generate report: {str(e)}")
+
+
+
 # ========== BILLING ==========
 @app.get("/api/billing/plans")
 async def get_plans():

@@ -232,22 +232,65 @@ export default function FreeAudit() {
 
                 {/* Show recommendations preview */}
                 <div>
-                  <h3 className="font-semibold mb-3">Top Automation Opportunities</h3>
+                  <h3 className="font-semibold mb-3">Your Automation Opportunities</h3>
                   <div className="space-y-3">
-                    {report.recommendations?.slice(0, 3).map((rec, i) => (
-                      <div key={i} className="border border-border rounded-lg p-4">
-                        <div className="flex items-start justify-between mb-2">
-                          <h4 className="font-semibold text-primary">{rec.title}</h4>
-                          <Badge>{rec.priority}</Badge>
-                        </div>
-                        <p className="text-sm text-muted-foreground mb-2">{rec.description}</p>
-                        {rec.estimated_value && (
-                          <p className="text-sm font-semibold text-success">
-                            💰 {rec.estimated_value}
-                          </p>
-                        )}
-                      </div>
+                    {report.recommendations?.map((rec, i) => (
+                      <Card key={i}>
+                        <CardHeader className="pb-3">
+                          <div className="flex items-start justify-between">
+                            <div className="flex-1">
+                              <Badge className="mb-2">{rec.category}</Badge>
+                              <CardTitle className="text-lg text-primary">{i + 1}. {rec.title}</CardTitle>
+                            </div>
+                            <Badge variant={rec.priority === 'high' ? 'destructive' : rec.priority === 'medium' ? 'default' : 'secondary'}>
+                              {rec.priority}
+                            </Badge>
+                          </div>
+                        </CardHeader>
+                        <CardContent className="space-y-2">
+                          <p className="text-sm text-muted-foreground">{rec.description}</p>
+                          <div className="bg-muted p-3 rounded-md">
+                            <p className="text-sm"><strong>Why you need it:</strong> {rec.rationale}</p>
+                          </div>
+                          <p className="text-sm"><strong>Expected impact:</strong> {rec.expected_impact}</p>
+                          {rec.estimated_value && (
+                            <p className="text-sm font-semibold text-success">
+                              💰 Estimated Value: {rec.estimated_value}
+                            </p>
+                          )}
+                        </CardContent>
+                      </Card>
                     ))}
+                  </div>
+                </div>
+
+                {/* Download/Subscribe CTA */}
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary/20 rounded-lg p-6">
+                  <h3 className="font-semibold text-lg mb-2">💾 Want to Save This Report?</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Get your professional PDF report with full implementation roadmap
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-4 border-2 border-primary">
+                      <h4 className="font-semibold text-primary mb-2">Subscribe & Get Free</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Start Starter plan ($29/mo) and download unlimited reports
+                      </p>
+                      <Button onClick={() => navigate('/login')} className="w-full">
+                        Start Free Trial →
+                      </Button>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-border">
+                      <h4 className="font-semibold mb-2">One-Time Purchase</h4>
+                      <p className="text-sm text-muted-foreground mb-3">
+                        Download this report only for $9.99
+                      </p>
+                      <Button variant="outline" className="w-full" onClick={() => {
+                        toast.info('One-time purchase coming soon! Subscribe for unlimited reports.');
+                      }}>
+                        Buy Report - $9.99
+                      </Button>
+                    </div>
                   </div>
                 </div>
 

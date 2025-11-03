@@ -140,9 +140,14 @@ export default function Landing() {
                   <Button variant="outline" onClick={logout}>Logout</Button>
                 </>
               ) : (
-                <Button onClick={login} data-testid="nav-login-button" className="bg-primary hover:bg-primary/90">
-                  Get Started
-                </Button>
+                <>
+                  <Button onClick={() => navigate('/free-audit')} className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">
+                    Free Audit
+                  </Button>
+                  <Button variant="outline" onClick={login} data-testid="nav-login-button">
+                    Login
+                  </Button>
+                </>
               )}
             </div>
           </div>

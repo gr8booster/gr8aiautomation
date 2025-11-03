@@ -23,13 +23,19 @@ export default function Analytics() {
 
   const loadAnalytics = async () => {
     try {
-      const response = await apiCall(`/api/analytics/dashboard?days=${period}`);
+      const [dashResponse, attrResponse] = await Promise.all([
+        apiCall(`/api/analytics/dashboard?days=${period}`),
+        apiCall(`/api/analytics/attribution?days=${period}`)
+      ]);
 
-      if (response.ok) {
-        const data = await response.json();
+      if (dashResponse.ok) {
+        const data = await dashResponse.json();
         setAnalytics(data);
-      } else {
-        toast.error('Failed to load analytics');
+      }
+      
+      if (attrResponse.ok) {
+        const attrData = await attrResponse.json();
+        setAnalytics(prev => ({...prev, attribution: attrData}));
       }
     } catch (error) {
       console.error('Analytics error:', error);

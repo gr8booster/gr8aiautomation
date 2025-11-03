@@ -1,26 +1,30 @@
 [
   {
-    "content": "Create setup wizard that launches after activating any automation",
-    "status": "completed"
-  },
-  {
-    "content": "Build AI Content Generator automation (blog posts, product descriptions)",
+    "content": "Create 'Free AI Audit' landing page with email capture form",
     "status": "pending"
   },
   {
-    "content": "Build AI Email Assistant automation (draft responses, campaigns)",
+    "content": "Build PDF report generator with business insights and ROI estimates",
     "status": "pending"
   },
   {
-    "content": "Enhance chatbot setup with customization wizard",
-    "status": "completed"
+    "content": "Implement SendGrid 3-email nurture sequence automation",
+    "status": "pending"
   },
   {
-    "content": "Enhance lead capture with form builder wizard",
-    "status": "completed"
+    "content": "Create Reports dashboard tab for viewing generated reports",
+    "status": "pending"
   },
   {
-    "content": "Test all AI agents end-to-end",
+    "content": "Add report analytics (conversion tracking, lead scoring)",
+    "status": "pending"
+  },
+  {
+    "content": "Build embeddable report widget for partners",
+    "status": "pending"
+  },
+  {
+    "content": "Test complete lead magnet funnel end-to-end",
     "status": "pending"
   }
 ]

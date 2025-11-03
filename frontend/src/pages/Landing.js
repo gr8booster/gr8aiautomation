@@ -172,6 +172,31 @@ export default function Landing() {
               Paste your URL. We scan your site and propose high-impact automations: chatbots, bookings, lead capture, marketing sequences, and more.
             </p>
 
+            {/* Free Audit CTA */}
+            <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-6 mb-8 max-w-2xl shadow-lg">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                  <Zap className="h-6 w-6 text-black" />
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">
+                    Get Your Free AI Automation Report
+                  </h3>
+                  <p className="text-sm text-gray-700 mb-4">
+                    Discover what you can automate in 60 seconds. No signup required • 100% Free • Personalized insights
+                  </p>
+                  <Button 
+                    onClick={() => navigate('/free-audit')} 
+                    size="lg"
+                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-md"
+                  >
+                    <Sparkles className="h-5 w-5 mr-2" />
+                    Generate My Free Report →
+                  </Button>
+                </div>
+              </div>
+            </div>
+
             {/* URL Input */}
             <div className="flex flex-col sm:flex-row gap-3 mb-6">
               <Input

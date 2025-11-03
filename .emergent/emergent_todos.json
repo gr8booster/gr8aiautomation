@@ -1,23 +1,23 @@
 [
   {
     "content": "Implement CSV export for reports",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Add search and advanced filters to Reports page",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Create popup trigger for Free Audit across site",
-    "status": "pending"
+    "status": "in_progress"
   },
   {
     "content": "Implement UTM tracking for lead attribution",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Add PDF storage to filesystem for persistent downloads",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Integrate report analytics into main Analytics dashboard",
@@ -25,7 +25,7 @@
   },
   {
     "content": "Create background job processor for automated email sequences",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Add SendGrid API key configuration UI in settings",

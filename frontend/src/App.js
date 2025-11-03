@@ -35,6 +35,7 @@ function App() {
             <Route path="/content-generator" element={<ProtectedRoute><ContentGenerator /></ProtectedRoute>} />
             <Route path="/email-assistant" element={<ProtectedRoute><EmailAssistant /></ProtectedRoute>} />
             <Route path="/workflow-builder" element={<ProtectedRoute><WorkflowBuilder /></ProtectedRoute>} />
+            <Route path="/marketplace" element={<ProtectedRoute><Marketplace /></ProtectedRoute>} />
             <Route path="/setup/:automationId" element={<ProtectedRoute><SetupWizard /></ProtectedRoute>} />
             <Route path="/billing" element={<ProtectedRoute><Billing /></ProtectedRoute>} />
             <Route path="/billing/success" element={<ProtectedRoute><BillingSuccess /></ProtectedRoute>} />

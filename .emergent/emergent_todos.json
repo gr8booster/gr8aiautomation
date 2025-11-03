@@ -1,10 +1,30 @@
 [
   {
-    "content": "Test complete lead magnet funnel end-to-end",
-    "status": "completed"
+    "content": "Build AI Content Generator service (blog posts, product descriptions, marketing copy)",
+    "status": "in_progress"
   },
   {
-    "content": "Build embeddable report widget for partners",
-    "status": "completed"
+    "content": "Create Content Generator frontend UI with templates and customization",
+    "status": "pending"
+  },
+  {
+    "content": "Build AI Email Assistant service (draft replies, campaigns, sequences)",
+    "status": "pending"
+  },
+  {
+    "content": "Create Email Assistant frontend UI with inbox integration",
+    "status": "pending"
+  },
+  {
+    "content": "Add Content Generator to automation templates and setup wizard",
+    "status": "pending"
+  },
+  {
+    "content": "Add Email Assistant to automation templates and setup wizard",
+    "status": "pending"
+  },
+  {
+    "content": "Test both new AI agents end-to-end",
+    "status": "pending"
   }
 ]

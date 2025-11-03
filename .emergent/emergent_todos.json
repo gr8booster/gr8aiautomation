@@ -1,18 +1,10 @@
 [
   {
-    "content": "Create Reports dashboard tab for viewing generated reports",
-    "status": "completed"
-  },
-  {
-    "content": "Add report analytics (conversion tracking, lead scoring)",
+    "content": "Test complete lead magnet funnel end-to-end",
     "status": "completed"
   },
   {
     "content": "Build embeddable report widget for partners",
-    "status": "pending"
-  },
-  {
-    "content": "Test complete lead magnet funnel end-to-end",
-    "status": "in_progress"
+    "status": "completed"
   }
 ]

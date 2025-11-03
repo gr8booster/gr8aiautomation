@@ -1059,6 +1059,14 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
         email_sent = await send_report_email(
             lead_email=req.email,
             lead_name=req.name or "there",
+
+
+@app.get("/api/reports")
+async def list_reports(user: dict = Depends(get_current_user)):
+    """List all generated reports (admin/system view)"""
+    reports = await db["automation_reports"].find().sort("created_at", -1).limit(100).to_list(100)
+    return serialize_docs(reports)
+
             report_url=report_url,
             opportunities_count=len(analysis.recommendations)
         )

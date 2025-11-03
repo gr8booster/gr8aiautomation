@@ -1073,6 +1073,16 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "score": lead_score,
             "status": "new",
             "source": "free_audit",
+
+        
+        # Track UTM if provided
+        if req.utm_source or req.utm_medium or req.utm_campaign:
+            await track_utm_source(db, lead_id, {
+                "utm_source": req.utm_source,
+                "utm_medium": req.utm_medium,
+                "utm_campaign": req.utm_campaign
+            })
+
             "report_id": report_id,
             "created_at": datetime.now(timezone.utc)
         })

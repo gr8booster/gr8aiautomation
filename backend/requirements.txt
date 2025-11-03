@@ -32,3 +32,4 @@ pytest
 pytest-asyncio
 pytest-mock
 passlib[bcrypt]
+reportlab

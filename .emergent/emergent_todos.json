@@ -1,23 +1,11 @@
 [
   {
-    "content": "Create 'Free AI Audit' landing page with email capture form",
-    "status": "completed"
-  },
-  {
-    "content": "Build PDF report generator with business insights and ROI estimates",
-    "status": "completed"
-  },
-  {
-    "content": "Implement SendGrid 3-email nurture sequence automation",
-    "status": "completed"
-  },
-  {
     "content": "Create Reports dashboard tab for viewing generated reports",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Add report analytics (conversion tracking, lead scoring)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Build embeddable report widget for partners",
@@ -25,6 +13,6 @@
   },
   {
     "content": "Test complete lead magnet funnel end-to-end",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]

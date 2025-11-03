@@ -35,6 +35,8 @@ from services.analytics_service import get_dashboard_analytics
 from services.appointment_service import AppointmentScheduler
 from services.report_generator import generate_automation_report_pdf
 from services.nurture_service import send_report_email, schedule_nurture_sequence
+from services.content_generator_service import generate_content, get_content_history, CONTENT_TEMPLATES
+from services.email_assistant_service import draft_email_response, create_email_campaign, get_email_drafts
 from utils.db_helpers import serialize_doc, serialize_docs
 from auth.jwt_handler import create_access_token
 from auth.dependencies import get_current_user, get_current_user_optional

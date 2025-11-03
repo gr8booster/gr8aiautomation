@@ -9,6 +9,7 @@ import FreeAudit from './pages/FreeAudit';
 import Reports from './pages/Reports';
 import ContentGenerator from './pages/ContentGenerator';
 import EmailAssistant from './pages/EmailAssistant';
+import WorkflowBuilder from './pages/WorkflowBuilder';
 import Dashboard from './pages/Dashboard';
 import SetupWizard from './pages/SetupWizard';
 import Billing from './pages/Billing';

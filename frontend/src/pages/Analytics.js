@@ -201,6 +201,26 @@ export default function Analytics() {
                 </CardContent>
               </Card>
             </div>
+
+            {/* Lead Attribution */}
+            {analytics.attribution && analytics.attribution.length > 0 && (
+              <Card className="mt-6">
+                <CardHeader>
+                  <CardTitle>Lead Attribution (UTM Sources)</CardTitle>
+                  <CardDescription>Where your leads are coming from</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-3">
+                    {analytics.attribution.map((source, idx) => (
+                      <div key={idx} className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                        <span className="font-medium capitalize">{source.source}</span>
+                        <Badge>{source.leads} leads</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            )}
           </>
         )}
       </div>

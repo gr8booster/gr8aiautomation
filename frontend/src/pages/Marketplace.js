@@ -26,10 +26,10 @@ export default function Marketplace() {
       const response = await apiCall('/api/marketplace/templates');
       const data = await response.json();
       setTemplates(data);
-      setLoading(false);
     } catch (error) {
-      // Use demo templates
+      // Use demo templates as fallback
       setTemplates(demoTemplates);
+    } finally {
       setLoading(false);
     }
   };

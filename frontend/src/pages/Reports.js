@@ -110,9 +110,36 @@ export default function Reports() {
 
       {/* Content */}
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
-        <div className="mb-8">
-          <h1 className="font-heading text-3xl font-bold">Automation Reports</h1>
-          <p className="text-muted-foreground mt-1">Track generated reports and lead conversions</p>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <h1 className="font-heading text-3xl font-bold">Automation Reports</h1>
+            <p className="text-muted-foreground mt-1">Track generated reports and lead conversions</p>
+          </div>
+          <Button onClick={exportCSV} disabled={exporting} variant="outline">
+            <Download className="h-4 w-4 mr-2" />
+            {exporting ? 'Exporting...' : 'Export CSV'}
+          </Button>
+        </div>
+
+        {/* Search and Filters */}
+        <div className="flex gap-4 mb-6">
+          <div className="flex-1">
+            <Input
+              placeholder="Search by email, name, or website..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+          <select
+            value={scoreFilter}
+            onChange={(e) => setScoreFilter(e.target.value)}
+            className="px-4 py-2 border border-border rounded-md bg-background"
+          >
+            <option value="">All Scores</option>
+            <option value="hot">Hot</option>
+            <option value="warm">Warm</option>
+            <option value="cold">Cold</option>
+          </select>
         </div>
 
         {/* Stats Cards */}

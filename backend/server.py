@@ -978,6 +978,9 @@ class ReportGenerateRequest(BaseModel):
     url: str
     email: str
     name: Optional[str] = None
+    utm_source: Optional[str] = None
+    utm_medium: Optional[str] = None
+    utm_campaign: Optional[str] = None
 
 @app.post("/api/reports/generate")
 @limiter.limit("3/hour")  # Limit to prevent abuse

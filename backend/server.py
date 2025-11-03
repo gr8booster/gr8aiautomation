@@ -1175,6 +1175,58 @@ async def save_custom_workflow(req: WorkflowSaveRequest, user: dict = Depends(ge
     })
     return {"workflow_id": workflow_id, "message": "Workflow saved"}
 
+
+
+
+# ========== TEAM COLLABORATION ==========
+class TeamInviteRequest(BaseModel):
+    email: str
+    role: str = "member"
+
+@app.get("/api/team/workspace")
+async def get_workspace(user: dict = Depends(get_current_user)):
+    """Get workspace and team members"""
+    workspace = {
+        "name": user.get("name", "My") + "'s Workspace",
+        "owner_id": user["user_id"]
+    }
+    
+    members = await db["team_members"].find({"workspace_owner": user["user_id"]}).to_list(100)
+    
+    return {
+        "workspace": workspace,
+        "members": serialize_docs(members)
+    }
+
+@app.post("/api/team/invite")
+async def invite_member(req: TeamInviteRequest, user: dict = Depends(get_current_user)):
+    """Invite team member"""
+    # Check if already invited
+    existing = await db["team_members"].find_one({"email": req.email, "workspace_owner": user["user_id"]})
+    if existing:
+        raise HTTPException(400, "User already invited")
+    
+    member_id = str(uuid.uuid4())
+    await db["team_members"].insert_one({
+        "_id": member_id,
+        "workspace_owner": user["user_id"],
+        "email": req.email,
+        "role": req.role,
+        "status": "pending",
+        "invited_at": datetime.now(timezone.utc)
+    })
+    
+    # TODO: Send invitation email
+    return {"message": "Invitation sent", "member_id": member_id}
+
+@app.delete("/api/team/members/{member_id}")
+async def remove_member(member_id: str, user: dict = Depends(get_current_user)):
+    """Remove team member"""
+    result = await db["team_members"].delete_one({"_id": member_id, "workspace_owner": user["user_id"]})
+    if result.deleted_count == 0:
+        raise HTTPException(404, "Member not found")
+    return {"message": "Member removed"}
+
 @app.get("/api/workflows/list")
 async def list_custom_workflows(user: dict = Depends(get_current_user)):
     """List user's custom workflows"""

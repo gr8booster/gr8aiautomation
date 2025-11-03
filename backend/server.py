@@ -1224,6 +1224,83 @@ async def generate_ai_content(req: ContentGenerateRequest, user: dict = Depends(
 @app.get("/api/content/history")
 async def get_user_content(user: dict = Depends(get_current_user)):
     """Get content generation history"""
+
+
+
+# ========== SETTINGS & CONFIGURATION ==========
+class IntegrationConfigRequest(BaseModel):
+    sendgrid_api_key: Optional[str] = None
+    sender_email: Optional[str] = None
+    sender_name: Optional[str] = None
+    twilio_account_sid: Optional[str] = None
+    twilio_auth_token: Optional[str] = None
+    twilio_phone_number: Optional[str] = None
+
+@app.get("/api/settings/integrations")
+async def get_integration_settings(user: dict = Depends(get_current_user)):
+    """Get integration configuration status (masked keys)"""
+    config = await db["user_settings"].find_one({"user_id": user["user_id"]})
+    
+    if not config:
+        return {
+            "sendgrid_configured": False,
+            "twilio_configured": False,
+            "sender_email": "",
+            "sender_name": "",
+            "twilio_phone": ""
+        }
+    
+    return {
+        "sendgrid_configured": bool(config.get("sendgrid_api_key")),
+        "twilio_configured": bool(config.get("twilio_account_sid")),
+        "sender_email": config.get("sender_email", ""),
+        "sender_name": config.get("sender_name", ""),
+        "twilio_phone": config.get("twilio_phone_number", "")
+    }
+
+@app.post("/api/settings/integrations")
+async def save_integration_settings(req: IntegrationConfigRequest, user: dict = Depends(get_current_user)):
+    """Save integration API keys (encrypted storage recommended for production)"""
+    update_data = {}
+    
+    if req.sendgrid_api_key and not req.sendgrid_api_key.startswith('••'):
+        update_data["sendgrid_api_key"] = req.sendgrid_api_key
+    if req.sender_email:
+        update_data["sender_email"] = req.sender_email
+    if req.sender_name:
+        update_data["sender_name"] = req.sender_name
+    if req.twilio_account_sid and not req.twilio_account_sid.startswith('••'):
+        update_data["twilio_account_sid"] = req.twilio_account_sid
+    if req.twilio_auth_token and not req.twilio_auth_token.startswith('••'):
+        update_data["twilio_auth_token"] = req.twilio_auth_token
+    if req.twilio_phone_number:
+        update_data["twilio_phone_number"] = req.twilio_phone_number
+    
+    await db["user_settings"].update_one(
+        {"user_id": user["user_id"]},
+        {"$set": {**update_data, "updated_at": datetime.now(timezone.utc)}},
+        upsert=True
+    )
+    
+    return {"message": "Settings saved successfully"}
+
+@app.post("/api/settings/test-email")
+async def test_email_config(user: dict = Depends(get_current_user)):
+    """Send test email to verify SendGrid configuration"""
+    from services.email_service import send_email
+    
+    user_doc = await users.find_one({"_id": user["user_id"]})
+    
+    try:
+        await send_email(
+            to_email=user_doc["email"],
+            subject="GR8 AI Test Email",
+            html_content="<p>Your SendGrid integration is working correctly!</p>"
+        )
+        return {"message": "Test email sent"}
+    except Exception as e:
+        raise HTTPException(500, f"Email test failed: {str(e)}")
+
     items = await get_content_history(db, user["user_id"])
     return serialize_docs(items)
 

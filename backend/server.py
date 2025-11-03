@@ -1151,6 +1151,36 @@ async def draft_email(req: EmailDraftRequest, user: dict = Depends(get_current_u
 async def create_campaign(req: EmailCampaignRequest, user: dict = Depends(get_current_user)):
     """Generate email campaign"""
     result = await create_email_campaign(db, req.dict(), user["user_id"])
+
+
+
+# ========== VISUAL WORKFLOW BUILDER ==========
+class WorkflowSaveRequest(BaseModel):
+    name: str
+    nodes: list
+    edges: list
+
+@app.post("/api/workflows/save")
+async def save_custom_workflow(req: WorkflowSaveRequest, user: dict = Depends(get_current_user)):
+    """Save custom visual workflow"""
+    workflow_id = str(uuid.uuid4())
+    await db["custom_workflows"].insert_one({
+        "_id": workflow_id,
+        "owner_id": user["user_id"],
+        "name": req.name,
+        "nodes": req.nodes,
+        "edges": req.edges,
+        "status": "draft",
+        "created_at": datetime.now(timezone.utc)
+    })
+    return {"workflow_id": workflow_id, "message": "Workflow saved"}
+
+@app.get("/api/workflows/list")
+async def list_custom_workflows(user: dict = Depends(get_current_user)):
+    """List user's custom workflows"""
+    items = await db["custom_workflows"].find({"owner_id": user["user_id"]}).to_list(100)
+    return serialize_docs(items)
+
     await track_usage(db, user["user_id"], ai_interactions=1)
     return result
 

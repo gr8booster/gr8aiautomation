@@ -219,11 +219,35 @@ export default function FreeAudit() {
                   <div className="flex items-start gap-3">
                     <Check className="h-5 w-5 text-green-600 mt-0.5" />
                     <div>
-                      <h3 className="font-semibold text-green-900 mb-1">Report Sent to Your Email!</h3>
+                      <h3 className="font-semibold text-green-900 mb-1">Report Generated Successfully!</h3>
                       <p className="text-sm text-green-700">
-                        We've sent your complete automation report to <strong>{email}</strong>
+                        {report.email_sent 
+                          ? `We've sent your complete automation report to ${email}`
+                          : `Your report is ready! (Email delivery requires SendGrid configuration)`
+                        }
                       </p>
                     </div>
+                  </div>
+                </div>
+
+                {/* Show recommendations preview */}
+                <div>
+                  <h3 className="font-semibold mb-3">Top Automation Opportunities</h3>
+                  <div className="space-y-3">
+                    {report.recommendations?.slice(0, 3).map((rec, i) => (
+                      <div key={i} className="border border-border rounded-lg p-4">
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="font-semibold text-primary">{rec.title}</h4>
+                          <Badge>{rec.priority}</Badge>
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-2">{rec.description}</p>
+                        {rec.estimated_value && (
+                          <p className="text-sm font-semibold text-success">
+                            💰 {rec.estimated_value}
+                          </p>
+                        )}
+                      </div>
+                    ))}
                   </div>
                 </div>
 

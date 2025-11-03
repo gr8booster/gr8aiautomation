@@ -1084,10 +1084,6 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
                 "utm_medium": req.utm_medium,
                 "utm_campaign": req.utm_campaign
             })
-
-            "report_id": report_id,
-            "created_at": datetime.now(timezone.utc)
-        })
         
         # Send report email (if SendGrid configured)
         report_url = f"https://gr8ai.com/reports/{report_id}"  # TODO: Implement download endpoint

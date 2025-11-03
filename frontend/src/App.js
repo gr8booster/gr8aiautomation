@@ -28,6 +28,7 @@ function App() {
       <AuthProvider>
         <div className="min-h-screen bg-background">
           <Toaster position="top-right" />
+          <FreeAuditPopup />
           <Routes>
             <Route path="/" element={<Landing />} />
             <Route path="/free-audit" element={<FreeAudit />} />

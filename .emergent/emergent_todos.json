@@ -1,18 +1,26 @@
 [
   {
-    "content": "Phase 3: Build Visual Workflow Builder with drag-drop canvas",
-    "status": "completed"
+    "content": "Phase 4: Get Twilio integration playbook and implement SMS automation",
+    "status": "in_progress"
   },
   {
-    "content": "Phase 3: Implement webhook automation with custom triggers",
-    "status": "completed"
+    "content": "Phase 4: Build social media scheduler with Twitter/LinkedIn posting",
+    "status": "pending"
   },
   {
-    "content": "Phase 6: Create automation marketplace with templates",
-    "status": "completed"
+    "content": "Phase 4: Add CRM integration options (webhooks to Salesforce/HubSpot)",
+    "status": "pending"
   },
   {
-    "content": "Phase 6: Build template sharing and monetization",
-    "status": "completed"
+    "content": "Phase 5: Build team workspaces with role-based access control",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 5: Implement user invitation and team management",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 5: Add shared automation library for teams",
+    "status": "pending"
   }
 ]

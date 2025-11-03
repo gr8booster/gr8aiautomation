@@ -11,6 +11,7 @@ import ContentGenerator from './pages/ContentGenerator';
 import EmailAssistant from './pages/EmailAssistant';
 import WorkflowBuilder from './pages/WorkflowBuilder';
 import Marketplace from './pages/Marketplace';
+import TeamSettings from './pages/TeamSettings';
 import Dashboard from './pages/Dashboard';
 import SetupWizard from './pages/SetupWizard';
 import Billing from './pages/Billing';

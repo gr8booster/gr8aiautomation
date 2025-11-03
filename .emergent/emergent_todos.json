@@ -1,30 +1,26 @@
 [
   {
     "content": "Build AI Content Generator service (blog posts, product descriptions, marketing copy)",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create Content Generator frontend UI with templates and customization",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Build AI Email Assistant service (draft replies, campaigns, sequences)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Create Email Assistant frontend UI with inbox integration",
-    "status": "pending"
+    "status": "completed"
   },
   {
-    "content": "Add Content Generator to automation templates and setup wizard",
-    "status": "pending"
+    "content": "Add navigation links to new AI agents in app header",
+    "status": "in_progress"
   },
   {
-    "content": "Add Email Assistant to automation templates and setup wizard",
-    "status": "pending"
-  },
-  {
-    "content": "Test both new AI agents end-to-end",
+    "content": "Test Content Generator and Email Assistant end-to-end",
     "status": "pending"
   }
 ]

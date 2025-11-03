@@ -1,26 +1,34 @@
 [
   {
-    "content": "Build Appointment Calendar UI for viewing and managing bookings",
+    "content": "Phase 3: Build Visual Workflow Builder with drag-drop canvas",
     "status": "in_progress"
   },
   {
-    "content": "Add appointment rescheduling and cancellation features",
+    "content": "Phase 3: Implement webhook automation with custom triggers",
     "status": "pending"
   },
   {
-    "content": "Create Visual Workflow Builder with drag-drop interface",
+    "content": "Phase 4: Integrate Twilio for SMS notifications",
     "status": "pending"
   },
   {
-    "content": "Implement workflow node system (triggers, actions, conditions)",
+    "content": "Phase 4: Add social media scheduling (Twitter/LinkedIn posting)",
     "status": "pending"
   },
   {
-    "content": "Test Appointment Calendar end-to-end",
+    "content": "Phase 5: Build team collaboration (workspaces, roles, sharing)",
     "status": "pending"
   },
   {
-    "content": "Test Visual Workflow Builder end-to-end",
+    "content": "Phase 5: Implement background job queue with Celery",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 6: Create automation marketplace with templates",
+    "status": "pending"
+  },
+  {
+    "content": "Phase 6: Build template sharing and monetization",
     "status": "pending"
   }
 ]

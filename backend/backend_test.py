@@ -438,7 +438,7 @@ class GR8BackendTester:
         
         # Get content history
         success, data = self.run_test("Get Content History", "GET", "/api/content/history", 200)
-        if success:
+        if success and data:
             self.log(f"Found {len(data)} content items in history", "INFO")
         
         return True

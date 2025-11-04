@@ -781,32 +781,9 @@ async def list_forms(user: dict = Depends(get_current_user)):
 @limiter.limit("10/minute")  # 10 form submissions per minute per IP
 async def submit_form(form_id: str, req: FormSubmitRequest, request: Request):
     """PUBLIC endpoint for form submissions"""
-    # Handle demo form
-    if form_id == 'demo-form':
-        # Create demo form if it doesn't exist
-        demo_form = await db["forms"].find_one({"_id": "demo-form"})
-        if not demo_form:
-            await db["forms"].insert_one({
-                "_id": "demo-form",
-                "owner_id": "demo",
-                "website_id": "demo-website",
-                "name": "Demo Contact Form",
-                "fields": [
-                    {"name": "name", "type": "text", "required": True},
-                    {"name": "email", "type": "email", "required": True},
-                    {"name": "phone", "type": "tel", "required": False},
-                    {"name": "message", "type": "textarea", "required": True}
-                ],
-                "settings": {"autoresponse_enabled": True},
-                "created_at": datetime.now(timezone.utc)
-            })
-            demo_form = {"_id": "demo-form", "owner_id": "demo", "website_id": "demo-website"}
-        
-        form = demo_form
-    else:
-        form = await db["forms"].find_one({"_id": form_id})
-        if not form:
-            raise HTTPException(404, "Form not found")
+    form = await db["forms"].find_one({"_id": form_id})
+    if not form:
+        raise HTTPException(404, "Form not found")
     
     # Score and store lead
     score = await score_lead(db, req.data)

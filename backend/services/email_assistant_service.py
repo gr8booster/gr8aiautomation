@@ -38,7 +38,8 @@ Do not include subject line."""
     try:
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
-            session_id=f"email-draft-{uuid.uuid4()}"
+            session_id=f"email-draft-{uuid.uuid4()}",
+            system_message="You are a professional email writing assistant. Draft clear, effective, and appropriately-toned email responses."
         ).with_model("openai", "gpt-4o-mini")
         
         response = await chat.send_message(UserMessage(text=prompt))
@@ -92,7 +93,8 @@ Make them conversion-optimized and engaging."""
     try:
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
-            session_id=f"email-campaign-{uuid.uuid4()}"
+            session_id=f"email-campaign-{uuid.uuid4()}",
+            system_message="You are an expert email marketing copywriter. Create compelling, conversion-focused email campaigns."
         ).with_model("openai", "gpt-4o")
         
         response = await chat.send_message(UserMessage(text=prompt))

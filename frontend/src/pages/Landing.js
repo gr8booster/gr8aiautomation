@@ -369,14 +369,47 @@ export default function Landing() {
       {/* Footer */}
       <footer className="border-t border-border py-12 bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-2">
-              <Sparkles className="h-5 w-5 text-primary" />
-              <span className="font-heading font-bold">GR8 AI Automation</span>
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Sparkles className="h-5 w-5 text-primary" />
+                <span className="font-heading font-bold">GR8 AI Automation</span>
+              </div>
+              <p className="text-sm text-muted-foreground">
+                AI-powered automations for modern businesses
+              </p>
             </div>
-            <p className="text-sm text-muted-foreground">
-              © 2025 GR8 AI Automation. Launch-ready automations.
-            </p>
+            
+            <div>
+              <h3 className="font-semibold mb-3">Product</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="/free-audit" className="hover:text-primary">Free Audit</a></li>
+                <li><a href="/marketplace" className="hover:text-primary">Marketplace</a></li>
+                <li><a href="/workflow-builder" className="hover:text-primary">Workflow Builder</a></li>
+                <li><a href="/content-generator" className="hover:text-primary">AI Content</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-3">Company</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="/about" className="hover:text-primary">About</a></li>
+                <li><a href="/pricing" className="hover:text-primary">Pricing</a></li>
+                <li><a href="mailto:support@gr8booster.com" className="hover:text-primary">Contact</a></li>
+              </ul>
+            </div>
+            
+            <div>
+              <h3 className="font-semibold mb-3">Legal</h3>
+              <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="/terms.html" target="_blank" className="hover:text-primary">Terms of Service</a></li>
+                <li><a href="/privacy.html" target="_blank" className="hover:text-primary">Privacy Policy</a></li>
+              </ul>
+            </div>
+          </div>
+          
+          <div className="pt-8 border-t border-border text-center text-sm text-muted-foreground">
+            © 2024 GR8 Booster. All rights reserved. Built with AI.
           </div>
         </div>
       </footer>

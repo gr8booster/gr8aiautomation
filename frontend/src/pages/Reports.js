@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Sparkles, FileText, Download, TrendingUp, Users, Mail } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Card, CardHeader, CardTitle, CardContent } from '../components/ui/card';
+import { Input } from '../components/ui/input';
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '../components/ui/table';
 import { Badge } from '../components/ui/badge';
 import { toast } from 'sonner';

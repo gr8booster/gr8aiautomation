@@ -1045,7 +1045,7 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             })
         
         # Send report email (if SendGrid configured)
-        report_url = f"https://gr8ai.com/reports/{report_id}"  # TODO: Implement download endpoint
+        report_url = f"https://gr8booster.com/api/reports/{report_id}/download"
         email_sent = await send_report_email(
             lead_email=req.email,
             lead_name=req.name or "there",

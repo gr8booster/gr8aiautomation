@@ -17,28 +17,7 @@ export default function Marketplace() {
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState('all');
 
-  useEffect(() => {
-    loadTemplates();
-  }, []);
-
-  const loadTemplates = async () => {
-    try {
-      const response = await apiCall('/api/marketplace/templates');
-      const data = await response.json();
-      setTemplates(data);
-    } catch (error) {
-      // Use demo templates as fallback
-      setTemplates(demoTemplates);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const installTemplate = async (template) => {
-    toast.success(`${template.name} added to your automations!`);
-    navigate('/dashboard');
-  };
-
+  // Demo templates as fallback
   const demoTemplates = [
     {
       _id: '1',

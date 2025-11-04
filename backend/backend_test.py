@@ -375,6 +375,251 @@ class GR8BackendTester:
         
         return True
 
+    def test_content_generator(self):
+        """Test AI Content Generator"""
+        self.log("\n=== TESTING AI CONTENT GENERATOR ===", "INFO")
+        
+        # Get content templates
+        success, data = self.run_test("Get Content Templates", "GET", "/api/content/templates", 200)
+        if success:
+            templates = data.get('templates', {})
+            self.log(f"Found {len(templates)} content templates", "INFO")
+        
+        # Generate blog post
+        success, data = self.run_test(
+            "Generate Blog Post",
+            "POST",
+            "/api/content/generate",
+            200,
+            data={
+                "content_type": "blog_post",
+                "inputs": {
+                    "topic": "Benefits of AI automation for small businesses",
+                    "tone": "professional",
+                    "length": "500",
+                    "audience": "small business owners"
+                }
+            }
+        )
+        
+        if success:
+            if 'output' in data:
+                self.log(f"Blog post generated: {len(data['output'])} characters", "PASS")
+                self.log(f"Word count: {data.get('word_count', 0)}", "INFO")
+            else:
+                self.log("Blog post generation returned success but no output field", "FAIL")
+                self.tests_failed += 1
+                self.failed_tests.append({
+                    "test": "Generate Blog Post - Output Validation",
+                    "endpoint": "/api/content/generate",
+                    "error": "Response missing 'output' field"
+                })
+        
+        # Generate product description
+        success, data = self.run_test(
+            "Generate Product Description",
+            "POST",
+            "/api/content/generate",
+            200,
+            data={
+                "content_type": "product_description",
+                "inputs": {
+                    "product_name": "Smart Home Assistant",
+                    "product_details": "Voice-controlled AI device for home automation",
+                    "audience": "tech-savvy homeowners",
+                    "tone": "enthusiastic",
+                    "length": "200"
+                }
+            }
+        )
+        
+        if success and 'output' in data:
+            self.log(f"Product description generated: {len(data['output'])} characters", "PASS")
+        
+        # Get content history
+        success, data = self.run_test("Get Content History", "GET", "/api/content/history", 200)
+        if success:
+            self.log(f"Found {len(data)} content items in history", "INFO")
+        
+        return True
+
+    def test_email_assistant(self):
+        """Test AI Email Assistant"""
+        self.log("\n=== TESTING AI EMAIL ASSISTANT ===", "INFO")
+        
+        # Draft email response
+        success, data = self.run_test(
+            "Draft Email Response",
+            "POST",
+            "/api/email/draft",
+            200,
+            data={
+                "original_email": "Hi, I'm interested in your automation services. Can you tell me more about pricing and features?",
+                "tone": "professional and friendly",
+                "key_points": "Mention our Pro plan at $99/mo with unlimited automations",
+                "recipient_name": "John"
+            }
+        )
+        
+        if success:
+            if 'draft' in data:
+                self.log(f"Email draft generated: {len(data['draft'])} characters", "PASS")
+            else:
+                self.log("Email draft returned success but no draft field", "FAIL")
+                self.tests_failed += 1
+                self.failed_tests.append({
+                    "test": "Draft Email Response - Output Validation",
+                    "endpoint": "/api/email/draft",
+                    "error": "Response missing 'draft' field"
+                })
+        
+        # Create email campaign
+        success, data = self.run_test(
+            "Create Email Campaign",
+            "POST",
+            "/api/email/campaign",
+            200,
+            data={
+                "topic": "New AI Features Launch",
+                "goal": "Drive signups for new features",
+                "audience": "Existing customers",
+                "tone": "exciting and professional",
+                "num_variations": 2
+            }
+        )
+        
+        if success and 'variations' in data:
+            self.log(f"Email campaign generated with variations", "PASS")
+        
+        # Get email drafts history
+        success, data = self.run_test("Get Email Drafts", "GET", "/api/email/drafts", 200)
+        if success:
+            self.log(f"Found {len(data)} email drafts in history", "INFO")
+        
+        return True
+
+    def test_free_audit(self):
+        """Test Free Audit Report Generation"""
+        self.log("\n=== TESTING FREE AUDIT REPORT ===", "INFO")
+        
+        # Generate free report (public endpoint)
+        success, data = self.run_test(
+            "Generate Free Audit Report",
+            "POST",
+            "/api/reports/generate",
+            200,
+            data={
+                "url": "https://example.com",
+                "email": "test@example.com",
+                "name": "Test User"
+            },
+            cookies=None  # Public endpoint
+        )
+        
+        if success:
+            self.log(f"Report ID: {data.get('report_id', 'N/A')}", "INFO")
+            self.log(f"Lead score: {data.get('score', 'N/A')}", "INFO")
+            self.log(f"Opportunities: {data.get('opportunities_count', 0)}", "INFO")
+            self.log(f"Email sent: {data.get('email_sent', False)}", "INFO")
+            
+            if 'recommendations' in data:
+                self.log(f"Recommendations preview: {len(data['recommendations'])} items", "PASS")
+        
+        # List reports (requires auth)
+        success, data = self.run_test("List Reports", "GET", "/api/reports", 200)
+        if success:
+            self.log(f"Found {len(data)} reports", "INFO")
+        
+        # Test export CSV
+        success, data = self.run_test("Export Reports CSV", "GET", "/api/reports/export", 200)
+        if success:
+            self.log("CSV export successful", "PASS")
+        
+        return True
+
+    def test_workflow_builder(self):
+        """Test Visual Workflow Builder"""
+        self.log("\n=== TESTING WORKFLOW BUILDER ===", "INFO")
+        
+        # Save custom workflow
+        success, data = self.run_test(
+            "Save Custom Workflow",
+            "POST",
+            "/api/workflows/save",
+            200,
+            data={
+                "name": "Test Workflow",
+                "nodes": [
+                    {"id": "1", "type": "trigger", "data": {"label": "Form Submit"}},
+                    {"id": "2", "type": "action", "data": {"label": "Send Email"}}
+                ],
+                "edges": [
+                    {"source": "1", "target": "2"}
+                ]
+            }
+        )
+        
+        if success and 'workflow_id' in data:
+            self.log(f"Workflow saved, ID: {data['workflow_id']}", "PASS")
+        
+        # List custom workflows
+        success, data = self.run_test("List Custom Workflows", "GET", "/api/workflows/list", 200)
+        if success:
+            self.log(f"Found {len(data)} custom workflows", "INFO")
+        
+        return True
+
+    def test_team_settings(self):
+        """Test Team Collaboration"""
+        self.log("\n=== TESTING TEAM SETTINGS ===", "INFO")
+        
+        # Get workspace
+        success, data = self.run_test("Get Workspace", "GET", "/api/team/workspace", 200)
+        if success:
+            workspace = data.get('workspace', {})
+            members = data.get('members', [])
+            self.log(f"Workspace: {workspace.get('name', 'N/A')}", "INFO")
+            self.log(f"Team members: {len(members)}", "INFO")
+        
+        # Invite team member
+        success, data = self.run_test(
+            "Invite Team Member",
+            "POST",
+            "/api/team/invite",
+            200,
+            data={
+                "email": "newmember@example.com",
+                "role": "member"
+            }
+        )
+        
+        if success and 'member_id' in data:
+            self.log(f"Team member invited, ID: {data['member_id']}", "PASS")
+        
+        return True
+
+    def test_settings_integrations(self):
+        """Test Settings & Integrations"""
+        self.log("\n=== TESTING SETTINGS & INTEGRATIONS ===", "INFO")
+        
+        # Get integration settings
+        success, data = self.run_test("Get Integration Settings", "GET", "/api/settings/integrations", 200)
+        if success:
+            self.log(f"SendGrid configured: {data.get('sendgrid_configured', False)}", "INFO")
+            self.log(f"Twilio configured: {data.get('twilio_configured', False)}", "INFO")
+        
+        return True
+
+    def test_analytics_attribution(self):
+        """Test Analytics Attribution"""
+        self.log("\n=== TESTING ANALYTICS ATTRIBUTION ===", "INFO")
+        
+        success, data = self.run_test("Get Lead Attribution", "GET", "/api/analytics/attribution?days=30", 200)
+        if success:
+            self.log(f"Attribution data retrieved", "PASS")
+        
+        return True
+
     def run_all_tests(self):
         """Run all backend tests"""
         self.log("\n" + "="*60, "INFO")

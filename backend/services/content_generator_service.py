@@ -117,7 +117,8 @@ async def generate_content(db, content_type: str, inputs: dict, user_id: str = N
     try:
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
-            session_id=f"content-{uuid.uuid4()}"
+            session_id=f"content-{uuid.uuid4()}",
+            system_message="You are a professional content writer and marketing expert. Generate high-quality, engaging content based on the user's requirements."
         ).with_model("openai", "gpt-4o")
         
         response = await chat.send_message(UserMessage(text=prompt))

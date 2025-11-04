@@ -1,14 +1,18 @@
 [
   {
-    "content": "Create popup trigger for Free Audit across site",
-    "status": "completed"
+    "content": "Debug and fix AI Content Generator failure",
+    "status": "in_progress"
   },
   {
-    "content": "Integrate report analytics into main Analytics dashboard",
-    "status": "completed"
+    "content": "Test all 7 AI agents with screenshots",
+    "status": "pending"
   },
   {
-    "content": "Add SendGrid API key configuration UI in settings",
-    "status": "completed"
+    "content": "Verify all features accessible from dashboard",
+    "status": "pending"
+  },
+  {
+    "content": "Test complete user journey end-to-end",
+    "status": "pending"
   }
 ]

@@ -528,7 +528,7 @@ class GR8BackendTester:
         
         # List reports (requires auth)
         success, data = self.run_test("List Reports", "GET", "/api/reports", 200)
-        if success:
+        if success and data:
             self.log(f"Found {len(data)} reports", "INFO")
         
         # Test export CSV

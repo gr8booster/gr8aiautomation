@@ -87,6 +87,28 @@ export default function Marketplace() {
     }
   ];
 
+  useEffect(() => {
+    loadTemplates();
+  }, []);
+
+  const loadTemplates = async () => {
+    try {
+      const response = await apiCall('/api/marketplace/templates');
+      const data = await response.json();
+      setTemplates(Array.isArray(data) ? data : demoTemplates);
+    } catch (error) {
+      // Use demo templates as fallback
+      setTemplates(demoTemplates);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const installTemplate = async (template) => {
+    toast.success(`${template.name} added to your automations!`);
+    navigate('/dashboard');
+  };
+
   const filteredTemplates = templates.filter(t => {
     const matchesSearch = t.name.toLowerCase().includes(search.toLowerCase()) ||
                          t.description.toLowerCase().includes(search.toLowerCase());

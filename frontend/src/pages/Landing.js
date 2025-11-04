@@ -203,8 +203,8 @@ export default function Landing() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-2xl blur-3xl"></div>
               <img 
-                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" 
-                alt="AI Analytics Dashboard"
+                src="https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg" 
+                alt="AI Automation Network"
                 className="relative rounded-2xl shadow-2xl border-2 border-primary/20"
               />
             </div>

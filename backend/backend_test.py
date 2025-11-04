@@ -494,7 +494,7 @@ class GR8BackendTester:
         
         # Get email drafts history
         success, data = self.run_test("Get Email Drafts", "GET", "/api/email/drafts", 200)
-        if success:
+        if success and data:
             self.log(f"Found {len(data)} email drafts in history", "INFO")
         
         return True

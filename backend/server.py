@@ -791,8 +791,8 @@ async def submit_form(form_id: str, req: FormSubmitRequest, request: Request):
     await db["leads"].insert_one({
         "_id": lead_id,
         "form_id": form_id,
-        "website_id": form.get("website_id", "demo-website"),
-        "owner_id": form.get("owner_id", "demo"),
+        "website_id": form.get("website_id"),
+        "owner_id": form.get("owner_id"),
         "data": req.data,
         "score": score,
         "status": "new",
@@ -803,7 +803,7 @@ async def submit_form(form_id: str, req: FormSubmitRequest, request: Request):
     autoresponse, email_sent = await generate_and_send_lead_autoresponse(
         db, 
         req.data, 
-        form.get("website_id", "demo-website"),
+        form.get("website_id"),
         send_email=True
     )
     await db["leads"].update_one(
@@ -815,8 +815,8 @@ async def submit_form(form_id: str, req: FormSubmitRequest, request: Request):
         }}
     )
     
-    # Track usage (skip for demo)
-    if form.get("owner_id") != "demo":
+    # Track usage
+    if form.get("owner_id"):
         await track_usage(db, form["owner_id"], ai_interactions=1)
     
     return {"success": True, "lead_id": lead_id, "autoresponse": autoresponse, "email_sent": email_sent}

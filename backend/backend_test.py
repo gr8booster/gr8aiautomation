@@ -565,7 +565,7 @@ class GR8BackendTester:
         
         # List custom workflows
         success, data = self.run_test("List Custom Workflows", "GET", "/api/workflows/list", 200)
-        if success:
+        if success and data:
             self.log(f"Found {len(data)} custom workflows", "INFO")
         
         return True

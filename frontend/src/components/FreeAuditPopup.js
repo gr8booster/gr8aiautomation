@@ -6,10 +6,17 @@ import { useNavigate } from 'react-router-dom';
 
 export default function FreeAuditPopup() {
   const navigate = useNavigate();
+  const location = useLocation();
   const [isOpen, setIsOpen] = useState(false);
   const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
+    // Don't show popup on login, signup, or free-audit pages
+    const excludedPages = ['/login', '/free-audit'];
+    if (excludedPages.includes(location.pathname)) {
+      return;
+    }
+
     // Show popup after 10 seconds if not dismissed
     const wasDismissed = localStorage.getItem('audit_popup_dismissed');
     if (wasDismissed) {
@@ -22,7 +29,7 @@ export default function FreeAuditPopup() {
     }, 10000);
 
     return () => clearTimeout(timer);
-  }, []);
+  }, [location]);
 
   const handleClose = () => {
     setIsOpen(false);

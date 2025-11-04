@@ -161,41 +161,54 @@ export default function Landing() {
           className="absolute inset-0 pointer-events-none bg-[radial-gradient(120%_120%_at_0%_0%,hsl(169_53%_82%)_0%,hsl(190_72%_35%/0.10)_40%,hsl(40_42%_88%)_100%)]"
         />
         <div className="relative z-10 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16 sm:py-24">
-          <div className="max-w-3xl">
-            <Badge className="mb-4 bg-accent text-accent-foreground">
-              <Zap className="h-3 w-3 mr-1" /> AI-Powered Automations
-            </Badge>
-            <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05] mb-6">
-              Automations from your website — instantly
-            </h1>
-            <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-8">
-              Paste your URL. We scan your site and propose high-impact automations: chatbots, bookings, lead capture, marketing sequences, and more.
-            </p>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+              <Badge className="mb-4 bg-accent text-accent-foreground">
+                <Zap className="h-3 w-3 mr-1" /> AI-Powered Automations
+              </Badge>
+              <h1 className="font-heading text-4xl sm:text-5xl lg:text-6xl tracking-tight leading-[1.05] mb-6">
+                Automations from your website — instantly
+              </h1>
+              <p className="text-base md:text-lg text-muted-foreground max-w-2xl mb-8">
+                Paste your URL. We scan your site and propose high-impact automations: chatbots, bookings, lead capture, marketing sequences, and more.
+              </p>
 
-            {/* Free Audit CTA */}
-            <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-6 mb-8 max-w-2xl shadow-lg">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
-                  <Zap className="h-6 w-6 text-black" />
-                </div>
-                <div className="flex-1">
-                  <h3 className="text-xl font-bold text-gray-900 mb-2">
-                    Get Your Free AI Automation Report
-                  </h3>
-                  <p className="text-sm text-gray-700 mb-4">
-                    Discover what you can automate in 60 seconds. No signup required • 100% Free • Personalized insights
-                  </p>
-                  <Button 
-                    onClick={() => navigate('/free-audit')} 
-                    size="lg"
-                    className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-md"
-                  >
-                    <Sparkles className="h-5 w-5 mr-2" />
-                    Generate My Free Report →
-                  </Button>
+              {/* Free Audit CTA */}
+              <div className="bg-yellow-50 border-2 border-yellow-400 rounded-xl p-6 mb-8 shadow-lg">
+                <div className="flex items-start gap-4">
+                  <div className="flex-shrink-0 w-12 h-12 bg-yellow-400 rounded-full flex items-center justify-center">
+                    <Zap className="h-6 w-6 text-black" />
+                  </div>
+                  <div className="flex-1">
+                    <h3 className="text-xl font-bold text-gray-900 mb-2">
+                      Get Your Free AI Automation Report
+                    </h3>
+                    <p className="text-sm text-gray-700 mb-4">
+                      Discover what you can automate in 60 seconds. No signup required • 100% Free • Personalized insights
+                    </p>
+                    <Button 
+                      onClick={() => navigate('/free-audit')} 
+                      size="lg"
+                      className="bg-yellow-500 hover:bg-yellow-600 text-black font-bold shadow-md"
+                    >
+                      <Sparkles className="h-5 w-5 mr-2" />
+                      Generate My Free Report →
+                    </Button>
+                  </div>
                 </div>
               </div>
             </div>
+
+            {/* Hero Image */}
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-tr from-primary/20 to-accent/20 rounded-2xl blur-3xl"></div>
+              <img 
+                src="https://images.unsplash.com/photo-1551288049-bebda4e38f71" 
+                alt="AI Analytics Dashboard"
+                className="relative rounded-2xl shadow-2xl border-2 border-primary/20"
+              />
+            </div>
+          </div>
 
             {/* URL Input */}
             <div className="flex flex-col sm:flex-row gap-3 mb-6">

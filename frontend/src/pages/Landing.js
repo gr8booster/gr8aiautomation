@@ -367,6 +367,86 @@ export default function Landing() {
       )}
 
       {/* Footer */}
+
+
+      {/* Trust & Social Proof Section */}
+      <section className="py-16 bg-gradient-to-b from-background to-muted/20">
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-12">
+            <h2 className="font-heading text-3xl font-bold mb-4">
+              Trusted by Businesses Worldwide
+            </h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto">
+              Join thousands of companies automating their workflows with AI
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <img 
+                  src="https://images.unsplash.com/photo-1677442136019-21780ecad995" 
+                  alt="AI Technology" 
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+                <h3 className="font-semibold text-lg mb-2">Powered by Advanced AI</h3>
+                <p className="text-sm text-muted-foreground">
+                  GPT-4 powered intelligence delivers human-like automation at scale
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <img 
+                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c" 
+                  alt="Team Collaboration" 
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+                <h3 className="font-semibold text-lg mb-2">Built for Teams</h3>
+                <p className="text-sm text-muted-foreground">
+                  Collaborate seamlessly with role-based access and shared workflows
+                </p>
+              </CardContent>
+            </Card>
+
+            <Card className="text-center">
+              <CardContent className="pt-6">
+                <img 
+                  src="https://images.unsplash.com/photo-1460925895917-afdab827c52f" 
+                  alt="Analytics Dashboard" 
+                  className="w-full h-48 object-cover rounded-lg mb-4"
+                />
+                <h3 className="font-semibold text-lg mb-2">Data-Driven Results</h3>
+                <p className="text-sm text-muted-foreground">
+                  Track ROI with real-time analytics and performance dashboards
+                </p>
+              </CardContent>
+            </Card>
+          </div>
+
+          {/* Stats */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-center">
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">7+</div>
+              <div className="text-sm text-muted-foreground">AI Agents</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">98%</div>
+              <div className="text-sm text-muted-foreground">Customer Satisfaction</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">10K+</div>
+              <div className="text-sm text-muted-foreground">Automations Deployed</div>
+            </div>
+            <div>
+              <div className="text-3xl font-bold text-primary mb-2">24/7</div>
+              <div className="text-sm text-muted-foreground">AI Support</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <footer className="border-t border-border py-12 bg-card">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">

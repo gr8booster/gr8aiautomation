@@ -128,7 +128,8 @@ Respond with ONLY one word: HOT, WARM, or COLD
         
         chat = LlmChat(
             api_key=EMERGENT_LLM_KEY,
-            session_id=f"lead-score-{uuid.uuid4()}"
+            session_id=f"lead-score-{uuid.uuid4()}",
+            system_message="You are a lead qualification expert. Analyze lead data and provide accurate scoring."
         ).with_model("openai", "gpt-4o-mini")
         
         response = await chat.send_message(UserMessage(text=prompt))

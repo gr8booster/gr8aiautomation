@@ -648,6 +648,19 @@ class GR8BackendTester:
         self.test_billing()
         self.test_executions()
         
+        # NEW TESTS - Priority for this iteration
+        self.log("\n" + "="*60, "INFO")
+        self.log("TESTING NEW FEATURES (PRIORITY)", "INFO")
+        self.log("="*60 + "\n", "INFO")
+        
+        self.test_content_generator()  # PRIORITY - Reported bug
+        self.test_email_assistant()
+        self.test_free_audit()
+        self.test_workflow_builder()
+        self.test_team_settings()
+        self.test_settings_integrations()
+        self.test_analytics_attribution()
+        
         end_time = time.time()
         duration = end_time - start_time
         

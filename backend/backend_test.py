@@ -488,8 +488,9 @@ class GR8BackendTester:
             }
         )
         
-        if success and 'variations' in data:
-            self.log(f"Email campaign generated with variations", "PASS")
+        if success:
+            if 'variations' in data:
+                self.log(f"Email campaign generated with variations", "PASS")
         
         # Get email drafts history
         success, data = self.run_test("Get Email Drafts", "GET", "/api/email/drafts", 200)

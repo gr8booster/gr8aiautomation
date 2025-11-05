@@ -157,99 +157,186 @@ export default function WorkforceScan() {
           </div>
         ) : (
           <div className="max-w-6xl mx-auto">
-            <div className="text-center mb-12">
-              <Badge className="mb-4 bg-success">Scan Complete</Badge>
+            <div className="text-center mb-8">
+              <Badge className="mb-4 bg-success">Dual Scan Complete</Badge>
               <h1 className="font-heading text-4xl font-bold mb-4">
-                {results.workforce_opportunities?.length || 3} AI Workforce Opportunities Found
+                AI Analysis Results
               </h1>
-              <div className="inline-flex items-center gap-6 bg-green-50 border-2 border-green-500 rounded-lg px-8 py-4">
-                <div className="text-center">
-                  <div className="text-4xl font-bold text-green-600">
-                    ${results.total_potential_savings_monthly?.toLocaleString()}
-                  </div>
-                  <div className="text-sm text-green-700">Monthly Savings</div>
-                </div>
-                <div className="text-center border-l-2 border-green-300 pl-6">
-                  <div className="text-4xl font-bold text-green-600">
-                    ${results.total_potential_savings_annual?.toLocaleString()}
-                  </div>
-                  <div className="text-sm text-green-700">Annual Savings</div>
-                </div>
-              </div>
+              <p className="text-muted-foreground">View automation opportunities and workforce optimization recommendations</p>
             </div>
 
-            <div className="grid gap-6 mb-8">
-              {results.workforce_opportunities?.map((opp, idx) => (
-                <Card key={idx} className="hover:shadow-xl transition-shadow">
-                  <CardHeader>
-                    <div className="flex items-start justify-between">
-                      <div className="flex-1">
-                        <Badge className="mb-2" variant={
-                          opp.classification === 'Full Replacement' ? 'destructive' :
-                          opp.classification === 'Hybrid' ? 'default' : 'secondary'
-                        }>
-                          {opp.classification}
-                        </Badge>
-                        <CardTitle className="text-2xl">{opp.job_title}</CardTitle>
-                        <div className="text-sm text-muted-foreground mt-2">
-                          Automation Potential: <strong className="text-primary text-lg">{opp.automation_potential}%</strong>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-3xl font-bold text-green-600">
-                          ${opp.monthly_savings?.toLocaleString()}
-                        </div>
-                        <div className="text-xs text-muted-foreground">saved/month</div>
-                        <div className="text-sm text-muted-foreground mt-1">
-                          ${opp.annual_savings?.toLocaleString()}/year
-                        </div>
-                      </div>
-                    </div>
-                  </CardHeader>
-                  <CardContent className="space-y-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <p className="text-sm font-semibold mb-3">Recommended AI Solution:</p>
-                        <div className="space-y-2">
-                          <Badge variant="outline" className="text-primary border-primary text-base px-3 py-1">
-                            ⚡ {opp.ai_agent}
+            <Tabs defaultValue="automation" className="w-full">
+              <TabsList className="grid w-full grid-cols-2 mb-8">
+                <TabsTrigger value="automation" className="text-lg">
+                  <Bot className="h-5 w-5 mr-2" />
+                  Automation Report
+                </TabsTrigger>
+                <TabsTrigger value="workforce" className="text-lg">
+                  <Users className="h-5 w-5 mr-2" />
+                  Workforce Report
+                </TabsTrigger>
+              </TabsList>
+
+              <TabsContent value="automation" className="space-y-6">
+                {automationResults && (
+                  <>
+                    <Card>
+                      <CardHeader>
+                        <div className="flex items-center justify-between">
+                          <CardTitle>Business Analysis Summary</CardTitle>
+                          <Badge variant="outline">
+                            Confidence: {automationResults.confidence_score}%
                           </Badge>
-                          {opp.secondary_agent && (
-                            <Badge variant="outline" className="ml-2 text-base px-3 py-1">
-                              + {opp.secondary_agent}
-                            </Badge>
-                          )}
+                        </div>
+                      </CardHeader>
+                      <CardContent>
+                        <p className="text-muted-foreground leading-relaxed">{automationResults.summary}</p>
+                      </CardContent>
+                    </Card>
+
+                    <div className="space-y-4">
+                      <h2 className="text-2xl font-bold">AI Automation Recommendations</h2>
+                      {automationResults.recommendations?.map((rec, idx) => (
+                        <Card key={idx} className="hover:shadow-lg transition-shadow">
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <CardTitle className="text-xl flex items-center gap-2">
+                                  <Target className="h-5 w-5 text-primary" />
+                                  {rec.area}
+                                </CardTitle>
+                              </div>
+                              <Badge className="bg-primary">
+                                Priority: {rec.priority}
+                              </Badge>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div>
+                              <p className="text-sm font-semibold mb-2">Recommendation:</p>
+                              <p className="text-muted-foreground">{rec.recommendation}</p>
+                            </div>
+                            <div>
+                              <p className="text-sm font-semibold mb-2">Expected Impact:</p>
+                              <p className="text-muted-foreground">{rec.impact}</p>
+                            </div>
+                            <Button className="w-full" onClick={() => {
+                              toast.success('Contact us to implement this solution!');
+                              navigate('/login');
+                            }}>
+                              <Zap className="h-4 w-4 mr-2" />
+                              Implement This Solution
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </TabsContent>
+
+              <TabsContent value="workforce" className="space-y-6">
+                {workforceResults && (
+                  <>
+                    <div className="text-center mb-8">
+                      <h2 className="text-3xl font-bold mb-4">
+                        {workforceResults.workforce_opportunities?.length || 0} Workforce Opportunities Found
+                      </h2>
+                      <div className="inline-flex items-center gap-6 bg-green-50 border-2 border-green-500 rounded-lg px-8 py-4">
+                        <div className="text-center">
+                          <div className="text-4xl font-bold text-green-600">
+                            ${workforceResults.total_potential_savings_monthly?.toLocaleString()}
+                          </div>
+                          <div className="text-sm text-green-700">Monthly Savings</div>
+                        </div>
+                        <div className="text-center border-l-2 border-green-300 pl-6">
+                          <div className="text-4xl font-bold text-green-600">
+                            ${workforceResults.total_potential_savings_annual?.toLocaleString()}
+                          </div>
+                          <div className="text-sm text-green-700">Annual Savings</div>
                         </div>
                       </div>
-                      <div>
-                        <p className="text-sm font-semibold mb-3">Tasks AI Will Handle:</p>
-                        <ul className="space-y-2">
-                          {opp.automated_tasks?.map((task, i) => (
-                            <li key={i} className="flex items-start gap-2">
-                              <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
-                              <span className="text-sm">{task}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
                     </div>
-                    <div className="bg-muted p-4 rounded-lg">
-                      <p className="text-sm leading-relaxed">{opp.explanation}</p>
-                    </div>
-                    <Button className="w-full" size="lg" onClick={() => {
-                      toast.success('Sign up to activate this AI agent!');
-                      navigate('/login');
-                    }}>
-                      <Zap className="h-5 w-5 mr-2" />
-                      Activate {opp.ai_agent} Now
-                    </Button>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
 
-            <div className="flex gap-4">
-              <Button onClick={() => setResults(null)} variant="outline" className="flex-1">
+                    <div className="grid gap-6">
+                      {workforceResults.workforce_opportunities?.map((opp, idx) => (
+                        <Card key={idx} className="hover:shadow-xl transition-shadow">
+                          <CardHeader>
+                            <div className="flex items-start justify-between">
+                              <div className="flex-1">
+                                <Badge className="mb-2" variant={
+                                  opp.classification === 'Full Replacement' ? 'destructive' :
+                                  opp.classification === 'Hybrid' ? 'default' : 'secondary'
+                                }>
+                                  {opp.classification}
+                                </Badge>
+                                <CardTitle className="text-2xl">{opp.job_title}</CardTitle>
+                                <div className="text-sm text-muted-foreground mt-2">
+                                  Automation Potential: <strong className="text-primary text-lg">{opp.automation_potential}%</strong>
+                                </div>
+                              </div>
+                              <div className="text-right">
+                                <div className="text-3xl font-bold text-green-600">
+                                  ${opp.monthly_savings?.toLocaleString()}
+                                </div>
+                                <div className="text-xs text-muted-foreground">saved/month</div>
+                                <div className="text-sm text-muted-foreground mt-1">
+                                  ${opp.annual_savings?.toLocaleString()}/year
+                                </div>
+                              </div>
+                            </div>
+                          </CardHeader>
+                          <CardContent className="space-y-4">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                              <div>
+                                <p className="text-sm font-semibold mb-3">Recommended AI Solution:</p>
+                                <div className="space-y-2">
+                                  <Badge variant="outline" className="text-primary border-primary text-base px-3 py-1">
+                                    ⚡ {opp.ai_agent}
+                                  </Badge>
+                                  {opp.secondary_agent && (
+                                    <Badge variant="outline" className="ml-2 text-base px-3 py-1">
+                                      + {opp.secondary_agent}
+                                    </Badge>
+                                  )}
+                                </div>
+                              </div>
+                              <div>
+                                <p className="text-sm font-semibold mb-3">Tasks AI Will Handle:</p>
+                                <ul className="space-y-2">
+                                  {opp.automated_tasks?.map((task, i) => (
+                                    <li key={i} className="flex items-start gap-2">
+                                      <Check className="h-4 w-4 text-success mt-0.5 flex-shrink-0" />
+                                      <span className="text-sm">{task}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            </div>
+                            <div className="bg-muted p-4 rounded-lg">
+                              <p className="text-sm leading-relaxed">{opp.explanation}</p>
+                            </div>
+                            <Button className="w-full" size="lg" onClick={() => {
+                              toast.success('Sign up to activate this AI agent!');
+                              navigate('/login');
+                            }}>
+                              <Zap className="h-5 w-5 mr-2" />
+                              Activate {opp.ai_agent} Now
+                            </Button>
+                          </CardContent>
+                        </Card>
+                      ))}
+                    </div>
+                  </>
+                )}
+              </TabsContent>
+            </Tabs>
+
+            <div className="flex gap-4 mt-8">
+              <Button onClick={() => {
+                setAutomationResults(null);
+                setWorkforceResults(null);
+              }} variant="outline" className="flex-1">
                 Scan Another Company
               </Button>
               <Button onClick={() => navigate('/login')} className="flex-1">

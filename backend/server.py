@@ -747,7 +747,7 @@ async def get_widget_code(website_id: str):
 (function() {{
   const GR8_CONFIG = {{
     websiteId: '{website_id}',
-    apiUrl: 'https://smarthub-ai-1.preview.emergentagent.com/api'
+    apiUrl: 'https://ai-workforce-15.preview.emergentagent.com/api'
   }};
   
   const script = document.createElement('script');
@@ -1387,7 +1387,7 @@ async def create_checkout(request: Request, plan_id: str, user: dict = Depends(g
         raise HTTPException(400, "Invalid plan")
     
     # Get frontend origin for success/cancel URLs
-    origin = request.headers.get("origin") or "https://smarthub-ai-1.preview.emergentagent.com"
+    origin = request.headers.get("origin") or "https://ai-workforce-15.preview.emergentagent.com"
     
     # Initialize Stripe
     host_url = str(request.base_url)

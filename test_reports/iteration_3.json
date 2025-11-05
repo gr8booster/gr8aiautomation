@@ -173,7 +173,7 @@
   },
   
   "testing_environment": {
-    "backend_url": "https://smarthub-ai-1.preview.emergentagent.com",
+    "backend_url": "https://ai-workforce-15.preview.emergentagent.com",
     "emergent_llm_key": "Configured and working",
     "sendgrid": "Optional - graceful degradation working",
     "twilio": "Optional - graceful degradation working",

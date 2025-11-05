@@ -603,7 +603,7 @@ The platform now provides a complete SaaS experience where users can analyze web
 - ❌ No Kubernetes manifests
 - ❌ No production deployment
 
-**Preview URL**: https://smarthub-ai-1.preview.emergentagent.com
+**Preview URL**: https://ai-workforce-15.preview.emergentagent.com
 - ✅ Accessible and working
 - ✅ Demo login functional
 - ✅ All pages load correctly

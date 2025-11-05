@@ -8,7 +8,7 @@ import time
 from datetime import datetime, timedelta
 
 class GR8BackendTester:
-    def __init__(self, base_url="https://smarthub-ai-1.preview.emergentagent.com"):
+    def __init__(self, base_url="https://ai-workforce-15.preview.emergentagent.com"):
         self.base_url = base_url
         self.session_token = None
         self.user_id = None

@@ -567,7 +567,12 @@ async def analyze(req: AnalysisRequest, request: Request, user: dict = Depends(g
     
     try:
         extraction = await fetch_and_extract_website(req.url)
-        analysis = await analyze_website_for_automations(extraction)
+        
+        # Run both analyses in parallel
+        analysis, workforce = await asyncio.gather(
+            analyze_website_for_automations(extraction),
+            analyze_workforce_opportunities(req.url)
+        )
         
         website_id = str(uuid.uuid4())
         await websites.insert_one({

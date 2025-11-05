@@ -609,7 +609,8 @@ async def analyze(req: AnalysisRequest, request: Request, user: dict = Depends(g
             "strengths": analysis.strengths,
             "opportunities": analysis.opportunities,
             "recommendations": recommendations,
-            "confidence_score": analysis.confidence_score
+            "confidence_score": analysis.confidence_score,
+            "workforce": workforce
         }
     except Exception as e:
         raise HTTPException(500, f"Analysis failed: {str(e)}")

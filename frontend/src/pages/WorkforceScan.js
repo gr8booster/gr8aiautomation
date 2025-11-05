@@ -84,7 +84,7 @@ export default function WorkforceScan() {
       </header>
 
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
-        {!results ? (
+        {!automationResults && !workforceResults ? (
           <div className="max-w-3xl mx-auto">
             <div className="text-center mb-12">
               <Badge className="mb-4 bg-primary">
@@ -113,7 +113,7 @@ export default function WorkforceScan() {
                     onChange={(e) => setUrl(e.target.value)}
                     disabled={scanning}
                     className="h-12"
-                    onKeyPress={(e) => e.key === 'Enter' && handleScan()}
+                    onKeyPress={(e) => e.key === 'Enter' && handleDualScan()}
                   />
                 </div>
 
@@ -129,11 +129,11 @@ export default function WorkforceScan() {
                   </div>
                 )}
 
-                <Button onClick={handleScan} disabled={scanning} className="w-full h-12 text-lg">
+                <Button onClick={handleDualScan} disabled={scanning} className="w-full h-12 text-lg">
                   {scanning ? 'Scanning...' : (
                     <>
                       <Zap className="h-5 w-5 mr-2" />
-                      Scan Workforce Opportunities
+                      Run Dual AI Scan
                     </>
                   )}
                 </Button>

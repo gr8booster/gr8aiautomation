@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, useScroll, useTransform } from 'framer-motion';
-import { Sparkles, Zap, Bot, Calendar, Mail, BarChart3, Globe, ArrowRight, Check } from 'lucide-react';
+import { Sparkles, Zap, Bot, Calendar, Mail, BarChart3, Globe, ArrowRight, Check, Users } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Progress } from '../components/ui/progress';

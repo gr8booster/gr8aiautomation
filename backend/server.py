@@ -992,22 +992,8 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "website": req.url
         }
         
-        pdf_buffer = generate_automation_report_pdf(analysis_data, lead_data)
-        pdf_bytes = pdf_buffer.getvalue()
-        
-        # Generate report ID first
+        # Save report record (no PDF generation for free tier)
         report_id = str(uuid.uuid4())
-        
-        # Save PDF to filesystem
-        pdf_dir = "/app/backend/generated_reports"
-        os.makedirs(pdf_dir, exist_ok=True)
-        pdf_filename = f"{report_id}.pdf"
-        pdf_path = os.path.join(pdf_dir, pdf_filename)
-        
-        with open(pdf_path, 'wb') as f:
-            f.write(pdf_bytes)
-        
-        # Save report record in database
         await db["automation_reports"].insert_one({
             "_id": report_id,
             "lead_email": req.email,
@@ -1016,10 +1002,8 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "business_type": analysis.business_type.value,
             "automation_score": lead_score,
             "opportunities_count": len(analysis.recommendations),
-            "estimated_savings": 5000,  # TODO: Calculate from recommendations
-            "pdf_size_bytes": len(pdf_bytes),
-            "pdf_path": pdf_path,
-            "status": "sent",
+            "estimated_savings": 5000,
+            "status": "preview_only",  # Changed from "sent"
             "utm_source": req.utm_source,
             "utm_medium": req.utm_medium,
             "utm_campaign": req.utm_campaign,

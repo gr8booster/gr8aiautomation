@@ -322,6 +322,103 @@ export default function Landing() {
             </div>
           </div>
         </section>
+
+
+      {/* Workforce Intelligence Results */}
+      {analysis?.workforce && analysis.workforce.jobs_found > 0 && (
+        <section className="py-16 bg-gradient-to-b from-background to-primary/5">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-12">
+              <Badge className="mb-4 bg-primary">🤖 AI Workforce Intelligence</Badge>
+              <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
+                Replace {analysis.workforce.jobs_found} Roles with AI Agents
+              </h2>
+              <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+                We found {analysis.workforce.jobs_found} job positions that can be automated or augmented with AI
+              </p>
+              <div className="mt-6 inline-flex items-center gap-4 bg-green-50 border-2 border-green-500 rounded-lg px-6 py-3">
+                <div className="text-center">
+                  <div className="text-3xl font-bold text-green-600">
+                    ${analysis.workforce.total_potential_savings_monthly?.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-green-700">Potential Monthly Savings</div>
+                </div>
+                <div className="text-center border-l-2 border-green-300 pl-4">
+                  <div className="text-3xl font-bold text-green-600">
+                    ${analysis.workforce.total_potential_savings_annual?.toLocaleString()}
+                  </div>
+                  <div className="text-sm text-green-700">Annual Savings</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="grid gap-4">
+              {analysis.workforce.workforce_opportunities.map((opp, idx) => (
+                <Card key={idx} className="hover:shadow-lg transition-shadow">
+                  <CardHeader>
+                    <div className="flex items-start justify-between">
+                      <div className="flex-1">
+                        <Badge className="mb-2" variant={
+                          opp.classification === 'Full Replacement' ? 'destructive' :
+                          opp.classification === 'Hybrid' ? 'default' : 'secondary'
+                        }>
+                          {opp.classification}
+                        </Badge>
+                        <CardTitle className="text-xl">{opp.job_title}</CardTitle>
+                        <div className="text-sm text-muted-foreground mt-1">
+                          Automation Potential: <strong className="text-primary">{opp.automation_potential}%</strong>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-2xl font-bold text-green-600">
+                          ${opp.monthly_savings?.toLocaleString()}
+                        </div>
+                        <div className="text-xs text-muted-foreground">saved/month</div>
+                      </div>
+                    </div>
+                  </CardHeader>
+                  <CardContent className="space-y-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div>
+                        <p className="text-sm font-semibold mb-2">Recommended AI Agent:</p>
+                        <div className="flex items-center gap-2">
+                          <Badge variant="outline" className="text-primary border-primary">
+                            {opp.ai_agent}
+                          </Badge>
+                          {opp.secondary_agent && (
+                            <Badge variant="outline">
+                              + {opp.secondary_agent}
+                            </Badge>
+                          )}
+                        </div>
+                      </div>
+                      <div>
+                        <p className="text-sm font-semibold mb-2">Automated Tasks:</p>
+                        <ul className="text-sm space-y-1">
+                          {opp.automated_tasks?.slice(0, 3).map((task, i) => (
+                            <li key={i} className="flex items-center gap-2">
+                              <Check className="h-3 w-3 text-success" />
+                              {task}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="bg-muted p-3 rounded-lg">
+                      <p className="text-sm">{opp.explanation}</p>
+                    </div>
+                    <Button className="w-full" onClick={() => toast.info('Activate this AI agent from your dashboard!')}>
+                      <Zap className="h-4 w-4 mr-2" />
+                      Activate {opp.ai_agent}
+                    </Button>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
       )}
 
       {/* Features Section */}

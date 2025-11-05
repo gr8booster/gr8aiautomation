@@ -1037,18 +1037,8 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
                 "utm_campaign": req.utm_campaign
             })
         
-        # Send report email (if SendGrid configured)
-        report_url = f"https://gr8booster.com/api/reports/{report_id}/download"
-        email_sent = await send_report_email(
-            lead_email=req.email,
-            lead_name=req.name or "there",
-            report_url=report_url,
-            opportunities_count=len(analysis.recommendations)
-        )
-        
-        # Schedule nurture sequence
-        if email_sent:
-            await schedule_nurture_sequence(db, lead_id, req.email, req.name or "there")
+        # NO email or PDF generation - those require subscription
+        # User sees full report on screen, must pay to download/email
         
         return {
             "success": True,
@@ -1056,9 +1046,9 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "score": lead_score,
             "opportunities_count": len(analysis.recommendations),
             "estimated_savings": 5000,
-            "email_sent": email_sent,
-            "message": "Report generated and sent to your email!",
-            "recommendations": analysis_data["recommendations"][:6]  # Return top 6 for preview
+            "email_sent": False,  # Never send for free tier
+            "message": "Report generated! Subscribe to download or email.",
+            "recommendations": analysis_data["recommendations"][:6]
         }
         
     except Exception as e:

@@ -569,6 +569,7 @@ export default function Landing() {
             <div>
               <h3 className="font-semibold mb-3">Product</h3>
               <ul className="space-y-2 text-sm text-muted-foreground">
+                <li><a href="/workforce-scan" className="hover:text-primary">Workforce Scan</a></li>
                 <li><a href="/free-audit" className="hover:text-primary">Free Audit</a></li>
                 <li><a href="/marketplace" className="hover:text-primary">Marketplace</a></li>
                 <li><a href="/workflow-builder" className="hover:text-primary">Workflow Builder</a></li>

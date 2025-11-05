@@ -953,11 +953,16 @@ class ReportGenerateRequest(BaseModel):
 @app.post("/api/reports/generate")
 @limiter.limit("3/hour")  # Limit to prevent abuse
 async def generate_free_report(req: ReportGenerateRequest, request: Request):
-    """Generate free automation report (PUBLIC endpoint for lead generation)"""
+    """Generate free automation + workforce reports (PUBLIC endpoint for lead generation)"""
     try:
         # Analyze website
         extraction = await fetch_and_extract_website(req.url)
-        analysis = await analyze_website_for_automations(extraction)
+        
+        # Run BOTH analyses in parallel
+        analysis, workforce = await asyncio.gather(
+            analyze_website_for_automations(extraction),
+            analyze_workforce_opportunities(req.url)
+        )
         
         # Prepare analysis data for PDF
         analysis_data = {
@@ -992,10 +997,10 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "website": req.url
         }
         
-        # Save report record (no PDF generation for free tier)
-        report_id = str(uuid.uuid4())
+        # Save AUTOMATION report record (no PDF generation for free tier)
+        automation_report_id = str(uuid.uuid4())
         await db["automation_reports"].insert_one({
-            "_id": report_id,
+            "_id": automation_report_id,
             "lead_email": req.email,
             "lead_name": req.name,
             "website_url": req.url,
@@ -1003,7 +1008,26 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "automation_score": lead_score,
             "opportunities_count": len(analysis.recommendations),
             "estimated_savings": 5000,
-            "status": "preview_only",  # Changed from "sent"
+            "status": "preview_only",
+            "utm_source": req.utm_source,
+            "utm_medium": req.utm_medium,
+            "utm_campaign": req.utm_campaign,
+            "created_at": datetime.now(timezone.utc)
+        })
+        
+        # Save WORKFORCE report record
+        workforce_report_id = str(uuid.uuid4())
+        await db["workforce_reports"].insert_one({
+            "_id": workforce_report_id,
+            "lead_email": req.email,
+            "lead_name": req.name,
+            "website_url": req.url,
+            "jobs_found": workforce.get("jobs_found", 0),
+            "opportunities_count": len(workforce.get("workforce_opportunities", [])),
+            "total_monthly_savings": workforce.get("total_potential_savings_monthly", 0),
+            "total_annual_savings": workforce.get("total_potential_savings_annual", 0),
+            "workforce_data": workforce,
+            "status": "preview_only",
             "utm_source": req.utm_source,
             "utm_medium": req.utm_medium,
             "utm_campaign": req.utm_campaign,
@@ -1025,7 +1049,8 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
             "score": lead_score,
             "status": "new",
             "source": "free_audit",
-            "report_id": report_id,
+            "automation_report_id": automation_report_id,
+            "workforce_report_id": workforce_report_id,
             "created_at": datetime.now(timezone.utc)
         })
         
@@ -1042,13 +1067,17 @@ async def generate_free_report(req: ReportGenerateRequest, request: Request):
         
         return {
             "success": True,
-            "report_id": report_id,
+            "automation_report_id": automation_report_id,
+            "workforce_report_id": workforce_report_id,
             "score": lead_score,
             "opportunities_count": len(analysis.recommendations),
+            "workforce_opportunities_count": len(workforce.get("workforce_opportunities", [])),
             "estimated_savings": 5000,
+            "workforce_savings_monthly": workforce.get("total_potential_savings_monthly", 0),
             "email_sent": False,  # Never send for free tier
-            "message": "Report generated! Subscribe to download or email.",
-            "recommendations": analysis_data["recommendations"][:6]
+            "message": "Reports generated! Subscribe to download or email.",
+            "recommendations": analysis_data["recommendations"][:6],
+            "workforce": workforce
         }
         
     except Exception as e:

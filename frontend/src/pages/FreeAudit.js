@@ -388,12 +388,15 @@ export default function FreeAudit() {
                 </div>
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-blue-900 mb-2">📊 Your Full Report is Displayed Above</h4>
+                  <h4 className="font-semibold text-blue-900 mb-2">📊 Your Complete Analysis (2 Reports Generated)</h4>
+                  <p className="text-sm text-blue-700 mb-2">
+                    ✓ <strong>Automation Report:</strong> {report.opportunities_count || 0} opportunities - ${report.estimated_savings || 0}/month
+                  </p>
                   <p className="text-sm text-blue-700 mb-3">
-                    You can see all {report.opportunities_count || 5} automation opportunities and potential savings of ${report.estimated_savings || 5000}/month.
+                    ✓ <strong>Workforce Report:</strong> {report.workforce_opportunities_count || 0} roles analyzed - ${report.workforce_savings_monthly || 0}/month
                   </p>
                   <p className="text-sm text-blue-700">
-                    Want to save, print, or email this report? Unlock premium features below.
+                    Want to save, print, or email these reports? Unlock premium features below.
                   </p>
                 </div>
 

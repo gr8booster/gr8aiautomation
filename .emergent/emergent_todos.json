@@ -1,26 +1,6 @@
 [
   {
-    "content": "Extend website scraper to extract job postings from careers pages",
-    "status": "completed"
-  },
-  {
-    "content": "Create AI job-to-agent mapping service with cost savings calculation",
-    "status": "completed"
-  },
-  {
-    "content": "Build Workforce Scan Results dashboard page with job table",
-    "status": "completed"
-  },
-  {
-    "content": "Add workforce composition chart (human vs AI)",
-    "status": "completed"
-  },
-  {
-    "content": "Integrate workforce scan into main analysis flow",
-    "status": "completed"
-  },
-  {
     "content": "Test complete workforce intelligence flow end-to-end",
-    "status": "in_progress"
+    "status": "completed"
   }
 ]

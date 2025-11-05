@@ -264,36 +264,6 @@ export default function FreeAudit() {
                   </div>
                 </div>
 
-                {/* Download/Subscribe CTA */}
-                <div className="bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary/20 rounded-lg p-6">
-                  <h3 className="font-semibold text-lg mb-2">💾 Want to Save This Report?</h3>
-                  <p className="text-sm text-muted-foreground mb-4">
-                    Get your professional PDF report with full implementation roadmap
-                  </p>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div className="bg-white rounded-lg p-4 border-2 border-primary">
-                      <h4 className="font-semibold text-primary mb-2">Subscribe & Get Free</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Start Starter plan ($29/mo) and download unlimited reports
-                      </p>
-                      <Button onClick={() => navigate('/login')} className="w-full">
-                        Start Free Trial →
-                      </Button>
-                    </div>
-                    <div className="bg-white rounded-lg p-4 border border-border">
-                      <h4 className="font-semibold mb-2">One-Time Purchase</h4>
-                      <p className="text-sm text-muted-foreground mb-3">
-                        Download this report only for $9.99
-                      </p>
-                      <Button variant="outline" className="w-full" onClick={() => {
-                        toast.info('One-time purchase coming soon! Subscribe for unlimited reports.');
-                      }}>
-                        Buy Report - $9.99
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-
                 {/* Quick Summary */}
                 <div>
                   <h3 className="font-semibold mb-3">Quick Summary</h3>
@@ -316,16 +286,54 @@ export default function FreeAudit() {
                 </div>
 
                 <div className="bg-blue-50 border border-blue-200 rounded-lg p-4">
-                  <h4 className="font-semibold text-blue-900 mb-2">📧 Check Your Email</h4>
+                  <h4 className="font-semibold text-blue-900 mb-2">📊 Your Full Report is Displayed Above</h4>
                   <p className="text-sm text-blue-700 mb-3">
-                    Your full PDF report includes:
+                    You can see all {report.opportunities_count || 5} automation opportunities and potential savings of ${report.estimated_savings || 5000}/month.
                   </p>
-                  <ul className="text-sm text-blue-700 space-y-1">
-                    <li>✓ Detailed automation opportunities by category</li>
-                    <li>✓ ROI estimates for each recommendation</li>
-                    <li>✓ Implementation roadmap</li>
-                    <li>✓ Next steps to get started</li>
-                  </ul>
+                  <p className="text-sm text-blue-700">
+                    Want to save, print, or email this report? Unlock premium features below.
+                  </p>
+                </div>
+
+                {/* Download/Subscribe CTA */}
+                <div className="bg-gradient-to-r from-primary/10 to-accent/10 border-2 border-primary/20 rounded-lg p-6">
+                  <h3 className="font-semibold text-lg mb-2">💾 Save or Email This Report?</h3>
+                  <p className="text-sm text-muted-foreground mb-4">
+                    Unlock PDF download and email delivery to share with your team
+                  </p>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="bg-white rounded-lg p-4 border-2 border-primary">
+                      <h4 className="font-semibold text-primary mb-2">Subscribe & Get Unlimited</h4>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        Starter plan ($29/mo):
+                      </p>
+                      <ul className="text-xs text-muted-foreground mb-3 space-y-1">
+                        <li>✓ Unlimited report downloads</li>
+                        <li>✓ Email delivery to your team</li>
+                        <li>✓ 3 websites analyzed</li>
+                        <li>✓ 10 active automations</li>
+                      </ul>
+                      <Button onClick={() => navigate('/login')} className="w-full">
+                        Start Free Trial →
+                      </Button>
+                    </div>
+                    <div className="bg-white rounded-lg p-4 border border-border">
+                      <h4 className="font-semibold mb-2">One-Time Purchase</h4>
+                      <p className="text-sm text-muted-foreground mb-1">
+                        This report only:
+                      </p>
+                      <ul className="text-xs text-muted-foreground mb-3 space-y-1">
+                        <li>✓ PDF download</li>
+                        <li>✓ Email delivery</li>
+                        <li>✓ Lifetime access</li>
+                      </ul>
+                      <Button variant="outline" className="w-full" onClick={() => {
+                        toast.info('One-time purchase coming soon! Subscribe for unlimited reports.');
+                      }}>
+                        Buy Report - $9.99
+                      </Button>
+                    </div>
+                  </div>
                 </div>
 
                 <div className="flex gap-3">

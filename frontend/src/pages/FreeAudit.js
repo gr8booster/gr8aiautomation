@@ -362,11 +362,15 @@ export default function FreeAudit() {
 
                 {/* Quick Summary */}
                 <div>
-                  <h3 className="font-semibold mb-3">Quick Summary</h3>
-                  <div className="space-y-2">
+                  <h3 className="font-semibold mb-3">Complete Analysis Summary</h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                       <span className="text-sm">Automation Opportunities</span>
-                      <Badge>{report.opportunities_count || 5}</Badge>
+                      <Badge>{report.opportunities_count || 0}</Badge>
+                    </div>
+                    <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
+                      <span className="text-sm">Workforce Opportunities</span>
+                      <Badge>{report.workforce_opportunities_count || 0}</Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
                       <span className="text-sm">Automation Score</span>
@@ -375,8 +379,10 @@ export default function FreeAudit() {
                       </Badge>
                     </div>
                     <div className="flex items-center justify-between p-3 bg-muted rounded-lg">
-                      <span className="text-sm">Estimated Monthly Savings</span>
-                      <span className="font-semibold text-primary">${report.estimated_savings || 5000}</span>
+                      <span className="text-sm">Total Monthly Savings</span>
+                      <span className="font-semibold text-primary">
+                        ${((report.estimated_savings || 0) + (report.workforce_savings_monthly || 0)).toLocaleString()}
+                      </span>
                     </div>
                   </div>
                 </div>

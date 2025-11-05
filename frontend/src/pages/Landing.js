@@ -322,7 +322,7 @@ export default function Landing() {
             </div>
           </div>
         </section>
-
+      )}
 
       {/* Workforce Intelligence Results */}
       {analysis?.workforce && analysis.workforce.jobs_found > 0 && (

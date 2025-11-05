@@ -9,10 +9,10 @@
   },
   {
     "content": "Update frontend FreeAudit.js to display both reports",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Test end-to-end: 1 scan → 2 reports with screenshots",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]

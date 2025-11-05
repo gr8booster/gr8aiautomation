@@ -325,16 +325,19 @@ export default function Landing() {
       )}
 
       {/* Workforce Intelligence Results */}
-      {analysis?.workforce && analysis.workforce.jobs_found > 0 && (
+      {analysis?.workforce && analysis.workforce.workforce_opportunities && analysis.workforce.workforce_opportunities.length > 0 && (
         <section className="py-16 bg-gradient-to-b from-background to-primary/5">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="text-center mb-12">
               <Badge className="mb-4 bg-primary">🤖 AI Workforce Intelligence</Badge>
               <h2 className="font-heading text-3xl sm:text-4xl font-bold mb-4">
-                Replace {analysis.workforce.jobs_found} Roles with AI Agents
+                {analysis.workforce.jobs_found > 0 
+                  ? `Replace ${analysis.workforce.jobs_found} Roles with AI Agents`
+                  : 'Augment Your Team with AI Agents'
+                }
               </h2>
               <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-                We found {analysis.workforce.jobs_found} job positions that can be automated or augmented with AI
+                {analysis.workforce.summary}
               </p>
               <div className="mt-6 inline-flex items-center gap-4 bg-green-50 border-2 border-green-500 rounded-lg px-6 py-3">
                 <div className="text-center">

@@ -1,34 +1,26 @@
 [
   {
     "content": "Extend website scraper to extract job postings from careers pages",
-    "status": "in_progress"
+    "status": "completed"
   },
   {
     "content": "Create AI job-to-agent mapping service with cost savings calculation",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Build Workforce Scan Results dashboard page with job table",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Add workforce composition chart (human vs AI)",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Integrate workforce scan into main analysis flow",
-    "status": "pending"
-  },
-  {
-    "content": "Create workforce audit PDF report generator",
-    "status": "pending"
-  },
-  {
-    "content": "Add email sequence for workforce scan results",
-    "status": "pending"
+    "status": "completed"
   },
   {
     "content": "Test complete workforce intelligence flow end-to-end",
-    "status": "pending"
+    "status": "in_progress"
   }
 ]

@@ -10,6 +10,7 @@ import uuid
 import httpx
 from datetime import datetime, timedelta, timezone
 from typing import List, Dict, Any, Optional
+import asyncio
 from dotenv import load_dotenv
 from pydantic import BaseModel
 import sentry_sdk

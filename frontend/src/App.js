@@ -33,6 +33,7 @@ function App() {
           <FreeAuditPopup />
           <Routes>
             <Route path="/" element={<Landing />} />
+            <Route path="/workforce-scan" element={<WorkforceScan />} />
             <Route path="/free-audit" element={<FreeAudit />} />
             <Route path="/login" element={<Login />} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />

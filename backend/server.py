@@ -584,7 +584,8 @@ async def analyze(req: AnalysisRequest, request: Request, user: dict = Depends(g
             "business_type": extraction.business_type.value,
             "fetched_at": datetime.now(timezone.utc),
             "analysis_summary": analysis.summary,
-            "content_digest": extraction.content_text[:500]
+            "content_digest": extraction.content_text[:500],
+            "workforce_scan": workforce
         })
         
         await track_usage(db, user_id, ai_interactions=1)

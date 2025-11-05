@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Sparkles, Users, Zap, TrendingDown, Check, DollarSign } from 'lucide-react';
+import { Sparkles, Users, Zap, TrendingDown, Check, DollarSign, Bot, Target } from 'lucide-react';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent, CardDescription } from '../components/ui/card';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '../components/ui/tabs';
 import { Progress } from '../components/ui/progress';
 import { Badge } from '../components/ui/badge';
 import { toast } from 'sonner';
@@ -14,9 +15,10 @@ export default function WorkforceScan() {
   const [url, setUrl] = useState('');
   const [scanning, setScanning] = useState(false);
   const [progress, setProgress] = useState(0);
-  const [results, setResults] = useState(null);
+  const [automationResults, setAutomationResults] = useState(null);
+  const [workforceResults, setWorkforceResults] = useState(null);
 
-  const handleScan = async () => {
+  const handleDualScan = async () => {
     if (!url) {
       toast.error('Please enter a website URL');
       return;
@@ -27,8 +29,8 @@ export default function WorkforceScan() {
 
     try {
       const progressInterval = setInterval(() => {
-        setProgress((prev) => Math.min(prev + 15, 85));
-      }, 800);
+        setProgress((prev) => Math.min(prev + 12, 85));
+      }, 600);
 
       const response = await apiCall('/api/analyze', {
         method: 'POST',
@@ -38,18 +40,29 @@ export default function WorkforceScan() {
       clearInterval(progressInterval);
 
       if (!response.ok) {
-        throw new Error('Analysis failed');
+        const error = await response.json();
+        throw new Error(error.detail || 'Scan failed');
       }
 
       const data = await response.json();
       setProgress(100);
-      setResults(data.workforce);
+      
+      // Split into 2 separate reports
+      setAutomationResults({
+        url: data.url,
+        summary: data.summary,
+        recommendations: data.recommendations,
+        confidence_score: data.confidence_score
+      });
+      
+      setWorkforceResults(data.workforce);
+      
       setScanning(false);
-      toast.success('Workforce scan complete!');
+      toast.success('Dual scan complete! View both reports below.');
     } catch (error) {
       setScanning(false);
       setProgress(0);
-      toast.error('Failed to scan. Please try again.');
+      toast.error(error.message || 'Scan failed. Please try again.');
     }
   };
 

@@ -231,39 +231,134 @@ export default function FreeAudit() {
                   </div>
                 </div>
 
-                {/* Show recommendations preview */}
-                <div>
-                  <h3 className="font-semibold mb-3">Your Automation Opportunities</h3>
-                  <div className="space-y-3">
-                    {report.recommendations?.map((rec, i) => (
-                      <Card key={i}>
-                        <CardHeader className="pb-3">
-                          <div className="flex items-start justify-between">
-                            <div className="flex-1">
-                              <Badge className="mb-2">{rec.category}</Badge>
-                              <CardTitle className="text-lg text-primary">{i + 1}. {rec.title}</CardTitle>
+                {/* Tabbed Report View */}
+                <Tabs defaultValue="automation" className="w-full">
+                  <TabsList className="grid w-full grid-cols-2">
+                    <TabsTrigger value="automation" className="flex items-center gap-2">
+                      <Zap className="h-4 w-4" />
+                      Automation Report ({report.opportunities_count || 0})
+                    </TabsTrigger>
+                    <TabsTrigger value="workforce" className="flex items-center gap-2">
+                      <Users className="h-4 w-4" />
+                      Workforce Report ({report.workforce_opportunities_count || 0})
+                    </TabsTrigger>
+                  </TabsList>
+
+                  {/* Automation Report Tab */}
+                  <TabsContent value="automation" className="space-y-4">
+                    <div>
+                      <h3 className="font-semibold mb-3">Your Automation Opportunities</h3>
+                      <div className="space-y-3">
+                        {report.recommendations?.map((rec, i) => (
+                          <Card key={i}>
+                            <CardHeader className="pb-3">
+                              <div className="flex items-start justify-between">
+                                <div className="flex-1">
+                                  <Badge className="mb-2">{rec.category}</Badge>
+                                  <CardTitle className="text-lg text-primary">{i + 1}. {rec.title}</CardTitle>
+                                </div>
+                                <Badge variant={rec.priority === 'high' ? 'destructive' : rec.priority === 'medium' ? 'default' : 'secondary'}>
+                                  {rec.priority}
+                                </Badge>
+                              </div>
+                            </CardHeader>
+                            <CardContent className="space-y-2">
+                              <p className="text-sm text-muted-foreground">{rec.description}</p>
+                              <div className="bg-muted p-3 rounded-md">
+                                <p className="text-sm"><strong>Why you need it:</strong> {rec.rationale}</p>
+                              </div>
+                              <p className="text-sm"><strong>Expected impact:</strong> {rec.expected_impact}</p>
+                              {rec.estimated_value && (
+                                <p className="text-sm font-semibold text-success">
+                                  💰 Estimated Value: {rec.estimated_value}
+                                </p>
+                              )}
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  {/* Workforce Report Tab */}
+                  <TabsContent value="workforce" className="space-y-4">
+                    {report.workforce && report.workforce.workforce_opportunities && (
+                      <>
+                        <div className="bg-gradient-to-r from-blue-50 to-purple-50 border border-blue-200 rounded-lg p-4">
+                          <h3 className="font-semibold text-blue-900 mb-2">
+                            🤖 AI Workforce Intelligence
+                          </h3>
+                          <p className="text-sm text-blue-700 mb-3">{report.workforce.summary}</p>
+                          <div className="grid grid-cols-2 gap-4">
+                            <div className="bg-white rounded p-3">
+                              <div className="text-2xl font-bold text-primary">{report.workforce.jobs_found}</div>
+                              <div className="text-xs text-muted-foreground">Roles Analyzed</div>
                             </div>
-                            <Badge variant={rec.priority === 'high' ? 'destructive' : rec.priority === 'medium' ? 'default' : 'secondary'}>
-                              {rec.priority}
-                            </Badge>
+                            <div className="bg-white rounded p-3">
+                              <div className="text-2xl font-bold text-green-600">
+                                ${(report.workforce.total_potential_savings_monthly || 0).toLocaleString()}
+                              </div>
+                              <div className="text-xs text-muted-foreground">Monthly Savings</div>
+                            </div>
                           </div>
-                        </CardHeader>
-                        <CardContent className="space-y-2">
-                          <p className="text-sm text-muted-foreground">{rec.description}</p>
-                          <div className="bg-muted p-3 rounded-md">
-                            <p className="text-sm"><strong>Why you need it:</strong> {rec.rationale}</p>
+                        </div>
+
+                        <div>
+                          <h3 className="font-semibold mb-3">AI Agent Recommendations</h3>
+                          <div className="space-y-3">
+                            {report.workforce.workforce_opportunities.map((opp, idx) => (
+                              <Card key={idx}>
+                                <CardHeader className="pb-3">
+                                  <div className="flex items-start justify-between">
+                                    <div className="flex-1">
+                                      <Badge className={
+                                        opp.classification === 'Full Replacement' ? 'bg-green-600' :
+                                        opp.classification === 'Hybrid' ? 'bg-blue-600' : 'bg-yellow-600'
+                                      }>
+                                        {opp.classification}
+                                      </Badge>
+                                      <CardTitle className="text-lg mt-2">{opp.job_title}</CardTitle>
+                                    </div>
+                                    <Badge variant="outline">{opp.automation_potential}% Automatable</Badge>
+                                  </div>
+                                </CardHeader>
+                                <CardContent className="space-y-3">
+                                  <div>
+                                    <p className="text-sm font-semibold text-primary mb-1">Recommended AI Agent:</p>
+                                    <p className="text-sm">{opp.ai_agent}</p>
+                                    {opp.secondary_agent && (
+                                      <p className="text-sm text-muted-foreground">+ {opp.secondary_agent}</p>
+                                    )}
+                                  </div>
+                                  
+                                  <div className="bg-muted p-3 rounded">
+                                    <p className="text-sm">{opp.explanation}</p>
+                                  </div>
+
+                                  <div>
+                                    <p className="text-sm font-semibold mb-1">Tasks AI Can Automate:</p>
+                                    <ul className="text-sm text-muted-foreground space-y-1">
+                                      {opp.automated_tasks?.map((task, i) => (
+                                        <li key={i}>✓ {task}</li>
+                                      ))}
+                                    </ul>
+                                  </div>
+
+                                  <div className="bg-green-50 border border-green-200 rounded p-3">
+                                    <p className="text-sm font-semibold text-green-900">
+                                      💰 Estimated Savings: ${(opp.monthly_savings || 0).toLocaleString()}/month
+                                      (${(opp.annual_savings || 0).toLocaleString()}/year)
+                                    </p>
+                                  </div>
+                                </CardContent>
+                              </Card>
+                            ))}
                           </div>
-                          <p className="text-sm"><strong>Expected impact:</strong> {rec.expected_impact}</p>
-                          {rec.estimated_value && (
-                            <p className="text-sm font-semibold text-success">
-                              💰 Estimated Value: {rec.estimated_value}
-                            </p>
-                          )}
-                        </CardContent>
-                      </Card>
-                    ))}
-                  </div>
-                </div>
+                        </div>
+                      </>
+                    )}
+                  </TabsContent>
+                </Tabs>
 
                 {/* Quick Summary */}
                 <div>

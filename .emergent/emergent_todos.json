@@ -1,34 +1,34 @@
 [
   {
-    "content": "Update all URLs and branding from preview to gr8booster.com",
-    "status": "completed"
+    "content": "Extend website scraper to extract job postings from careers pages",
+    "status": "in_progress"
   },
   {
-    "content": "Remove all demo/test auto-creation logic from codebase",
-    "status": "completed"
-  },
-  {
-    "content": "Add Terms of Service and Privacy Policy pages",
-    "status": "completed"
-  },
-  {
-    "content": "Create comprehensive Help/Documentation page",
+    "content": "Create AI job-to-agent mapping service with cost savings calculation",
     "status": "pending"
   },
   {
-    "content": "Add onboarding tutorial/tooltips for first-time users",
+    "content": "Build Workforce Scan Results dashboard page with job table",
     "status": "pending"
   },
   {
-    "content": "Polish UI - improve error messages and loading states",
+    "content": "Add workforce composition chart (human vs AI)",
     "status": "pending"
   },
   {
-    "content": "Add admin panel for viewing all users and system stats",
+    "content": "Integrate workforce scan into main analysis flow",
     "status": "pending"
   },
   {
-    "content": "Create public API documentation page",
+    "content": "Create workforce audit PDF report generator",
+    "status": "pending"
+  },
+  {
+    "content": "Add email sequence for workforce scan results",
+    "status": "pending"
+  },
+  {
+    "content": "Test complete workforce intelligence flow end-to-end",
     "status": "pending"
   }
 ]

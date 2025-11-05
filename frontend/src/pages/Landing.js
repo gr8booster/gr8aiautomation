@@ -141,6 +141,10 @@ export default function Landing() {
                 </>
               ) : (
                 <>
+                  <Button variant="ghost" onClick={() => navigate('/workforce-scan')}>
+                    <Users className="h-4 w-4 mr-1" />
+                    Workforce Scan
+                  </Button>
                   <Button onClick={() => navigate('/free-audit')} className="bg-yellow-500 hover:bg-yellow-600 text-black font-semibold">
                     Free Audit
                   </Button>

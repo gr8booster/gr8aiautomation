@@ -27,6 +27,7 @@ from models.schemas import (
 )
 from analyzer.website_fetcher import fetch_and_extract_website
 from analyzer.ai_analyzer import analyze_website_for_automations
+from analyzer.workforce_scanner import analyze_workforce_opportunities
 from services.orchestrator import OrchestratorService
 from services.chatbot_service import process_chatbot_message, get_chatbot_history
 from services.usage_tracker import PLAN_LIMITS, track_usage, get_usage, check_limit

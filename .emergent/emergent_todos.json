@@ -1,6 +1,18 @@
 [
   {
-    "content": "Test complete workforce intelligence flow end-to-end",
-    "status": "completed"
+    "content": "Add workforce analysis to /api/free-report endpoint to generate BOTH reports",
+    "status": "in_progress"
+  },
+  {
+    "content": "Create separate workforce_reports collection/schema in database",
+    "status": "pending"
+  },
+  {
+    "content": "Update frontend FreeAudit.js to display both reports",
+    "status": "pending"
+  },
+  {
+    "content": "Test end-to-end: 1 scan → 2 reports with screenshots",
+    "status": "pending"
   }
 ]

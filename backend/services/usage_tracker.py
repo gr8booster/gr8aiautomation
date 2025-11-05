@@ -19,9 +19,9 @@ PLAN_LIMITS = {
         "price": 29.0
     },
     "pro": {
-        "websites": 10,
+        "websites": 999,  # Unlimited for testing
         "automations": 9999,
-        "ai_interactions": 10000,
+        "ai_interactions": 99999,  # Unlimited for testing
         "price": 99.0
     }
 }
